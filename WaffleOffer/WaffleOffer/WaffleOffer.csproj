@@ -122,6 +122,7 @@
     <Compile Include="Models\AppUser.cs" />
     <Compile Include="Models\Good.cs" />
     <Compile Include="Models\Item.cs" />
+    <Compile Include="Models\ItemTag.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Models\Trader.cs" />

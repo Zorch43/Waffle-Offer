@@ -7,5 +7,10 @@ namespace WaffleOffer.Models
 {
     public class Trader
     {
+        // Basic user information
+        public string NameFirst { get; set; }
+        public string NameLast { get; set; }
+        public string email { get; set; }
+        public string Username { get; set; }
     }
 }

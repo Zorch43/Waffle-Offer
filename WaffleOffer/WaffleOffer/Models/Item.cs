@@ -7,7 +7,7 @@ namespace WaffleOffer.Models
 {
     public class Item
     {
-        new List<ItemTag> tags = new List<ItemTag>();
+        List<ItemTag> tags = new List<ItemTag>();
 
         public string Name { get; set; }
         public string Description { get; set; }

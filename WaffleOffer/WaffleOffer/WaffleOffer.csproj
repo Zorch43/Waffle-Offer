@@ -121,6 +121,7 @@
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\AppUser.cs" />
     <Compile Include="Models\Good.cs" />
+    <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemTag.cs" />
     <Compile Include="Models\Service.cs" />

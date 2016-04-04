@@ -20,8 +20,18 @@ namespace WaffleOffer.Models
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
+        [Required]
+        [Display(Name = "First Name")]
+        public string FirstName { get; set; }
 
+        [Required]
+        [Display(Name = "Last Name")]
+        public string LastName { get; set; }
 
+        [Required]
+        [DataType(DataType.PostalCode)]
+        [Display(Name = "Zip Code")]
+        public string ZipCode { get; set; }
 
     }
 }

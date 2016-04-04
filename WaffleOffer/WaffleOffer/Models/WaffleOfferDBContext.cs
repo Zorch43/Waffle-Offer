@@ -8,8 +8,10 @@ namespace WaffleOffer.Models
 {
     public class WaffleOfferDBContext : IdentityDbContext<AppUser>
     {
-        public WaffleOfferDBContext() : base("DefaultConnection")
+        public WaffleOfferDBContext() : base("name=WaffleOfferDBContext")
         {
         }
+
+       //public System.Data.Entity.DbSet<WaffleOffer.Models.Trader> Traders { get; set; }
     }
 }

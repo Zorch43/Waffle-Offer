@@ -46,7 +46,7 @@ namespace WaffleOffer.Controllers
                 return View();
             }
 
-            var user = userManager.Find(model.Email, model.Password);
+            var user = userManager.Find(model.UserName, model.Password);
 
             if (user != null)
             {
@@ -90,8 +90,11 @@ namespace WaffleOffer.Controllers
 
             var user = new AppUser
             {
-                UserName = model.Email,
-                Email = model.Email
+                UserName = model.Nickname,
+                Email = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                ZipCode = model.ZipCode
             };
 
             var result = userManager.Create(user, model.Password);

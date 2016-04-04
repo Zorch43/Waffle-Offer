@@ -14,6 +14,7 @@ namespace WaffleOffer
     {
         protected void Application_Start()
         {
+            //Database.SetInitializer(new DropCreateDatabaseAlways<WaffleOfferDBContext>());
             AreaRegistration.RegisterAllAreas();
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);
             RouteConfig.RegisterRoutes(RouteTable.Routes);

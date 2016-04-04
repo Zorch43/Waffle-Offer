@@ -1,0 +1,31 @@
+﻿@model WaffleOffer.Models.AppUser
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+<h2>Profile</h2>
+
+<div>
+    <h4>Trader</h4>
+	<hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.UserName)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProfileText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProfileText)
+        </dd>
+
+    </dl>
+</div>

@@ -33,6 +33,7 @@ namespace WaffleOffer
                 // allow alphanumeric characters in username
                 usermanager.UserValidator = new UserValidator<AppUser>(usermanager)
                 {
+                    RequireUniqueEmail = true,
                     AllowOnlyAlphanumericUserNames = false
                 };
 

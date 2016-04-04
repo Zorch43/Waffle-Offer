@@ -11,8 +11,8 @@ namespace WaffleOffer.Models
     {
 
         [Required]
-        [DataType(DataType.EmailAddress)]
-        public string Email { get; set; }
+        [Display(Name="Nickname")]
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]

@@ -1,15 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using System.Web.Mvc;
 
 namespace WaffleOffer.Models
 {
     public class ItemImage
     {
         //  key
+        [Key]
         public int ImageID { get; set; }
-        //  key to match the image to the item
+        
         public int ItemID { get; set; }
         //  may or may not want captions for each photo
         public string Caption { get; set; }

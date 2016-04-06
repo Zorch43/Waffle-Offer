@@ -39,10 +39,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.0.0\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Web.DynamicData" />
     <Reference Include="System.Web.Entity" />
@@ -114,19 +121,24 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\GoodController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\AppUser.cs" />
     <Compile Include="Models\Good.cs" />
+    <Compile Include="Models\GoodVM.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemTag.cs" />
     <Compile Include="Models\Service.cs" />
+    <Compile Include="Models\ServiceVM.cs" />
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Models\Trader.cs" />
+    <Compile Include="Models\WaffleOfferDBContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -160,6 +172,16 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
+    <Content Include="Views\Good\Create.cshtml" />
+    <Content Include="Views\Good\Delete.cshtml" />
+    <Content Include="Views\Good\Details.cshtml" />
+    <Content Include="Views\Good\Edit.cshtml" />
+    <Content Include="Views\Good\Index.cshtml" />
+    <Content Include="Views\Services\Create.cshtml" />
+    <Content Include="Views\Services\Delete.cshtml" />
+    <Content Include="Views\Services\Details.cshtml" />
+    <Content Include="Views\Services\Edit.cshtml" />
+    <Content Include="Views\Services\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

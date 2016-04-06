@@ -9,10 +9,7 @@ namespace WaffleOffer.Models
     public class Item
     {
         List<ItemTag> tags = new List<ItemTag>();
-<<<<<<< HEAD
         List<ItemImage> images = new List<ItemImage>();
-=======
->>>>>>> Trade
 
         public string Name { get; set; }
         public string Description { get; set; }

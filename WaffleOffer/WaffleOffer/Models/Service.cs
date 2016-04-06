@@ -5,7 +5,11 @@ using System.Web;
 
 namespace WaffleOffer.Models
 {
-    public class Service
+    public class Service : Item
     {
+        //  key
+        public int ServiceID { get; set; }
+        //  number of minutes offered/desired
+        public int Duration { get; set; }
     }
 }

@@ -5,7 +5,13 @@ using System.Web;
 
 namespace WaffleOffer.Models
 {
-    public class Good
+    public class Good : Item
     {
+        //  key
+        public int GoodID { get; set; }
+        //  What the measurement is in (pounds, pairs, etc.)
+        public string Units { get; set; }
+        //  number of Units offered
+        public double Quantity { get; set; }
     }
 }

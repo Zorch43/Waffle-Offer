@@ -1,0 +1,42 @@
+﻿
+/*Selection*/
+::selection {
+    color: #ffffff; /*Text color*/
+    background: #671900; /* ColourLovers: red blazer (red brown)*/
+    /*background: #ffee57;  // ColourLovers: Golden Apple (yellow) */
+    font-weight: bold;
+}
+
+body {
+    color: #1a0200; /* ColourLovers: River of Wine (black red) */
+    background-color: #ffe4c9; /* // ColourLovers: Spotless Angel (light tan) */
+    /*background-color: #ffc68c;  // ColourLovers: sand storm (tan - like a golden waffle) */
+}
+
+/*Navbar Styles*/
+.navbar-inverse {
+    font-weight: bold;
+    background-color: #1a0200; /* ColourLovers: River of Wine (black red) */
+}
+
+.navbar-inverse .navbar-brand:hover,
+.navbar-inverse .navbar-brand:focus {
+    color: #ffee57; /* ColourLovers: Golden Apple (yellow) */
+    font-weight: bold;
+}
+
+.navbar-inverse .navbar-nav > li > a:hover,
+.navbar-inverse .navbar-nav > li > a:focus {
+  color: #ffee57; /* ColourLovers: Golden Apple (yellow) */
+  font-weight: bold;
+}
+
+/* Jumbotron Styles */
+.jumbotron {
+    background-color: rgba(238, 238, 238, 0.5); /* // equiv. of #eeeeee, at 90% trans. */
+}
+
+/* Other Typographical Styles*/
+.copywrite {
+    font-style: italic;
+}

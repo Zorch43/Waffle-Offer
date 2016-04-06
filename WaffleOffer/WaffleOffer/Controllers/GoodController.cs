@@ -10,7 +10,7 @@ using WaffleOffer.Models;
 
 namespace WaffleOffer.Controllers
 {
-    public class GoodsController : Controller
+    public class GoodController : Controller
     {
         private WaffleOfferDBContext db = new WaffleOfferDBContext();
 

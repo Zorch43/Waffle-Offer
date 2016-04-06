@@ -121,7 +121,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\GoodsController.cs" />
+    <Compile Include="Controllers\GoodController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ServicesController.cs" />
     <Compile Include="Global.asax.cs">
@@ -172,11 +172,11 @@
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Scripts\jquery-1.10.2.min.map" />
-    <Content Include="Views\Goods\Create.cshtml" />
-    <Content Include="Views\Goods\Delete.cshtml" />
-    <Content Include="Views\Goods\Details.cshtml" />
-    <Content Include="Views\Goods\Edit.cshtml" />
-    <Content Include="Views\Goods\Index.cshtml" />
+    <Content Include="Views\Good\Create.cshtml" />
+    <Content Include="Views\Good\Delete.cshtml" />
+    <Content Include="Views\Good\Details.cshtml" />
+    <Content Include="Views\Good\Edit.cshtml" />
+    <Content Include="Views\Good\Index.cshtml" />
     <Content Include="Views\Services\Create.cshtml" />
     <Content Include="Views\Services\Delete.cshtml" />
     <Content Include="Views\Services\Details.cshtml" />

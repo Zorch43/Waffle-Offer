@@ -15,14 +15,14 @@ namespace WaffleOffer.Controllers
 
         public ActionResult About()
         {
-            ViewBag.Message = "Your application description page.";
+            ViewBag.Message = "A web app for trading your stuff for new stuff.";
 
             return View();
         }
 
         public ActionResult Contact()
         {
-            ViewBag.Message = "Your contact page.";
+            ViewBag.Message = "Here is how to contact us:";
 
             return View();
         }

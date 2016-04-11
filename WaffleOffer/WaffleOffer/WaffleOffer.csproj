@@ -157,6 +157,7 @@
     <Compile Include="Models\Good.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\Service.cs" />
     <Compile Include="Models\Trade.cs" />
@@ -199,6 +200,7 @@
     <Content Include="Views\Auth\Login.cshtml" />
     <Content Include="Views\Auth\Register.cshtml" />
     <Content Include="Views\Profile\Index.cshtml" />
+    <Content Include="Views\Profile\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

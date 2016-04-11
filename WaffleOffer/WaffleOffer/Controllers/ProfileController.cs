@@ -22,7 +22,7 @@ namespace WaffleOffer.Controllers
         }
 
         //
-        // GET: /Profile/
+        // GET: /Profile/userName
         [Authorize]
         public ActionResult Index(string userName)
         {
@@ -33,9 +33,51 @@ namespace WaffleOffer.Controllers
 
             var model = userManager.FindByName(userName);
             if (model != null)
-                return View(model);
+                return View(new ProfileViewModel(model));
             else
                 return HttpNotFound("Profile not found");
         }
+
+        //GET: /Profile/Edit/userName
+        [Authorize]
+        public ActionResult Edit(string userName)
+        {
+            if (String.IsNullOrWhiteSpace(userName) || (User.Identity.Name != userName && !User.IsInRole("Admin")))
+            {
+                return RedirectToAction("Edit", new { userName = User.Identity.GetUserName() });
+            }
+
+            var model = userManager.FindByName(userName);
+            if (model != null)
+                return View(new ProfileViewModel(model));
+            else
+                return HttpNotFound("Profile not found");
+        }
+
+        //POST: /Profile/Edit/
+        [Authorize]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(ProfileViewModel model)
+        {
+            if (!ModelState.IsValid)
+                return View();
+
+            var user = userManager.FindByName(model.Nickname);
+            if (user != null)
+            {
+                user.Email = model.Email;
+                user.FirstName = model.FirstName;
+                user.LastName = model.LastName;
+                user.ZipCode = model.ZipCode;
+                user.ProfileText = model.ProfileText;
+
+                userManager.Update(user);
+                return RedirectToAction("Index", new { userName = user.UserName });
+            }
+            return View(model);
+            
+        }
+
 	}
 }

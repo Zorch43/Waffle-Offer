@@ -5,7 +5,7 @@ using System.Web;
 
 namespace WaffleOffer.Models
 {
-    public class Admin
+    public class Admin : AppUser
     {
     }
 }

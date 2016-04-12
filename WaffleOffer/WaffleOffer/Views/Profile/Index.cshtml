@@ -1,0 +1,69 @@
+﻿@model WaffleOffer.Models.ProfileViewModel
+
+@{
+    ViewBag.Title = "Profile";
+}
+
+<h2>Profile</h2>
+
+<div>
+    <h4>Trader</h4>
+	<hr />
+    <dl class="dl-horizontal">
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Nickname)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Nickname)
+        </dd>
+
+        
+
+        @*Authorized viewers only*@
+        @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.RealName)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.RealName)
+            </dd>
+            
+            <dt>
+                @Html.DisplayNameFor(model => model.Email)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Email)
+            </dd>
+        }
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ZipCode)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ZipCode)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.ProfileText)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.ProfileText)
+        </dd>
+
+        @*Authorized viewers only*@
+        @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
+        {
+            <div>
+                @Html.ActionLink("Edit Profile", "Edit", new { userName = Model.Nickname})
+            </div>
+        }
+
+    </dl>
+</div>

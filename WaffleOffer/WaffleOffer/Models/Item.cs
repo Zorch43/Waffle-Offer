@@ -8,6 +8,8 @@ namespace WaffleOffer.Models
 {
     public class Item
     {
+
+        public enum ItemType { Want, Have}
         List<ItemTag> tags = new List<ItemTag>(); // removed extra 'new'
         List<ItemImage> images = new List<ItemImage>();
 
@@ -22,5 +24,6 @@ namespace WaffleOffer.Models
         public string Units { get; set; }
         //  number of Units offered
         public double Quantity { get; set; }
+
     }
 }

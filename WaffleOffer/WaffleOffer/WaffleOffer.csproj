@@ -141,6 +141,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Views\Trade\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -150,11 +151,13 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\TradeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\AppUser.cs" />
+    <Compile Include="Models\CreateItemViewModel.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\ItemTag.cs" />
@@ -163,6 +166,7 @@
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Models\Trader.cs" />
+    <Compile Include="Models\TradeViewModel.cs" />
     <Compile Include="Models\WaffleOfferDBContext.cs" />
     <Compile Include="Models\WaffleOfferDBInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

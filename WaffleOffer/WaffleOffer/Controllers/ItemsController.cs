@@ -36,10 +36,14 @@ namespace WaffleOffer.Controllers
         }
 
         // GET: /Items/Create
-        public ActionResult Create()
+        public ActionResult Create(string id)
         {
+
             return View();
         }
+
+        public 
+
 
         // POST: /Items/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
@@ -57,6 +61,8 @@ namespace WaffleOffer.Controllers
 
             return View(item);
         }
+
+      
 
         // GET: /Items/Edit/5
         public ActionResult Edit(int? id)

@@ -21,6 +21,7 @@ namespace WaffleOffer.Models
         //profile
         public string ProfileText { get; set; }
 
+        public Trader TraderAccount { get; set; }
         ////items
         //public List<Item> Wants { get; set; }
         //public List<Item> Haves { get; set; }

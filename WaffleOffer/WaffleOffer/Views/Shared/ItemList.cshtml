@@ -39,9 +39,9 @@
                 @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }) |
-                @Html.ActionLink("Details", "Details", "Items", new { id = item.ItemID }) |
-                @Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID })
+                @Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null) |
+                @Html.ActionLink("Details", "Details", "Items", new { id = item.ItemID }, null) |
+                @Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null)
             </td>
         </tr>
     }

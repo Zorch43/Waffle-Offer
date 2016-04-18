@@ -141,7 +141,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Trade\" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Start\BundleConfig.cs" />
@@ -215,6 +214,7 @@
     <Content Include="Views\Items\Edit.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Shared\ItemList.cshtml" />
+    <Content Include="Views\Trade\Index.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

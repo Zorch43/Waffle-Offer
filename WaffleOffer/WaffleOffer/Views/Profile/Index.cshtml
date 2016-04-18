@@ -64,7 +64,10 @@
             </dt>
 
             <dd>
-                @Html.ActionLink("Add Item", "Create", "Items", new { type="Have"}, null)
+                @if (User.Identity.Name == Model.Nickname)
+                {
+                     @Html.ActionLink("Add Item", "Create", "Items", new { type="Have"}, null)
+                }
                 @Html.Partial("ItemList", Model.Haves)
             </dd>
         }
@@ -75,7 +78,10 @@
             </dt>
 
             <dd>
-                @Html.ActionLink("Add Item", "Create", "Items", new { type = "Want" }, null)
+                @if (User.Identity.Name == Model.Nickname)
+                {
+                    @Html.ActionLink("Add Item", "Create", "Items", new { type = "Want" }, null)
+                }
                 @Html.Partial("ItemList", Model.Wants)
             </dd>
         }

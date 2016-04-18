@@ -89,6 +89,7 @@ namespace WaffleOffer.Controllers
         // GET: /Messages/Compose
         public ActionResult Compose(string recipientUsername)
         {
+            ViewBag.Recipient = recipientUsername;
             return View();
         }
 

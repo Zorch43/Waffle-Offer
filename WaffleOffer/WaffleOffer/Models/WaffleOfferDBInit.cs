@@ -22,10 +22,11 @@ namespace WaffleOffer.Models
             //create admin account
             var user = new AppUser(){
                 UserName = "Admin",
-                FirstName = "Boss",
+                FirstName = "Bossy",
                 LastName = "McBossFace",
                 Email = "Admin@WaffleOffer.com",
-                ZipCode = "91820"
+                ZipCode = "91820",
+                TraderAccount = new Trader()
             };
             InitUser(user, "IAmTheLaw", "Admin");
 

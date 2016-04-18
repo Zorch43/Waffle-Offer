@@ -13,6 +13,9 @@ namespace WaffleOffer.Models
             Wants = new List<Item>();
             Haves = new List<Item>();
         }
+        //key
+        [Key]
+        public int Id { get; set; }
         //items
         public List<Item> Wants { get; set; }
         public List<Item> Haves { get; set; }

@@ -17,6 +17,9 @@
         <hr />
         @Html.ValidationSummary(true)
 
+        @Html.Hidden("ListingType")
+        @Html.Hidden("ListingUser")
+
         <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">

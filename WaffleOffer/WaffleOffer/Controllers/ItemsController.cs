@@ -36,21 +36,29 @@ namespace WaffleOffer.Controllers
         }
 
         // GET: /Items/Create
-        public ActionResult Create(string id)
+        public ActionResult Create(string type)
         {
 
-            return View();
+            if (type == Item.ItemType.Have.ToString() || type == Item.ItemType.Want.ToString())
+            {
+                return View(new Item()
+                {
+                    ListingType = (Item.ItemType)Enum.Parse(typeof(Item.ItemType), type),
+                    ListingUser = User.Identity.Name
+                });
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
         }
-
-        public 
-
 
         // POST: /Items/Create
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity")] Item item)
+        public ActionResult Create([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item)
         {
             if (ModelState.IsValid)
             {

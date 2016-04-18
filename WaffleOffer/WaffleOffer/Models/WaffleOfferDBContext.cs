@@ -13,7 +13,5 @@ namespace WaffleOffer.Models
         }
 
         public System.Data.Entity.DbSet<WaffleOffer.Models.Item> Items { get; set; }
-
-       //public System.Data.Entity.DbSet<WaffleOffer.Models.Trader> Traders { get; set; }
     }
 }

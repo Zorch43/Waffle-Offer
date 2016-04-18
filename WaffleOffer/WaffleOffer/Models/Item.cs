@@ -24,6 +24,10 @@ namespace WaffleOffer.Models
         public string Units { get; set; }
         //  number of Units offered
         public double Quantity { get; set; }
+        //type of listing
+        public ItemType ListingType { get; set; }
+        //listing user
+        public string ListingUser { get; set; }
 
     }
 }

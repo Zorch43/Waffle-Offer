@@ -9,18 +9,6 @@ namespace WaffleOffer.Models
 {
     public class AppUser : IdentityUser
     {
-        [Key]
-        public override string Id
-        {
-            get
-            {
-                return base.Id;
-            }
-            set
-            {
-                base.Id = value;
-            }
-        }
         //non-editable
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -41,6 +29,8 @@ namespace WaffleOffer.Models
 
         ////social
         //public List<Trader> FavoriteTraders { get; set; }
+
+        //public List<Message> UserMessages { get { return messages; } set { messages = value; } }
 
     }
 }

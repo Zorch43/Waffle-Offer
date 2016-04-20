@@ -27,10 +27,13 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     @*Temporary - change for release*@
                     <li>@Html.ActionLink("Items", "Index", "Items")</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
                     @*Authentication links*@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink(User.Identity.Name, "Index", "Profile")</li>
+                        <li>@Html.ActionLink("Messages", "Inbox", "Messages", null, null)</li>
                         <li><a href="@Url.Action("logout", "auth")">Log Out</a></li>
                     }
                     else

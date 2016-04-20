@@ -87,6 +87,13 @@
         }
         
 
+        @if (User.Identity.Name != Model.Nickname)
+        {
+            <div>
+                @Html.ActionLink("Send Message", "Compose", "Messages", new { recipientUsername = Model.Nickname }, null)
+            </div>
+        }
+
         @*Authorized viewers only*@
         @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
         {

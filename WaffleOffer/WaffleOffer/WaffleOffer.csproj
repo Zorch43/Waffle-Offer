@@ -149,6 +149,7 @@
     <Compile Include="Controllers\AuthController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ItemsController.cs" />
+    <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
     <Compile Include="Controllers\TradeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -161,11 +162,17 @@
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\ItemTag.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
+    <Compile Include="Models\Message.cs" />
+    <Compile Include="Models\MessageViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Models\Trader.cs" />
+<<<<<<< HEAD
     <Compile Include="Models\TradeViewModel.cs" />
+=======
+    <Compile Include="Models\WaffleOfferContext.cs" />
+>>>>>>> refs/remotes/origin/master
     <Compile Include="Models\WaffleOfferDBContext.cs" />
     <Compile Include="Models\WaffleOfferDBInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -215,6 +222,13 @@
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Shared\ItemList.cshtml" />
     <Content Include="Views\Trade\Index.cshtml" />
+    <Content Include="Views\Messages\Delete.cshtml" />
+    <Content Include="Views\Messages\Edit.cshtml" />
+    <Content Include="Views\Messages\Inbox.cshtml" />
+    <Content Include="Views\Messages\Compose.cshtml" />
+    <Content Include="Views\Messages\View.cshtml" />
+    <Content Include="Views\Messages\Sent.cshtml" />
+    <Content Include="Views\Messages\Error.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

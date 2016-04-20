@@ -1,0 +1,48 @@
+﻿@model IEnumerable<WaffleOffer.Models.MessageViewModel>
+
+@{
+    ViewBag.Title = "Sent Messages";
+}
+
+<h2>Sent Messages</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @*@Html.DisplayNameFor(model => model.SenderItem.UserName)*@ 
+            To
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Subject)
+        </th>
+        <th>
+            @*@Html.DisplayNameFor(model => model.DateSent)*@
+            Sent
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RecipientItem.UserName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Subject)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DateSent)
+            </td>
+            <td>
+                @Html.ActionLink("Open", "View", new { id = item.MessageID }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.MessageID })
+            </td>
+        </tr>
+    }
+
+</table>
+<p>
+    @Html.ActionLink("Return to Inbox", "Inbox")
+</p>
+

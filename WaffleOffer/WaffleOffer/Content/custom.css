@@ -40,3 +40,9 @@ body {
 .copywrite {
     font-style: italic;
 }
+
+hr {
+    /*border: solid 1px #cf4823;  //ColourLovers: tomorrow's dawn (brown) */
+    /*border: solid 1px #822100;  //ColourLovers: Paranoid Glance (dk. brown) */
+    border-color: rgba(130,33,0,.75); /* //ColourLovers: Paranoid Glance (dk. brown) */
+}

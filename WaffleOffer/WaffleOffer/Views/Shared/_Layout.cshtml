@@ -27,7 +27,7 @@
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
                     <li>@Html.ActionLink("Items", "Index", "Items")</li>
                     @*Authentication links*@
-                    @if (User.Identity.IsAuthenticated)
+                    @*@if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink(User.Identity.Name, "Index", "Profile")</li>
                         <li><a href="@Url.Action("logout", "auth")">Log Out</a></li>
@@ -37,8 +37,9 @@
                         <li><a href="@Url.Action("login", "auth")">Log In</a></li>
                         <li><a href="@Url.Action("Register", "auth")">Register</a></li>
 
-                    }
+                    }*@
                 </ul>
+                @Html.Partial("_AuthLoginPartial")
             </div>
         </div>
     </div>

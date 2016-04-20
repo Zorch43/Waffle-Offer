@@ -168,11 +168,7 @@
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Models\Trader.cs" />
-<<<<<<< HEAD
     <Compile Include="Models\TradeViewModel.cs" />
-=======
-    <Compile Include="Models\WaffleOfferContext.cs" />
->>>>>>> refs/remotes/origin/master
     <Compile Include="Models\WaffleOfferDBContext.cs" />
     <Compile Include="Models\WaffleOfferDBInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

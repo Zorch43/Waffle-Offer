@@ -1,0 +1,55 @@
+﻿@model WaffleOffer.Models.MessageViewModel
+
+@{
+    ViewBag.Title = "View Message";
+}
+<h2>View Message</h2>
+<div>
+    <dl class="dl-horizontal">
+        <dt>
+            @*@Html.DisplayNameFor(model => model.SenderItem.UserName)*@
+            Sender
+        </dt>
+        <dd>
+            @Html.DisplayFor(model => model.SenderItem.UserName)
+        </dd>
+
+        <dt>
+            @*@Html.DisplayNameFor(model => model.RecipientItem.UserName)*@
+            Recipient
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.RecipientItem.UserName)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Subject)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Subject)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Body)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Body)
+        </dd>
+        <dt>
+            @*@Html.DisplayNameFor(model => model.DateSent)*@
+            Sent
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DateSent)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Return to Inbox", "Inbox")
+</p>
+

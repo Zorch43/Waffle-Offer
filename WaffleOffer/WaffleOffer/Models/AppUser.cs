@@ -8,7 +8,7 @@ namespace WaffleOffer.Models
 {
     public class AppUser : IdentityUser
     {
-
+        //private List<Message> messages = new List<Message>();
         //non-editable
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -28,6 +28,8 @@ namespace WaffleOffer.Models
 
         ////social
         //public List<Trader> FavoriteTraders { get; set; }
+
+        //public List<Message> UserMessages { get { return messages; } set { messages = value; } }
 
     }
 }

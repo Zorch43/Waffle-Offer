@@ -8,13 +8,17 @@ using System.Web;
 
 namespace WaffleOffer.Models
 {
-    public class WaffleOfferDBInit : DropCreateDatabaseIfModelChanges<WaffleOfferDBContext>
-    //public class WaffleOfferDBInit : DropCreateDatabaseAlways<WaffleOfferDBContext>
+    
+    //public class WaffleOfferDBInit : DropCreateDatabaseAlways<WaffleOfferContext>
+    //public class WaffleOfferDBInit : CreateDatabaseIfNotExists<WaffleOfferContext>
+    //public class WaffleOfferDBInit : CreateDatabaseIfNotExists<WaffleOfferContext>
+    public class WaffleOfferDBInit : DropCreateDatabaseIfModelChanges<WaffleOfferContext>
     {
         UserManager<AppUser> userManager;
         PasswordHasher hasher = new PasswordHasher();
 
-        protected override void Seed(WaffleOfferDBContext context)
+        //protected override void Seed(WaffleOfferDBContext context)
+        protected override void Seed(WaffleOfferContext context)
         {
 
             userManager = new UserManager<AppUser>(new UserStore<AppUser>(context));

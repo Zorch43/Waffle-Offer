@@ -18,7 +18,7 @@
             <ul>
                 @foreach (var item in Model.SendingTrader.TraderAccount.Haves)
                 {
-                    <li>@item.Name</li>
+                    <li>@item.Name<a href="#">&rArr</a></li>
                 }
             </ul>
         </td>
@@ -27,7 +27,7 @@
             <ul>
                 @foreach (var item in Model.SendingItems)
                 {
-                    <li>@item.Name</li>
+                    <li><a href="#">&lArr</a>@item.Name</li>
                 }
             </ul>
         </td>
@@ -35,15 +35,16 @@
             <ul>
                 @foreach (var item in Model.ReceivingItems)
                 {
-                    <li>@item.Name</li>
+                    <li>@item.Name<a href="#">&rArr</a></li>
                 }
             </ul>
         </td>
         <td>
             <ul>
+                @Html.DisplayFor(model => model.ReceivingTrader.UserName)
                 @foreach (var item in Model.ReceivingTrader.TraderAccount.Haves)
                 {
-                    <li>@item.Name</li>
+                    <li><a href="#">&lArr</a>@item.Name</li>
                 }
             </ul>
         </td>

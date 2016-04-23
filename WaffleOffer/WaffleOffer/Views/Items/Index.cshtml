@@ -1,14 +1,22 @@
 ﻿@model IEnumerable<WaffleOffer.Models.Item>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Items Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Index</h2>
+<h2>Items Index</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")
+
+    @using (Html.BeginForm())
+    {
+        <p>
+            Name: @Html.TextBox("searchStg") <input type="submit" value="Search" /> 
+            @*<input type="reset" value="Clear" />*@
+         </p>
+    }
 </p>
 <table class="table">
     <tr>

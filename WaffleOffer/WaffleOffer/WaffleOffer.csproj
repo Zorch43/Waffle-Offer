@@ -164,6 +164,7 @@
     <Compile Include="Models\MessageViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
+    <Compile Include="Models\Search.cs" />
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Models\Trader.cs" />
     <Compile Include="Models\WaffleOfferContext.cs" />

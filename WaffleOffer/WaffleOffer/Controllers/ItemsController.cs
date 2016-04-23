@@ -15,9 +15,21 @@ namespace WaffleOffer.Controllers
         private WaffleOfferDBContext db = new WaffleOfferDBContext();
 
         // GET: /Items/
-        public ActionResult Index()
+        public ActionResult Index(string searchStg)
         {
-            return View(db.Items.ToList());
+            var items = from i in db.Items
+                        select i;
+
+            if (!String.IsNullOrEmpty(searchStg))
+            {
+                items = items.Where(s => s.Name.Contains(searchStg));
+                //items = items.Where(s => s.Name.Contains(searchStg) || s.Name.Contains(searchStg2)); // tried a second search criteria with string. Did not work.
+            }
+
+            return View(items);
+
+            // Default list of items
+            //return View(db.Items.ToList());
         }
 
         // GET: /Items/Details/5

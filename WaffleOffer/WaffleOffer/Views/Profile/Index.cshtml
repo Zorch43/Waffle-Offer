@@ -13,6 +13,13 @@
                 <!-- commented out until I can fix the garbage-looking alignment -->
                 <!--<figcaption class="profile-caption">-->@*@Html.DisplayFor(model => model.Nickname)*@ <!--</figcaption>-->
             </figure>
+            @*Only other traders should be able to see this*@
+            @if (User.Identity.Name != Model.Nickname)
+            {
+                <div>
+                    @Html.ActionLink("Send Message", "Compose", "Messages", new { recipientUsername = Model.Nickname }, new { @class="btn btn-sm btn-custom-grey" })
+                </div>
+            }
             @*Authorized viewers only*@
             @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
             {
@@ -20,6 +27,7 @@
                     @Html.ActionLink("Edit Profile", "Edit", new { userName = Model.Nickname }, new {@class="btn btn-sm btn-custom-grey" })
                 </p>
             }
+
         </div>
         <div class="col-md-8">
             <h5>About @Html.DisplayFor(model => model.Nickname)</h5>

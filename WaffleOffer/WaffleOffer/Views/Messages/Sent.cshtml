@@ -22,7 +22,7 @@
         <li class="collection-item avatar">
             <i class="material-icons">account_circle</i>
             <p>
-                <span class="msg-label">From:</span> @Html.DisplayFor(modelItem => item.SenderItem.UserName) <br />
+                <span class="msg-label">To:</span> @Html.DisplayFor(modelItem => item.RecipientItem.UserName) <br />
                 <span class="msg-label">Subject:</span> @Html.DisplayFor(modelItem => item.Subject) <br />
                 <span class="msg-label">Sent:</span> @Html.DisplayFor(modelItem => item.DateSent)
             </p>

@@ -57,5 +57,20 @@ namespace WaffleOffer.Controllers
             }
             return new HttpNotFoundResult();
         }
+
+        [HttpPost]
+        public ActionResult Create([Bind(Include = "SenderId,ReceiverId,OfferedItems,RequestedItems")] TradeCreator trade)
+        {
+            //get list of offered items
+
+            //get list of requested items
+
+            //create Trade
+
+            //add to database
+
+            //go back to items
+            return RedirectToAction("index", "items");
+        }
     }
 }

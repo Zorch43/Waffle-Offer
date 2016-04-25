@@ -14,10 +14,12 @@ namespace WaffleOffer.Models
         public int TradeId { get; set; }
 
         //sending trader
+        public string SendingTraderId { get; set; }
         public AppUser SendingTrader { get; set; }
         public List<Item> SendingItems { get; set; }
 
         //recieving trader
+        public string ReceivingTraderId { get; set; }
         public AppUser ReceivingTrader { get; set; }
         public List<Item> ReceivingItems { get; set; }
 

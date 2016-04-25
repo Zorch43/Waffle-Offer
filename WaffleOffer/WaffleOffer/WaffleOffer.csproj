@@ -167,6 +167,7 @@
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\Trade.cs" />
+    <Compile Include="Models\TradeCreator.cs" />
     <Compile Include="Models\Trader.cs" />
     <Compile Include="Models\TradeViewModel.cs" />
     <Compile Include="Models\WaffleOfferDBContext.cs" />

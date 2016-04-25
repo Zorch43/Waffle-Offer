@@ -1,42 +1,212 @@
-﻿
-/*Selection*/
-::selection {
-    color: #ffffff; /*Text color*/
-    background: #671900; /* ColourLovers: red blazer (red brown)*/
-    /*background: #ffee57;  // ColourLovers: Golden Apple (yellow) */
-    font-weight: bold;
-}
+﻿/* 
+    Color Guide:
+    Lighter grey --> #a5a5a5
+    Darker grey --> #535353
+
+    Gold --> #ffc90e
+    Lighter gold --> #efe4b0
+    Darker gold --> #f8b10e
+*/
 
 body {
-    color: #1a0200; /* ColourLovers: River of Wine (black red) */
-    background-color: #ffe4c9; /* // ColourLovers: Spotless Angel (light tan) */
-    /*background-color: #ffc68c;  // ColourLovers: sand storm (tan - like a golden waffle) */
+    color: #535353;
+    background-color: #fff;
 }
 
-/*Navbar Styles*/
-.navbar-inverse {
+/* Navbar Styles */
+.navbar-default {
+    background-color: #fff;
+    border: solid #a5a5a5 2px;
+    /*border: solid #535353 2px;*/
+    color: #a5a5a5;
+    /*color: #535353;*/
+    padding: 0;
+}
+
+.navbar-default .navbar-brand {   
+    border-left: solid #a5a5a5 2px;
+    /*border-left: solid #535353 2px;*/
+    /*border-right: solid #a5a5a5 2px;*/
+    /*border-right: solid #535353 2px;*/
+    color: #a5a5a5;
+    /*color: #535353;*/
+    font-size: 22px;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    /*color: #ffc90e;*/
+    /*color: #535353;*/
+    color: #a5a5a5;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #a5a5a5;
+    /*color: #535353;*/
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #ffc90e;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #a5a5a5;
+    /*background-color: #535353;*/
+}
+.custom-nav-item {
+    border-right: solid #a5a5a5 2px;
+    /*border-right: solid #535353 2px;*/
+}
+.custom-nav-item-right {
+    border-left: solid #a5a5a5 2px;
+    /*border-left: solid #535353 2px;*/
+}
+.custom-nav-item-both {
+    border-left: solid #a5a5a5 2px;
+    /*border-left: solid #535353 2px;*/
+    border-right: solid #a5a5a5 2px;
+    /*border-right: solid #a5a5a5 2px;*/
+}
+#landing-nav {
     font-weight: bold;
-    background-color: #1a0200; /* ColourLovers: River of Wine (black red) */
 }
 
-.navbar-inverse .navbar-brand:hover,
-.navbar-inverse .navbar-brand:focus {
-    color: #ffee57; /* ColourLovers: Golden Apple (yellow) */
-    font-weight: bold;
+/* Heading Styles */
+.light-heading {
+    color: #a5a5a5;
+    margin-top: 50px;
 }
-
-.navbar-inverse .navbar-nav > li > a:hover,
-.navbar-inverse .navbar-nav > li > a:focus {
-  color: #ffee57; /* ColourLovers: Golden Apple (yellow) */
-  font-weight: bold;
+.dark-heading {
+    color: #535353;
+    margin-top: 50px;
+}
+.list-header {
+    text-align: center;
 }
 
 /* Jumbotron Styles */
 .jumbotron {
-    background-color: rgba(238, 238, 238, 0.5); /* // equiv. of #eeeeee, at 90% trans. */
+    background-color: #fff;
+    /*border: solid #a5a5a5 2px;*/
+    margin: 50px 0 0 0;
+}
+.jumbotron img {
+    height: auto;
+    margin: 0 auto;
+    max-width: 100%;   
 }
 
-/* Other Typographical Styles*/
-.copywrite {
-    font-style: italic;
+/* Additional Home Page Styles */
+.landing-col {
+    padding: 15px;
 }
+
+.landing-col h4 {
+    /*color: #a5a5a5;*/
+    color: #535353;
+}
+
+.landing-col p {
+    font-size: 18px;
+}
+
+/* Footer Styles */
+footer {   
+    font-size: 12px;
+}
+
+footer ul li {
+    margin: 0 0 5px 0;
+}
+
+footer a {
+    color: #a5a5a5;
+    text-decoration: underline;
+}
+
+footer a:hover, 
+footer a:focus {
+    color: #535353;
+    text-decoration: underline;
+}
+
+footer a:visited {
+    color: #535353;
+    text-decoration: underline;
+}
+
+footer address {
+    color: #a5a5a5;
+    text-align: right;
+}
+
+/* Button Styles */
+.btn-custom-submit {
+    background-color: #fff;
+    border: solid #ffc90e 2px;
+    color: #f8b10e;
+}
+.btn-custom-submit:hover,
+.btn-custom-submit:focus {
+    background-color: #fff;
+    color: #f8b10e;
+}
+
+.btn-custom-grey {
+    background-color: #fff;
+    border: solid #a5a5a5 2px;
+    color: #535353;
+}
+.btn-custom-grey:hover,
+.btn-custom-grey:focus {
+    background-color: #fff;
+    color: #535353;
+}
+
+.btn-group .dropdown-menu li a{
+    background-color: #fff;
+    color: #535353;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.btn-group .dropdown-menu li a:hover,
+.btn-group .dropdown-menu li a:focus{
+    background-color: #fff;
+    color: #ffc90e;
+}
+
+/* Icon Styles */
+.icon-link-light {
+    color: #a5a5a5;
+}
+.icon-link-dark {
+    color: #535353;
+}
+.icon-link-light:hover,
+.icon-link-dark:hover,
+.icon-link-light:focus,
+.icon-link-dark:focus {
+    color: #ffc90e;
+}
+
+.icon-warning:hover,
+.icon-warning:focus {
+    color:#e82722;
+}
+
+/* Text Classes */
+.msg-label {
+    font-weight: bold;
+}
+
+/* Image Styles */
+.profile-pic {
+    border: solid #a5a5a5 2px;
+}
+.profile-caption {
+    font-size: 15px;
+    text-align: center;
+}
+
+

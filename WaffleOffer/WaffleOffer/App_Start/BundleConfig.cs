@@ -20,10 +20,15 @@ namespace WaffleOffer
                       "~/Scripts/bootstrap.js",
                       "~/Scripts/respond.js"));
 
+            // Mobile Design for Bootstrap script
+            bundles.Add(new ScriptBundle("~/bundles/mdb").Include(
+                      "~/Scripts/mdb.js"));
+
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
                       "~/Content/site.css",
-                      "~/Content/custom.css"));  // Added custom CSS stylesheet
+                      "~/Content/mdb.css",
+                      "~/Content/custom.css"));
         }
     }
 }

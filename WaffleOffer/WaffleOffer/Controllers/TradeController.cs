@@ -61,13 +61,34 @@ namespace WaffleOffer.Controllers
         [HttpPost]
         public ActionResult Create([Bind(Include = "SenderId,ReceiverId,OfferedItems,RequestedItems")] TradeCreator trade)
         {
-            //get list of offered items
+            var offered = new List<Item>();
+            var requested = new List<Item>();
 
+            //get list of offered items
+            for (int i = 0; i < trade.OfferedItems.Count; i++)
+            {
+                offered.Add(db.Items.Find(trade.OfferedItems.ElementAt(i)));
+            }
+
+            
             //get list of requested items
+            for (int i = 0; i < trade.RequestedItems.Count; i++)
+            {
+                requested.Add(db.Items.Find(trade.RequestedItems.ElementAt(i)));
+            }
 
             //create Trade
-
+            var model = new Trade()
+            {
+                SendingItems = offered,
+                ReceivingItems = requested,
+                SendingTraderId = trade.SenderId,
+                ReceivingTraderId = trade.ReceiverId
+            };
             //add to database
+            db.Trades.Add(model);
+            db.SaveChanges();
+
 
             //go back to items
             return RedirectToAction("index", "items");

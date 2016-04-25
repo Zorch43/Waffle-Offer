@@ -12,10 +12,17 @@ namespace WaffleOffer.Models
         {
         }
 
+<<<<<<< HEAD
         public System.Data.Entity.DbSet<WaffleOffer.Models.Item> Items { get; set; }
 
         public System.Data.Entity.DbSet<WaffleOffer.Models.ItemImage> ItemImages { get; set; }
 
        //public System.Data.Entity.DbSet<WaffleOffer.Models.Trader> Traders { get; set; }
     }
+=======
+        public System.Data.Entity.DbSet<Item> Items { get; set; }
+
+       //public System.Data.Entity.DbSet<Trader> Traders { get; set; }
+    }
+>>>>>>> master
 }

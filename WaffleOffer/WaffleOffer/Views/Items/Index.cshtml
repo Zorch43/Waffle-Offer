@@ -13,7 +13,7 @@
     @using (Html.BeginForm())
     {
         <p>
-            Name: @Html.TextBox("searchStg") <input type="submit" value="Search" /> 
+            Item Name: @Html.TextBox("searchStg") <input type="submit" value="Search" /> 
             @*<input type="reset" value="Clear" />*@
          </p>
     }
@@ -21,13 +21,15 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.ActionLink("Item Name", "Index", new { sortOdr = ViewBag.NameSort })
+            @*@Html.DisplayNameFor(model => model.Name)*@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Quality)
+            @Html.ActionLink("Quality", "Index", new { sortOdr = ViewBag.QualitySort })
+            @*@Html.DisplayNameFor(model => model.Quality)*@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Units)

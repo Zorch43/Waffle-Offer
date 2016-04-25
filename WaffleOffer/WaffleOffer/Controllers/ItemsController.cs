@@ -15,8 +15,11 @@ namespace WaffleOffer.Controllers
         private WaffleOfferDBContext db = new WaffleOfferDBContext();
 
         // GET: /Items/
-        public ActionResult Index(string searchStg)
+        public ActionResult Index(string sortOdr, string searchStg)
         {
+            ViewBag.NameSort = String.IsNullOrEmpty(sortOdr) ? "name_desc" : "";
+            ViewBag.QualitySort = sortOdr == "Quality" ? "quality_desc" : "Quality";
+
             var items = from i in db.Items
                         select i;
 
@@ -26,7 +29,23 @@ namespace WaffleOffer.Controllers
                 //items = items.Where(s => s.Name.Contains(searchStg) || s.Name.Contains(searchStg2)); // tried a second search criteria with string. Did not work.
             }
 
-            return View(items);
+            switch (sortOdr)
+            {
+                case "name_desc":
+                    items = items.OrderByDescending(i => i.Name);
+                    break;
+                case "Quality":
+                    items = items.OrderBy(i => i.Quality);
+                    break;
+                case "quality_desc":
+                    items = items.OrderByDescending(i => i.Quality);
+                    break;
+                default:
+                    items = items.OrderBy(i => i.Name);
+                    break;
+            }
+
+            return View(items.ToList());
 
             // Default list of items
             //return View(db.Items.ToList());

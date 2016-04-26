@@ -25,7 +25,8 @@ namespace WaffleOffer.Controllers
 
             if (!String.IsNullOrEmpty(searchStg))
             {
-                items = items.Where(s => s.Name.Contains(searchStg));
+                items = items.Where(s => s.Name.Contains(searchStg) || s.Description.Contains(searchStg));
+                //items = items.Where(s => s.Name.Contains(searchStg));  // Does single word/ words in same order search in Name only
                 //items = items.Where(s => s.Name.Contains(searchStg) || s.Name.Contains(searchStg2)); // tried a second search criteria with string. Did not work.
             }
 

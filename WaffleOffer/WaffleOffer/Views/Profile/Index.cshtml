@@ -56,6 +56,36 @@
         <dd>
             @Html.DisplayFor(model => model.ProfileText)
         </dd>
+        
+        @if (Model.Haves != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Haves)
+            </dt>
+
+            <dd>
+                @if (User.Identity.Name == Model.Nickname)
+                {
+                     @Html.ActionLink("Add Item", "Create", "Items", new { type="Have"}, null)
+                }
+                @Html.Partial("ItemList", Model.Haves)
+            </dd>
+        }
+        @if (Model.Wants != null)
+        {
+            <dt>
+                @Html.DisplayNameFor(model => model.Wants)
+            </dt>
+
+            <dd>
+                @if (User.Identity.Name == Model.Nickname)
+                {
+                    @Html.ActionLink("Add Item", "Create", "Items", new { type = "Want" }, null)
+                }
+                @Html.Partial("ItemList", Model.Wants)
+            </dd>
+        }
+        
 
         @if (User.Identity.Name != Model.Nickname)
         {
@@ -73,4 +103,5 @@
         }
 
     </dl>
+
 </div>

@@ -68,9 +68,21 @@ namespace WaffleOffer.Controllers
         }
 
         // GET: /Items/Create
-        public ActionResult Create()
+        public ActionResult Create(string type)
         {
-            return View();
+
+            if (type == Item.ItemType.Have.ToString() || type == Item.ItemType.Want.ToString())
+            {
+                return View(new Item()
+                {
+                    ListingType = (Item.ItemType)Enum.Parse(typeof(Item.ItemType), type),
+                    ListingUser = User.Identity.Name
+                });
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
         }
 
         // POST: /Items/Create
@@ -78,7 +90,7 @@ namespace WaffleOffer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity")] Item item)
+        public ActionResult Create([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -89,6 +101,8 @@ namespace WaffleOffer.Controllers
 
             return View(item);
         }
+
+      
 
         // GET: /Items/Edit/5
         public ActionResult Edit(int? id)

@@ -1,0 +1,52 @@
+﻿@model WaffleOffer.Models.Trade
+@{
+    ViewBag.Title = "Trade";
+}
+
+<h2>Trade</h2>
+
+<table>
+    <tr>
+        <th>Sender</th>
+        <th>Offered by Sender</th>
+        <th>Offered by Receiver</th>
+        <th>Receiver</th>
+    </tr>
+    <tr>
+        <td>
+            @Html.DisplayFor(model => model.SendingTrader.UserName)
+            <ul>
+                @foreach (var item in Model.SendingTrader.TraderAccount.Haves)
+                {
+                    <li>@item.Name</li>
+                }
+            </ul>
+        </td>
+
+        <td>
+            <ul>
+                @foreach (var item in Model.SendingItems)
+                {
+                    <li>@item.Name</li>
+                }
+            </ul>
+        </td>
+        <td>
+            <ul>
+                @foreach (var item in Model.ReceivingItems)
+                {
+                    <li>@item.Name</li>
+                }
+            </ul>
+        </td>
+        <td>
+            <ul>
+                @foreach (var item in Model.ReceivingTrader.TraderAccount.Haves)
+                {
+                    <li>@item.Name</li>
+                }
+            </ul>
+        </td>
+    </tr>
+</table>
+

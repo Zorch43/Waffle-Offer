@@ -151,11 +151,13 @@
     <Compile Include="Controllers\ItemsController.cs" />
     <Compile Include="Controllers\MessagesController.cs" />
     <Compile Include="Controllers\ProfileController.cs" />
+    <Compile Include="Controllers\TradeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\AppUser.cs" />
+    <Compile Include="Models\CreateItemViewModel.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemImage.cs" />
     <Compile Include="Models\ItemTag.cs" />
@@ -167,7 +169,7 @@
     <Compile Include="Models\Search.cs" />
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Models\Trader.cs" />
-    <Compile Include="Models\WaffleOfferContext.cs" />
+    <Compile Include="Models\TradeViewModel.cs" />
     <Compile Include="Models\WaffleOfferDBContext.cs" />
     <Compile Include="Models\WaffleOfferDBInit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -216,6 +218,8 @@
     <Content Include="Views\Items\Edit.cshtml" />
     <Content Include="Views\Items\Index.cshtml" />
     <Content Include="Views\Shared\_AuthLoginPartial.cshtml" />
+    <Content Include="Views\Shared\ItemList.cshtml" />
+    <Content Include="Views\Trade\Index.cshtml" />
     <Content Include="Views\Messages\Delete.cshtml" />
     <Content Include="Views\Messages\Edit.cshtml" />
     <Content Include="Views\Messages\Inbox.cshtml" />

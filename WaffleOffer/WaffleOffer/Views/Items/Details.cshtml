@@ -56,4 +56,5 @@
 <p>
     @Html.ActionLink("Edit", "Edit", new { id = Model.ItemID }) |
     @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Open Trade", "Index", "Trade", new { partner=Model.ListingUser}, null)
 </p>

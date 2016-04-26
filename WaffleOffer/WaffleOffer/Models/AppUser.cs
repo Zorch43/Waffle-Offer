@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNet.Identity.EntityFramework;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
@@ -8,7 +9,6 @@ namespace WaffleOffer.Models
 {
     public class AppUser : IdentityUser
     {
-        //private List<Message> messages = new List<Message>();
         //non-editable
         public string FirstName { get; set; }
         public string LastName { get; set; }
@@ -21,6 +21,7 @@ namespace WaffleOffer.Models
         //profile
         public string ProfileText { get; set; }
 
+        public Trader TraderAccount { get; set; }
         ////items
         //public List<Item> Wants { get; set; }
         //public List<Item> Haves { get; set; }

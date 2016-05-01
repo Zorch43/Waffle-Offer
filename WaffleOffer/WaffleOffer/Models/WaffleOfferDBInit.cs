@@ -11,7 +11,7 @@ namespace WaffleOffer.Models
     
     //public class WaffleOfferDBInit : DropCreateDatabaseAlways<WaffleOfferDBContext>
     //public class WaffleOfferDBInit : CreateDatabaseIfNotExists<WaffleOfferDBContext>
-    //public class WaffleOfferDBInit : CreateDatabaseIfNotExists<WaffleOffeDBrContext>
+    //public class WaffleOfferDBInit : CreateDatabaseIfNotExists<WaffleOfferDBContext>
     public class WaffleOfferDBInit : DropCreateDatabaseIfModelChanges<WaffleOfferDBContext>
     {
         UserManager<AppUser> userManager;

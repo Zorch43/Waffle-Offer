@@ -65,12 +65,7 @@
             var n = document.createElement("INPUT");
             n.setAttribute('type', 'hidden');
             //assign name
-            if (column == 'SenderOffers') {
-                n.setAttribute('name', 'OfferedItems');
-            }
-            else {
-                n.setAttribute('name', 'RequestedItems');
-            }
+            n.setAttribute('name', 'Items');
             
             n.setAttribute('value', itemId);
             //append to submission form

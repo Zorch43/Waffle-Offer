@@ -11,7 +11,6 @@ namespace WaffleOffer.Models
         public string SenderId { get; set; }
         public string ReceiverId { get; set; }
         //list of item ids
-        public ICollection<int> OfferedItems{get; set;}
-        public ICollection<int> RequestedItems { get; set; }
+        public ICollection<int> Items{get; set;}
     }
 }

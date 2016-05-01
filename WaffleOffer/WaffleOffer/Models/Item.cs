@@ -29,5 +29,8 @@ namespace WaffleOffer.Models
         //listing user
         public string ListingUser { get; set; }
 
+        //list of trades that the item appears/has appeared in
+        //mostly to satisfy EF, but might come in handy
+        public List<Trade> Trades { get; set; }
     }
 }

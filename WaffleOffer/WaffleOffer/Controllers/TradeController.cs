@@ -33,9 +33,8 @@ namespace WaffleOffer.Controllers
                 var model = new Trade()
                 {
                     SendingTrader = userManager.FindByName(User.Identity.Name),
-                    SendingItems = new List<Item>(),
+                    Items = new List<Item>(),
                     ReceivingTrader = tradePartner,
-                    ReceivingItems = new List<Item>()
                 };
 
                 //load model up
@@ -59,39 +58,46 @@ namespace WaffleOffer.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create([Bind(Include = "SenderId,ReceiverId,OfferedItems,RequestedItems")] TradeCreator trade)
+        public ActionResult Create([Bind(Include = "SenderId,ReceiverId,Items")] TradeCreator trade)
         {
-            var offered = new List<Item>();
-            var requested = new List<Item>();
-
-            //get list of offered items
-            for (int i = 0; i < trade.OfferedItems.Count; i++)
-            {
-                offered.Add(db.Items.Find(trade.OfferedItems.ElementAt(i)));
-            }
-
             
-            //get list of requested items
-            for (int i = 0; i < trade.RequestedItems.Count; i++)
-            {
-                requested.Add(db.Items.Find(trade.RequestedItems.ElementAt(i)));
-            }
 
             //create Trade
             var model = new Trade()
             {
-                SendingItems = offered,
-                ReceivingItems = requested,
                 SendingTraderId = trade.SenderId,
                 ReceivingTraderId = trade.ReceiverId
             };
+
+            var items = new List<Item>();
+
+            //get list of items
+            for (int i = 0; i < trade.Items.Count; i++)
+            {
+                items.Add(db.Items.Find(trade.Items.ElementAt(i)));
+            }
+
+            //add traded items to trade
+            model.Items = items;
+
             //add to database
             db.Trades.Add(model);
             db.SaveChanges();
 
 
             //go back to items
-            return RedirectToAction("index", "items");
+            return RedirectToAction("List");
+        }
+
+        [HttpGet]
+        public ActionResult List()
+        {
+            //TODO: load list
+            var list = (from t in db.Trades.Include("SendingTrader")
+                        .Include("ReceivingTrader").Include("Items")
+                        select t).ToList();            
+            
+            return View(list);
         }
     }
 }

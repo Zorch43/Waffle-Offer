@@ -10,7 +10,18 @@
     
     <div class="form-horizontal">
         <h4 class="dark-heading">Edit Message</h4>
-        <hr />
+        <p>
+            <div class="btn-group">
+                <button type="button" class="btn btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Go <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Inbox", "Inbox")</li>
+                    <li>@Html.ActionLink("Sent Messages", "Sent")</li>
+                    <li>@Html.ActionLink("My Profile", "Index", "Profile")</li>
+                </ul>
+            </div>
+        </p>
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.MessageID)
         @Html.HiddenFor(model => model.SenderID)
@@ -39,10 +50,6 @@
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

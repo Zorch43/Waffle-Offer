@@ -27,9 +27,9 @@
                 <span class="msg-label">Sent:</span> @Html.DisplayFor(modelItem => item.DateSent)
             </p>
             <div class="secondary-content">
-                @Html.ActionLink("mail_outline", "View", new { id = item.MessageID }, new { @class = "material-icons icon-link-light" })
+                @Html.ActionLink("mail_outline", "View", new { id = item.MessageID }, new { @class = "material-icons icon-link-light", @title = "Open" })
                 &nbsp;
-                @Html.ActionLink("delete_forever", "Delete", new { id = item.MessageID }, new { @class = "material-icons icon-link-light icon-warning" })
+                @Html.ActionLink("delete_forever", "Delete", new { id = item.MessageID }, new { @class = "material-icons icon-link-light icon-warning", @title = "Delete" })
             </div>
         </li>
     }

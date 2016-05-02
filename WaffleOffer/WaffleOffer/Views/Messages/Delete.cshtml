@@ -1,44 +1,39 @@
-﻿@model WaffleOffer.Models.Message
+﻿@model WaffleOffer.Models.MessageViewModel
 
 @{
     ViewBag.Title = "Delete Message";
 }
-<h2>Delete Message</h2>
-<h3>Are you sure you want to delete this?</h3>
+<h4 class="dark-heading">Delete Message</h4>
+<h5>Are you sure you want to delete this?</h5>
+<p>
+    <div class="btn-group">
+        <button type="button" class="btn btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Go <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Inbox", "Inbox")</li>
+            <li>@Html.ActionLink("Sent Messages", "Sent")</li>
+            <li>@Html.ActionLink("My Profile", "Index", "Profile")</li>
+        </ul>
+    </div>
+</p>
 <div>
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Subject)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Subject)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DateSent)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateSent)
-        </dd>
-
-    </dl>
-
-    @using (Html.BeginForm()) {
+    <ul class="collection">
+        <li class="collection-item">
+            <span class="msg-label">Sender: &nbsp;</span> @Html.DisplayFor(model => model.SenderItem.UserName)<br />
+            <span class="msg-label">Recipient: &nbsp;</span> @Html.DisplayFor(model => model.RecipientItem.UserName)<br />
+            <span class="msg-label">Sent: &nbsp;</span> @Html.DisplayFor(model => model.DateSent)
+        </li>
+        <li class="collection-item"><span class="msg-label">@Html.DisplayNameFor(model => model.Subject): &nbsp;</span> @Html.DisplayFor(model => model.Subject)</li>
+        <li class="collection-item"><span class="msg-label">@Html.DisplayNameFor(model => model.Body): &nbsp;</span>@Html.DisplayFor(model => model.Body)</li>
+    </ul>
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
-            <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Return to Inbox", "Inbox")
+            <input type="submit" value="Delete" class="btn btn-custom-danger" />
         </div>
     }
 </div>
+

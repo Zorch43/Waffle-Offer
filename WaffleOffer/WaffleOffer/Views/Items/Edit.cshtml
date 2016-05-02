@@ -1,27 +1,22 @@
 ﻿@model WaffleOffer.Models.Item
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Edit Item";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<h2>Edit</h2>
-
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Item</h4>
-        <hr />
+        <h4 class="dark-heading">Edit Item</h4>
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.ItemID)
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Name)
+                @Html.TextBoxFor(model => model.Name, new { @class = "material-input" })
                 @Html.ValidationMessageFor(model => model.Name)
             </div>
         </div>
@@ -29,7 +24,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Description, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Description)
+                @Html.TextAreaFor(model => model.Description, new { @class = "materialize-textarea", @rows = "5", @cols = "20" })
                 @Html.ValidationMessageFor(model => model.Description)
             </div>
         </div>
@@ -37,7 +32,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Quality, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Quality)
+                @Html.TextBoxFor(model => model.Quality, new { @class = "material-input" })
                 @Html.ValidationMessageFor(model => model.Quality)
             </div>
         </div>
@@ -45,7 +40,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Units, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Units)
+                @Html.TextBoxFor(model => model.Units, new { @class = "material-input" })
                 @Html.ValidationMessageFor(model => model.Units)
             </div>
         </div>
@@ -53,7 +48,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Quantity, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.Quantity)
+                @Html.TextBoxFor(model => model.Quantity, new { @class = "material-input" })
                 @Html.ValidationMessageFor(model => model.Quantity)
             </div>
         </div>

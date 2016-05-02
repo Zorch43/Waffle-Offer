@@ -12,7 +12,7 @@ namespace WaffleOffer.Controllers
 {
     public class ItemsController : Controller
     {
-        //private WaffleOfferDBContext db = new WaffleOfferDBContext();
+        //private WaffleOfferContext db = new WaffleOfferContext();
         private WaffleOfferContext db = new WaffleOfferContext();
 
 

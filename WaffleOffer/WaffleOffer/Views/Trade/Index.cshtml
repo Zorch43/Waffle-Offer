@@ -51,25 +51,24 @@
         //get all items in it
         var items = col.childNodes;
         //for each item:
-        for (var i = 1; i < col.childElementCount + 1; i++)
+        for (var i = 0; i < items.length; i++)
         {
-            //assign value
-            var item = items[i];
-            var itemId = item.getAttribute('id');
+            if (items[i].nodeType == 1) {
+                //assign value
+                var item = items[i];
+                var itemId = item.getAttribute('id');
 
-            //if (!col.childNodes[i].hasAttributes()) {
-            //    //if node doesn't have attributes (ie, not a list item), skip it
-            //    continue;
-            //}
-            //generate a hidden input element
-            var n = document.createElement("INPUT");
-            n.setAttribute('type', 'hidden');
-            //assign name
-            n.setAttribute('name', 'Items');
+
+                //generate a hidden input element
+                var n = document.createElement("INPUT");
+                n.setAttribute('type', 'hidden');
+                //assign name
+                n.setAttribute('name', 'Items');
             
-            n.setAttribute('value', itemId);
-            //append to submission form
-            document.getElementById('submitTrade').appendChild(n);
+                n.setAttribute('value', itemId);
+                //append to submission form
+                document.getElementById('submitTrade').appendChild(n);
+            }
         }
     }
 </script>
@@ -87,7 +86,7 @@
         <td>
             
             <ul id="SenderHaves">
-                @foreach (var item in Model.SendingTrader.TraderAccount.Haves)
+                @foreach (var item in Model.SenderHaves)
                 {
                     <li id="@item.ItemID">
                         <input type="button" onclick="moveItem(@item.ItemID)" value="@item.Name" />
@@ -118,7 +117,7 @@
         </td>
         <td>
             <ul id="ReceiverHaves">
-                @foreach (var item in Model.ReceivingTrader.TraderAccount.Haves)
+                @foreach (var item in Model.ReceiverHaves)
                 {
                     <li id="@item.ItemID">
                         <input type="button" onclick="moveItem(@item.ItemID)" value="@item.Name" />
@@ -131,6 +130,7 @@
 <button onclick="submitTrade()">Submit Trade</button>
 
 @using (Html.BeginForm("Create", "Trade", FormMethod.Post, new { id="submitTrade"})){
+    <input type="hidden" name="TradeId" value="@Model.TradeId"/>
     <input type="hidden" name="SenderId" value="@Model.SendingTrader.Id" />
     <input type="hidden" name="ReceiverId" value="@Model.ReceivingTrader.Id" />
 }

@@ -18,7 +18,7 @@
         <td>
             For:
             <br/>
-            @Html.ActionLink("View Trade", "Detail", "Trade", new { TradeId = Model.TradeId }, null);
+            @Html.ActionLink("View Trade", "Index", "Trade", new { partner = Model.ReceivingTrader.UserName, tradeId = Model.TradeId }, null);
         </td>
         <td>
             <ul>

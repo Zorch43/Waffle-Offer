@@ -1,7 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
+using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WaffleOffer.Models;
@@ -24,41 +26,88 @@ namespace WaffleOffer.Controllers
         }
 
         // GET: Trade
-        public ActionResult Index(string partner)
+        public ActionResult Index(string partner, int? tradeId)
         {
-            //find partner
-            var tradePartner = userManager.FindByName(partner);
-            if (tradePartner != null)
+            if (tradeId != null)
             {
-                var model = new Trade()
-                {
-                    SendingTrader = userManager.FindByName(User.Identity.Name),
-                    Items = new List<Item>(),
-                    ReceivingTrader = tradePartner,
-                };
+                var trade = (from t in db.Trades.Include("Items")
+                        .Include("SendingTrader").Include("ReceivingTrader")
+                             where t.TradeId == tradeId
+                             select t).FirstOrDefault();
 
-                //load model up
-                model.SendingTrader.TraderAccount = new Trader()
+                if (trade != null)
                 {
-                    Haves = (from i in db.Items
-                             where i.ListingUser == model.SendingTrader.UserName && i.ListingType == Item.ItemType.Have
-                             select i).ToList()
-                };
+                    if (User.IsInRole("Admin")
+                        || User.Identity.GetUserId() == trade.SendingTraderId
+                        || User.Identity.GetUserId() == trade.ReceivingTraderId)
+                    {
+                        //load model up
+                        trade.SendingTrader.TraderAccount = new Trader()
+                        {
+                            Haves = (from i in db.Items
+                                     where i.ListingUser == trade.SendingTrader.UserName && i.ListingType == Item.ItemType.Have
+                                     select i).ToList()
+                        };
+                        
 
-                model.ReceivingTrader.TraderAccount = new Trader()
+                        trade.ReceivingTrader.TraderAccount = new Trader()
+                        {
+                            Haves = (from i in db.Items
+                                     where i.ListingUser == trade.ReceivingTrader.UserName && i.ListingType == Item.ItemType.Have
+                                     select i).ToList()
+                        };
+
+                        return View(trade);
+                    }
+                    else
+                    {
+                        return new HttpStatusCodeResult(HttpStatusCode.Forbidden);
+                    }
+
+                }
+                else
                 {
-                    Haves = (from i in db.Items
-                             where i.ListingUser == model.ReceivingTrader.UserName && i.ListingType == Item.ItemType.Have
-                             select i).ToList()
-                };
-
-                return View(model);
+                    return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+                }
             }
-            return new HttpNotFoundResult();
+            else
+            {
+                //find partner
+                var tradePartner = userManager.FindByName(partner);
+                if (tradePartner != null)
+                {
+                    var model = new Trade()
+                    {
+                        SendingTrader = userManager.FindByName(User.Identity.Name),
+                        Items = new List<Item>(),
+                        ReceivingTrader = tradePartner,
+                    };
+
+                    //load model up
+                    model.SendingTrader.TraderAccount = new Trader()
+                    {
+                        Haves = (from i in db.Items
+                                 where i.ListingUser == model.SendingTrader.UserName && i.ListingType == Item.ItemType.Have
+                                 select i).ToList()
+                    };
+
+                    model.ReceivingTrader.TraderAccount = new Trader()
+                    {
+                        Haves = (from i in db.Items
+                                 where i.ListingUser == model.ReceivingTrader.UserName && i.ListingType == Item.ItemType.Have
+                                 select i).ToList()
+                    };
+
+                    return View(model);
+                }
+                return new HttpNotFoundResult();
+            }
+            
+           
         }
 
         [HttpPost]
-        public ActionResult Create([Bind(Include = "SenderId,ReceiverId,Items")] TradeCreator trade)
+        public ActionResult Create([Bind(Include = "TradeId, SenderId,ReceiverId,Items")] TradeCreator trade)
         {
             
 
@@ -80,9 +129,25 @@ namespace WaffleOffer.Controllers
             //add traded items to trade
             model.Items = items;
 
-            //add to database
-            db.Trades.Add(model);
-            db.SaveChanges();
+            if (trade.TradeId == null)
+            {
+                //add to database
+                db.Trades.Add(model);
+                db.SaveChanges();
+            }
+            else
+            {
+                //update trade
+                //swap sender and receiver
+                model.ReceivingTraderId = trade.SenderId;
+                model.SendingTraderId = trade.ReceiverId;
+                //set trade id
+                model.TradeId = trade.TradeId;
+                //update in database
+                db.Entry(model).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+            
 
 
             //go back to items
@@ -95,9 +160,23 @@ namespace WaffleOffer.Controllers
             //TODO: load list
             var list = (from t in db.Trades.Include("SendingTrader")
                         .Include("ReceivingTrader").Include("Items")
-                        select t).ToList();            
-            
-            return View(list);
+                        select t).ToList();
+
+            if (User.IsInRole("Admin"))
+            {
+                return View(list);
+            }
+            else
+            {
+                var selectiveList = new List<Trade>();
+                foreach (Trade t in list)
+                {
+                    if (User.Identity.Name == t.ReceivingTrader.UserName
+                        || User.Identity.Name == t.SendingTrader.UserName)
+                        selectiveList.Add(t);
+                }
+                return View(selectiveList);
+            }
         }
     }
 }

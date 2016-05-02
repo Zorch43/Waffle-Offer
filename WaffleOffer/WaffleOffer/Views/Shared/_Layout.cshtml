@@ -31,7 +31,7 @@
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li class="custom-nav-item-right">@Html.ActionLink(User.Identity.Name, "Index", "Profile")</li>
-                        <li class="custom-nav-item-right">@Html.ActionLink("Messages", "Inbox", "Messages", null, null)</li>
+                        <!--<li class="custom-nav-item-right">@Html.ActionLink("account_box", "Index", "Profile",null, new { @class = "material-icons", @title = "My Profile" })</li>-->
                         <li class="custom-nav-item-right"><a href="@Url.Action("logout", "auth")">Log Out</a></li>
                     }
                     else

@@ -70,6 +70,7 @@ body {
     /*border-right: solid #a5a5a5 2px;*/
     margin-bottom: 0;
 }
+
 #landing-nav {
     font-weight: bold;
 }
@@ -293,8 +294,6 @@ footer address {
     border:#8c1efa solid 2px;
     color: #8c1efa;
 }
-
-
 
 /*
 .custom-card-icon-1,

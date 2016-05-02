@@ -20,7 +20,7 @@
                     @Html.ActionLink("Send Message", "Compose", "Messages", new { recipientUsername = Model.Nickname }, new { @class="btn btn-sm btn-custom-grey" })
                 </div>
             }
-            @*Authorized viewers only*@
+            @*Authorized users only*@
             @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
             {
                  <p>
@@ -75,10 +75,12 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <div class="card custom-card-blue hoverable">
-                <h4 class="custom-card-heading">Messages</h4>
-                <p class="custom-card-content-center"><i class="material-icons custom-card-icon">mail_outline</i></p>
-            </div>
+            <a href="@Url.Action("Inbox","Messages")">
+                <div class="card custom-card-blue hoverable">
+                    <h4 class="custom-card-heading">Messages</h4>
+                    <p class="custom-card-content-center"><i class="material-icons custom-card-icon">mail_outline</i></p>
+                </div>
+            </a>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
             <div class="card custom-card-purple hoverable">

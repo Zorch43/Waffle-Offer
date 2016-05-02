@@ -4,8 +4,19 @@
     ViewBag.Title = "Compose Message";
 }
 
-<h2>Compose Message</h2>
-
+<h4 class="dark-heading">Compose Message</h4>
+<p>
+    <div class="btn-group">
+        <button type="button" class="btn btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Go <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Inbox", "Inbox")</li>
+            <li>@Html.ActionLink("Sent Messages", "Sent")</li>
+            <li>@Html.ActionLink("My Profile", "Index", "Profile")</li>
+        </ul>
+    </div>
+</p>
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -24,30 +35,25 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Subject, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Subject, new { @class = "form-control" })
+                @Html.TextBoxFor(model => model.Subject, new { @class = "material-input" })
                 @Html.ValidationMessageFor(model => model.Subject)
             </div>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.Body, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Body, new { @class = "form-control", @rows = "5", @cols = "20" })
+                @Html.TextAreaFor(model => model.Body, new { @class = "materialize-textarea", @rows = "5", @cols = "20" })
                 @Html.ValidationMessageFor(model => model.Body)
             </div>
         </div>
-
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Send" class="btn btn-default" />
+                <input type="submit" value="Send" class="btn btn-custom-submit" />
+                @Html.ActionLink("Cancel", "Inbox", null, new {@class="btn btn-custom-grey" })
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Return to Inbox", "Inbox")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

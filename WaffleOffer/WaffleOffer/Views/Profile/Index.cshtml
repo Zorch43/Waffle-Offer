@@ -3,105 +3,126 @@
 @{
     ViewBag.Title = "Profile";
 }
+<h4 class="dark-heading">&nbsp;</h4>
+<div class="top-space">
+    <div class="row">
+        <div class="col-md-4">
+            <figure>
+                <!-- profile img or placeholder avatar goes here-->
+                <img src="../Images/wo-temp-avatar-1.png" class="profile-pic" />
+                <!-- commented out until I can fix the garbage-looking alignment -->
+                <!--<figcaption class="profile-caption">-->@*@Html.DisplayFor(model => model.Nickname)*@ <!--</figcaption>-->
+            </figure>
+            @*Only other traders should be able to see this*@
+            @if (User.Identity.Name != Model.Nickname)
+            {
+                <div>
+                    @Html.ActionLink("Send Message", "Compose", "Messages", new { recipientUsername = Model.Nickname }, new { @class="btn btn-sm btn-custom-grey" })
+                </div>
+            }
+            @*Authorized users only*@
+            @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
+            {
+                 <p>
+                    @Html.ActionLink("Edit Profile", "Edit", new { userName = Model.Nickname }, new {@class="btn btn-sm btn-custom-grey" })
+                </p>
+            }
 
-<h2>Profile</h2>
-
-<div>
-    <h4>Trader</h4>
-	<hr />
-    <dl class="dl-horizontal">
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Nickname)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Nickname)
-        </dd>
-
-        
-
-        @*Authorized viewers only*@
-        @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.RealName)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.RealName)
-            </dd>
-            
-            <dt>
-                @Html.DisplayNameFor(model => model.Email)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Email)
-            </dd>
-        }
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ZipCode)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ZipCode)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.ProfileText)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.ProfileText)
-        </dd>
-        
-        @if (Model.Haves != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.Haves)
-            </dt>
-
-            <dd>
-                @if (User.Identity.Name == Model.Nickname)
-                {
-                     @Html.ActionLink("Add Item", "Create", "Items", new { type="Have"}, null)
-                }
-                @Html.Partial("ItemList", Model.Haves)
-            </dd>
-        }
-        @if (Model.Wants != null)
-        {
-            <dt>
-                @Html.DisplayNameFor(model => model.Wants)
-            </dt>
-
-            <dd>
-                @if (User.Identity.Name == Model.Nickname)
-                {
-                    @Html.ActionLink("Add Item", "Create", "Items", new { type = "Want" }, null)
-                }
-                @Html.Partial("ItemList", Model.Wants)
-            </dd>
-        }
-        
-
-        @if (User.Identity.Name != Model.Nickname)
-        {
-            <div>
-                @Html.ActionLink("Send Message", "Compose", "Messages", new { recipientUsername = Model.Nickname }, null)
+        </div>
+        <div class="col-md-8">
+            <h5>About @Html.DisplayFor(model => model.Nickname)</h5>
+            <p>
+                @Html.DisplayFor(model => model.ProfileText)
+                Lorem ipsum whateverum until there is some profile text or some placeholder
+                something or other. Whatever. Lorem. Ipsum. Etcetera. Rosa rosae rosae rosam 
+                rosa (with a flat little hat) rosa.
+            </p>
+            <p>
+                <strong>@Html.DisplayNameFor(model => model.ZipCode):</strong> @Html.DisplayFor(model => model.ZipCode)
+            </p>
+            @*Authorized viewers only*@
+            @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
+            {
+                <p>
+                    <strong>@Html.DisplayNameFor(model => model.RealName):</strong> @Html.DisplayFor(model => model.RealName)
+                </p>
+                <p>
+                    <strong>@Html.DisplayNameFor(model => model.Email):</strong> @Html.DisplayFor(model => model.Email)
+                </p>
+            }
+        </div>
+    </div>
+    @* Dashboard only visible to the user or an admin *@
+    @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin")) 
+    { 
+    <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="card custom-card-orange hoverable">
+                <h4 class="custom-card-heading">Haves</h4>
+                <p class="custom-card-content-center"><i class="material-icons custom-card-icon">business_center</i></p>
             </div>
-        }
-
-        @*Authorized viewers only*@
-        @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
-        {
-            <div>
-                @Html.ActionLink("Edit Profile", "Edit", new { userName = Model.Nickname})
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="card custom-card-red hoverable">
+                <h4 class="custom-card-heading">Wants</h4>
+                <p class="custom-card-content-center"><i class="material-icons custom-card-icon">search</i></p>
             </div>
-        }
-
-    </dl>
-
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="card custom-card-yellow hoverable">
+                <h4 class="custom-card-heading">Pending Trades</h4>
+                <p class="custom-card-content-center"><i class="material-icons custom-card-icon">compare_arrows</i></p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <a href="@Url.Action("Inbox","Messages")">
+                <div class="card custom-card-blue hoverable">
+                    <h4 class="custom-card-heading">Messages</h4>
+                    <p class="custom-card-content-center"><i class="material-icons custom-card-icon">mail_outline</i></p>
+                </div>
+            </a>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="card custom-card-purple hoverable">
+                <h4 class="custom-card-heading">Ratings</h4>
+                <!--<p class="custom-card-content-center"><i class="material-icons custom-card-icon">thumbs_up_down</i></p>-->
+                <p class="custom-card-content-center"><i class="material-icons custom-card-icon">star_border</i></p>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+            <div class="card custom-card-green hoverable">
+                <h4 class="custom-card-heading">Trade History</h4>
+                <p class="custom-card-content-center"><i class="material-icons custom-card-icon">access_time</i></p>
+            </div>
+        </div>
+    </div><!--end row -->
+    }
+    <!-- 
+        TODO: Restrict these boxes to guests and visiting traders only.
+        Add a dashboard for the logged-in user 
+    -->
+    @*Trader will not see this on their own page*@
+    @if (User.Identity.Name != Model.Nickname || User.IsInRole("Admin"))
+    {
+        <div class="row">
+            <div class="col-md-6">
+                <ul class="collection with-header">
+                    <li class="collection-header list-header"><h5>Haves</h5></li>
+                    <li class="collection-item">Thing 1</li>
+                    <li class="collection-item">Thing 2</li>
+                    <li class="collection-item">Thing 3</li>
+                    <li class="collection-item">Thing 4</li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <ul class="collection with-header">
+                    <li class="collection-header list-header"><h5>Wants</h5></li>
+                    <li class="collection-item">Thing 1</li>
+                    <li class="collection-item">Thing 2</li>
+                    <li class="collection-item">Thing 3</li>
+                    <li class="collection-item">Thing 4</li>
+                </ul>
+            </div>
+        </div>
+    }
 </div>

@@ -4,46 +4,34 @@
     ViewBag.Title = "Inbox";
 }
 
-<h2>Inbox</h2>
-
+<h4 class="dark-heading">Inbox</h4>
 <p>
-    @Html.ActionLink("View Sent Messages", "Sent")
+    <div class="btn-group">
+        <button type="button" class="btn btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Go <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Sent Messages", "Sent")</li>
+            <li>@Html.ActionLink("My Profile", "Index", "Profile")</li>
+        </ul>
+    </div>
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @*@Html.DisplayNameFor(model => model.SenderItem.UserName)*@
-            From
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Subject)
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.DateSent)*@
-            Sent
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SenderItem.UserName)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Subject)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DateSent)
-        </td>
-        <td>
-            @Html.ActionLink("Open", "View", new { id=item.MessageID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.MessageID })
-        </td>
-    </tr>
+<ul class="collection">
+@foreach (var item in Model)
+{
+    <li class="collection-item avatar">
+        <i class="material-icons">account_circle</i>
+        <p>
+            <span class="msg-label">From:</span> @Html.DisplayFor(modelItem => item.SenderItem.UserName) <br />
+            <span class="msg-label">Subject:</span> @Html.DisplayFor(modelItem => item.Subject) <br />
+            <span class="msg-label">Sent:</span> @Html.DisplayFor(modelItem => item.DateSent)
+        </p>
+        <div class="secondary-content">
+            @Html.ActionLink("mail_outline", "View", new { id = item.MessageID }, new { @class = "material-icons icon-link-light", @title="Open"})
+            &nbsp;
+            @Html.ActionLink("delete_forever", "Delete", new { id = item.MessageID }, new { @class = "material-icons icon-link-light icon-warning", @title="Delete"})
+        </div>
+    </li>
 }
-
-</table>
-<p>
-    @Html.ActionLink("Return to Profile", "Index", "Profile")
-</p>
+</ul>

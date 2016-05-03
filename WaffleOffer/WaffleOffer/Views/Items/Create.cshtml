@@ -1,11 +1,11 @@
 ﻿@model WaffleOffer.Models.Item
 
 @{
-    ViewBag.Title = "Create";
+    ViewBag.Title = "Create new item";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Create</h2>
+<h2>Item:</h2>
 
 
 @using (Html.BeginForm()) 
@@ -13,7 +13,7 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Item</h4>
+        <h4>Add A New Item</h4>
         <hr />
         @Html.ValidationSummary(true)
 

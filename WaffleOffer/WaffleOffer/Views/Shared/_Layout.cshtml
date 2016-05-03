@@ -29,19 +29,19 @@
                 </ul>
                 <ul class="nav navbar-nav navbar-right">
                     @*Authentication links*@
-                    @*@if (User.Identity.IsAuthenticated)
-                    {
-                        <li class="custom-nav-item-right">@Html.ActionLink(User.Identity.Name, "Index", "Profile")</li>
-                        <li class="custom-nav-item-right">@Html.ActionLink("Messages", "Inbox", "Messages", null, null)</li>
-                        <li class="custom-nav-item-right"><a href="@Url.Action("logout", "auth")">Log Out</a></li>
-                    }
-                    else
-                    {
-                        <li class="custom-nav-item-right"><a href="@Url.Action("login", "auth")">Log In</a></li>
-                        <li class="custom-nav-item-both"><a href="@Url.Action("Register", "auth")">Register</a></li>
-                    }
+                    @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="custom-nav-item-right">@Html.ActionLink(User.Identity.Name, "Index", "Profile")</li>
+                            <li class="custom-nav-item-right">@Html.ActionLink("Messages", "Inbox", "Messages", null, null)</li>
+                            <li class="custom-nav-item-right"><a href="@Url.Action("logout", "auth")">Log Out</a></li>
+                        }
+                        else
+                        {
+                            <li class="custom-nav-item-right"><a href="@Url.Action("login", "auth")">Log In</a></li>
+                            <li class="custom-nav-item-both"><a href="@Url.Action("Register", "auth")">Register</a></li>
+                        }
                 </ul>
-                @Html.Partial("_AuthLoginPartial")
+                @*@Html.Partial("_AuthLoginPartial")*@
             </div>
         </div>
     </div>

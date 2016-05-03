@@ -81,4 +81,12 @@
             </ul>
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-6">
+            @Html.ActionLink("Add A New Have", "Create", "Items", new { type = "Have" }, new { @class="btn btn-block btn-custom-grey" })
+        </div>
+        <div class="col-md-6">
+            @Html.ActionLink("Add A New Want", "Create", "Items", new { type = "Want" }, new { @class="btn btn-block btn-custom-grey" })
+        </div>
+    </div>
 </div>

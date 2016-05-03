@@ -8,8 +8,8 @@ using System.Web;
 
 namespace WaffleOffer.Models
 {
-    
-    public class WaffleOfferDBInit : DropCreateDatabaseAlways<WaffleOfferDBContext>
+    public class WaffleOfferDBInit : DropCreateDatabaseIfModelChanges<WaffleOfferDBContext>
+    //public class WaffleOfferDBInit : DropCreateDatabaseAlways<WaffleOfferDBContext>
     //public class WaffleOfferDBInit : CreateDatabaseIfNotExists<WaffleOfferContext>
     //public class WaffleOfferDBInit : CreateDatabaseIfNotExists<WaffleOfferContext>
     //public class WaffleOfferDBInit : DropCreateDatabaseIfModelChanges<WaffleOfferContext>
@@ -24,7 +24,8 @@ namespace WaffleOffer.Models
             userManager = new UserManager<AppUser>(new UserStore<AppUser>(context));
             context.Roles.Add(new IdentityRole("Admin"));
             //create admin account
-            var user = new AppUser(){
+            var user = new AppUser()
+            {
                 UserName = "Admin",
                 FirstName = "Bossy",
                 LastName = "McBossFace",

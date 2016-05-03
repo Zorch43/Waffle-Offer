@@ -9,38 +9,15 @@
 
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @*@Html.ActionLink("Create New", "Create")*@
 
     @using (Html.BeginForm())
     {
         <p>
-            Item Name: @Html.TextBox("searchStg") <input type="submit" value="Search" /> 
+            Item Name: @Html.TextBox("searchStg") <input type="submit" value="Search" />
             @*<input type="reset" value="Clear" />*@
-         </p>
+        </p>
     }
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @*<a href="@Url.Action("Index", "Items", new { sortOdr = ViewBag.NameSort })">Item Name <span class="glyphicon glyphicon-triangle-top"></span></a>*@
-            @Html.ActionLink("Item Name", "Index", new { sortOdr = ViewBag.NameSort }) @*<span class="glyphicon-sort-by-alphabet"></span>*@ <span class="caret"></span>
-      @*@Html.DisplayNameFor(model => model.Name)*@
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.ActionLink("Quality", "Index", new { sortOdr = ViewBag.QualitySort })
-            @*@Html.DisplayNameFor(model => model.Quality)*@
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Units)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th></th>
-    </tr>
 
-	
-	// @Html.Partial("ItemList", Model) // from "Wants and Haves". Not sure how to apply
+    @Html.Partial("ItemList", Model) <!-- Links to a partial view that holds the items table -->

@@ -68,9 +68,13 @@ namespace WaffleOffer.Controllers
         }
 
         // GET: /Items/Create
+        [HttpGet]
         public ActionResult Create(string type)
         {
+            //// Default action
+            //return View();
 
+            // Create for Wants and Haves. Wants and Haves need to be working, else this returns a 404 error
             if (type == Item.ItemType.Have.ToString() || type == Item.ItemType.Want.ToString())
             {
                 return View(new Item()
@@ -90,7 +94,7 @@ namespace WaffleOffer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item)
+        public ActionResult Create([Bind(Include = "ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -101,6 +105,23 @@ namespace WaffleOffer.Controllers
 
             return View(item);
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item) // from exisiting fields in the Create view
+        ////public ActionResult Create([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Items.Add(item);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    else
+        //    {
+        //        return View(item);
+        //    }         
+        //}
 
       
 

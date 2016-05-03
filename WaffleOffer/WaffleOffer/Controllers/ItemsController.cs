@@ -12,7 +12,9 @@ namespace WaffleOffer.Controllers
 {
     public class ItemsController : Controller
     {
-        private WaffleOfferDBContext db = new WaffleOfferDBContext();
+        //private WaffleOfferDBContext db = new WaffleOfferDBContext();
+        private WaffleOfferContext db = new WaffleOfferContext();
+
 
         // GET: /Items/
         public ActionResult Index(string sortOdr, string searchStg)

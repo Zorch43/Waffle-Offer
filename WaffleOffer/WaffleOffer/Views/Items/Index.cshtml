@@ -1,6 +1,7 @@
 ﻿@model IEnumerable<WaffleOffer.Models.Item>
 
-@{
+@*@{
+<<<<<<< HEAD
     ViewBag.Title = "Items Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -10,7 +11,38 @@
 
 <p>
     @*@Html.ActionLink("Create New", "Create")*@
+*@
 
+@{
+    ViewBag.Title = "Items";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="dark-heading">Items</h4>
+<p>
+    @Html.ActionLink("Add Item", "Create", "", new { @class="btn btn-sm btn-custom-grey" })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quality)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Units)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+        <th></th>
+    </tr>
+
+	@* new code *@
     @using (Html.BeginForm())
     {
         <p>

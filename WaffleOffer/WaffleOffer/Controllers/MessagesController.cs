@@ -19,7 +19,6 @@ namespace WaffleOffer.Controllers
 
         #endregion
 
-
         #region view/display
         // PERMISSIONS ONLY FOR TESTING. REMOVE ASAP. !IMPORTANT
         [AllowAnonymous]
@@ -194,11 +193,12 @@ namespace WaffleOffer.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             Message message = db.Messages.Find(id);
+            MessageViewModel messageVm = GetMessageVM(message);
             if (message == null)
             {
                 return HttpNotFound();
             }
-            return View(message);
+            return View(messageVm);
         }
 
         // PERMISSIONS ONLY FOR TESTING. REMOVE ASAP. !IMPORTANT

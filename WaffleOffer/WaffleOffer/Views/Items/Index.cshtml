@@ -1,10 +1,26 @@
 ﻿@model IEnumerable<WaffleOffer.Models.Item>
 
 @{
-    ViewBag.Title = "Items";
+    ViewBag.Title = "Items Index";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h4 class="dark-heading">Items</h4>
+<h1 class="dark-heading">All Items</h1>
+@*<h2>Items Index</h2>*@
 
-@Html.Partial("ItemList", Model)
+<p>
+    @* Action link to add an item. Does not work from this view; needs to go through profile. *@
+    @*@Html.ActionLink("Add Item", "Create", "", new { @class="btn btn-sm btn-custom-grey" })*@
+    @*@Html.ActionLink("Create New", "Create")*@
+
+
+    @using (Html.BeginForm())
+    {
+        <p>
+            Item Name: @Html.TextBox("searchStg") <input type="submit" value="Search" />
+            @*<input type="reset" value="Clear" />*@
+        </p>
+    }
+</p>
+
+    @Html.Partial("ItemList", Model) <!-- Links to a partial view that holds the items table -->

@@ -1,15 +1,20 @@
 ﻿@model IEnumerable<WaffleOffer.Models.Item>
 
+@*<i class="material-icons">arrow_drop_down</i>*@
+@*<i class="material-icons">sort</i>*@
+
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.Name)
+            @Html.ActionLink("Item Name", "Index", new { sortOdr = ViewBag.NameSort }) @*<span class="glyphicon-sort-by-alphabet"></span>*@ <span class="caret"></span>
+            @*@Html.DisplayNameFor(model => model.Name)*@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Description)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Quality)
+            @Html.ActionLink("Quality", "Index", new { sortOdr = ViewBag.QualitySort })
+            @*@Html.DisplayNameFor(model => model.Quality)*@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.Units)
@@ -17,6 +22,7 @@
         <th>
             @Html.DisplayNameFor(model => model.Quantity)
         </th>
+
         <th></th>
     </tr>
 

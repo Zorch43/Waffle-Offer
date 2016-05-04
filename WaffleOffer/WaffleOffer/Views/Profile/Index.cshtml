@@ -23,12 +23,13 @@
                 </div>
             }
             @*Authorized users only*@
-            @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
+            @*Smaller button to Edit Profile*@
+            @*@if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
             {
-                 <p>
-                    @Html.ActionLink("Edit Profile", "Edit", new { userName = Model.Nickname }, new {@class="btn btn-sm btn-custom-grey" })
+                <p>
+                    @Html.ActionLink("Edit Profile", "Edit", new { userName = Model.Nickname }, new { @class = "btn btn-sm btn-custom-grey" })
                 </p>
-            }
+            }*@
 
         </div>
         <div class="col-md-8">
@@ -54,6 +55,25 @@
             }
         </div>
     </div>
+
+    @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin"))
+    {
+        <!-- Row of buttons to Edit the Profile, Add Wants, and Add Haves -->
+            <div class="row">
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    @Html.ActionLink("Edit Profile", "Edit", new { userName = Model.Nickname }, new { @class = "btn btn-block btn-custom-grey" })
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    @Html.ActionLink("Add A New Have", "Create", "Items", new { type = "Have" }, new { @class = "btn btn-block btn-custom-grey" })
+                </div>
+                <div class="col-xs-12 col-sm-6 col-md-4">
+                    @Html.ActionLink("Add A New Want", "Create", "Items", new { type = "Want" }, new { @class = "btn btn-block btn-custom-grey" })
+                </div>
+            </div>
+    }
+
+
+
     @* Dashboard only visible to the user or an admin *@
     @if (User.Identity.Name == Model.Nickname || User.IsInRole("Admin")) 
     { 
@@ -126,16 +146,15 @@
                 </ul>
             </div>
         </div>
-    @* old code
-    </div>
-    <div class="row">
+    <!-- Buttons to add a new item to Have or Want -->
+    <!--</div>-->
+    @*<div class="row">
         <div class="col-md-6">
             @Html.ActionLink("Add A New Have", "Create", "Items", new { type = "Have" }, new { @class="btn btn-block btn-custom-grey" })
         </div>
         <div class="col-md-6">
             @Html.ActionLink("Add A New Want", "Create", "Items", new { type = "Want" }, new { @class="btn btn-block btn-custom-grey" })
         </div>
-    </div>
-    *@
+    </div>*@  
     }
 </div>

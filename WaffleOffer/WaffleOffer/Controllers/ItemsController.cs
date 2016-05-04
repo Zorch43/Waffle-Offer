@@ -12,8 +12,8 @@ namespace WaffleOffer.Controllers
 {
     public class ItemsController : Controller
     {
-        //private WaffleOfferDBContext db = new WaffleOfferDBContext();
-        private WaffleOfferContext db = new WaffleOfferContext();
+        private WaffleOfferDBContext db = new WaffleOfferDBContext();
+        //private WaffleOfferContext db = new WaffleOfferContext();
 
 
         // GET: /Items/
@@ -75,7 +75,7 @@ namespace WaffleOffer.Controllers
         {
             //// Default action
             //return View();
-
+            
             // Create for Wants and Haves. Wants and Haves need to be working, else this returns a 404 error
             if (type == Item.ItemType.Have.ToString() || type == Item.ItemType.Want.ToString())
             {

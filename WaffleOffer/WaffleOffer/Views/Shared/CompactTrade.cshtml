@@ -1,0 +1,32 @@
+﻿@model WaffleOffer.Models.Trade
+
+<table class="table">
+    <tr>
+        <th>@Model.SendingTrader.UserName</th>
+        <th></th>
+        <th>@Model.ReceivingTrader.UserName</th>
+    </tr>
+    <tr>
+        <td>
+            <ul>
+                @foreach (var item in Model.SendingItems)
+                {
+                    <li>@item.Quantity x @item.Name</li>
+                }
+            </ul>
+        </td>
+        <td>
+            For:
+            <br/>
+            @Html.ActionLink("View Trade", "Index", "Trade", new { partner = Model.ReceivingTrader.UserName, tradeId = Model.TradeId }, null);
+        </td>
+        <td>
+            <ul>
+                @foreach (var item in Model.ReceivingItems)
+                {
+                    <li>@item.Quantity x @item.Name</li>
+                }
+            </ul>
+        </td>
+    </tr>
+</table>

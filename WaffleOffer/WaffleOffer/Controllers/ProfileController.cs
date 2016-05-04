@@ -12,7 +12,7 @@ namespace WaffleOffer.Controllers
     {
         private readonly UserManager<AppUser> userManager;
 
-        private WaffleOfferDBContext db = new WaffleOfferDBContext();
+        private WaffleOfferContext db = new WaffleOfferContext();
 
         public ProfileController() : this(Startup.UserManagerFactory.Invoke())
         {

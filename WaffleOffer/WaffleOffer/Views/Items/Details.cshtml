@@ -50,11 +50,13 @@
 
     </dl>
 </div>
-<p>   
-    @*@Html.ActionLink("Edit", "Edit", new { id = Model.ItemID }) |
-    @Html.ActionLink("Back to List", "Index")
-    @Html.ActionLink("Open Trade", "Index", "Trade", new { partner=Model.ListingUser}, null)*@
-   
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ItemID }, new { @class="btn btn-sm btn-custom-grey" })
+<p>
     @Html.ActionLink("Back to Items", "Index", null, new { @class = "btn btn-sm btn-custom-grey" })
+    @if (User.IsInRole("Admin") || User.Identity.Name == Model.ListingUser)
+    {
+        @Html.ActionLink("Edit", "Edit", new { id = Model.ItemID }, new { @class="btn btn-sm btn-custom-grey" })
+    }
+    else{
+        @Html.ActionLink("Open Trade", "Index", "Trade", new { partner=Model.ListingUser}, new { @class="btn btn-sm btn-custom-grey" })
+    }
 </p>

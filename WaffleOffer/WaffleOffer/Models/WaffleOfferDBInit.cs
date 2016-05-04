@@ -8,28 +8,30 @@ using System.Web;
 
 namespace WaffleOffer.Models
 {
-    
-    //public class WaffleOfferDBInit : DropCreateDatabaseAlways<WaffleOfferContext>
+    public class WaffleOfferDBInit : DropCreateDatabaseIfModelChanges<WaffleOfferDBContext>
+    //public class WaffleOfferDBInit : DropCreateDatabaseAlways<WaffleOfferDBContext>
     //public class WaffleOfferDBInit : CreateDatabaseIfNotExists<WaffleOfferContext>
     //public class WaffleOfferDBInit : CreateDatabaseIfNotExists<WaffleOfferContext>
-    public class WaffleOfferDBInit : DropCreateDatabaseIfModelChanges<WaffleOfferContext>
+    //public class WaffleOfferDBInit : DropCreateDatabaseIfModelChanges<WaffleOfferContext>
     {
         UserManager<AppUser> userManager;
         PasswordHasher hasher = new PasswordHasher();
 
         //protected override void Seed(WaffleOfferDBContext context)
-        protected override void Seed(WaffleOfferContext context)
+        protected override void Seed(WaffleOfferDBContext context)
         {
 
             userManager = new UserManager<AppUser>(new UserStore<AppUser>(context));
             context.Roles.Add(new IdentityRole("Admin"));
             //create admin account
-            var user = new AppUser(){
+            var user = new AppUser()
+            {
                 UserName = "Admin",
-                FirstName = "Boss",
+                FirstName = "Bossy",
                 LastName = "McBossFace",
                 Email = "Admin@WaffleOffer.com",
-                ZipCode = "91820"
+                ZipCode = "91820",
+                TraderAccount = new Trader()
             };
             InitUser(user, "IAmTheLaw", "Admin");
 

@@ -15,7 +15,7 @@ namespace WaffleOffer.Controllers
     {
         #region instance variables
 
-        private WaffleOfferContext db = new WaffleOfferContext();
+        private WaffleOfferDBContext db = new WaffleOfferDBContext();
 
         #endregion
 

@@ -12,14 +12,46 @@ namespace WaffleOffer.Controllers
 {
     public class ItemsController : Controller
     {
-        //private WaffleOfferDBContext db = new WaffleOfferDBContext();
-        private WaffleOfferContext db = new WaffleOfferContext();
+        private WaffleOfferDBContext db = new WaffleOfferDBContext();
+        //private WaffleOfferContext db = new WaffleOfferContext();
 
 
         // GET: /Items/
-        public ActionResult Index()
+        public ActionResult Index(string sortOdr, string searchStg)
         {
-            return View(db.Items.ToList());
+            ViewBag.NameSort = String.IsNullOrEmpty(sortOdr) ? "name_desc" : "";
+            ViewBag.QualitySort = sortOdr == "Quality" ? "quality_desc" : "Quality";
+
+            var items = from i in db.Items
+                        select i;
+
+            if (!String.IsNullOrEmpty(searchStg))
+            {
+                items = items.Where(s => s.Name.Contains(searchStg) || s.Description.Contains(searchStg));
+                //items = items.Where(s => s.Name.Contains(searchStg));  // Does single word/ words in same order search in Name only
+                //items = items.Where(s => s.Name.Contains(searchStg) || s.Name.Contains(searchStg2)); // tried a second search criteria with string. Did not work.
+            }
+
+            switch (sortOdr)
+            {
+                case "name_desc":
+                    items = items.OrderByDescending(i => i.Name);
+                    break;
+                case "Quality":
+                    items = items.OrderBy(i => i.Quality);
+                    break;
+                case "quality_desc":
+                    items = items.OrderByDescending(i => i.Quality);
+                    break;
+                default:
+                    items = items.OrderBy(i => i.Name);
+                    break;
+            }
+
+            return View(items.ToList());
+
+            // Default list of items
+            //return View(db.Items.ToList());
         }
 
         // GET: /Items/Details/5
@@ -38,9 +70,25 @@ namespace WaffleOffer.Controllers
         }
 
         // GET: /Items/Create
-        public ActionResult Create()
+        [HttpGet]
+        public ActionResult Create(string type)
         {
-            return View();
+            //// Default action
+            //return View();
+            
+            // Create for Wants and Haves. Wants and Haves need to be working, else this returns a 404 error
+            if (type == Item.ItemType.Have.ToString() || type == Item.ItemType.Want.ToString())
+            {
+                return View(new Item()
+                {
+                    ListingType = (Item.ItemType)Enum.Parse(typeof(Item.ItemType), type),
+                    ListingUser = User.Identity.Name
+                });
+            }
+            else
+            {
+                return new HttpStatusCodeResult(HttpStatusCode.NotFound);
+            }
         }
 
         // POST: /Items/Create
@@ -48,7 +96,7 @@ namespace WaffleOffer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity")] Item item)
+        public ActionResult Create([Bind(Include = "ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item)
         {
             if (ModelState.IsValid)
             {
@@ -59,6 +107,25 @@ namespace WaffleOffer.Controllers
 
             return View(item);
         }
+
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item) // from exisiting fields in the Create view
+        ////public ActionResult Create([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Items.Add(item);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    else
+        //    {
+        //        return View(item);
+        //    }         
+        //}
+
+      
 
         // GET: /Items/Edit/5
         public ActionResult Edit(int? id)

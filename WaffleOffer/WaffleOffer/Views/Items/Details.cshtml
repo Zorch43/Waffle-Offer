@@ -50,7 +50,11 @@
 
     </dl>
 </div>
-<p>
+<p>   
+    @*@Html.ActionLink("Edit", "Edit", new { id = Model.ItemID }) |
+    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Open Trade", "Index", "Trade", new { partner=Model.ListingUser}, null)*@
+   
     @Html.ActionLink("Edit", "Edit", new { id = Model.ItemID }, new { @class="btn btn-sm btn-custom-grey" })
     @Html.ActionLink("Back to Items", "Index", null, new { @class = "btn btn-sm btn-custom-grey" })
 </p>

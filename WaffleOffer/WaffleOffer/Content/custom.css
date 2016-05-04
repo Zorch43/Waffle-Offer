@@ -147,10 +147,6 @@ footer ul li {
     margin: 0 0 5px 0;
 }
 
-footer a {
-    color: #a5a5a5;
-    text-decoration: underline;
-}
 
 footer a:hover, 
 footer a:focus {
@@ -341,3 +337,25 @@ footer address {
 }
 
 
+
+hr {
+    /*border: solid 1px #cf4823;  //ColourLovers: tomorrow's dawn (brown) */
+    /*border: solid 1px #822100;  //ColourLovers: Paranoid Glance (dk. brown) */
+    border-color: rgba(130,33,0,.75); /* //ColourLovers: Paranoid Glance (dk. brown) */
+}
+
+.table tbody {
+    border-top-color: rgba(207,72,35,.2);
+}
+
+.table tbody tr td {
+    /*border-top: solid 1px rgba(130,33,0,.1);  //ColourLovers: Paranoid Glance (dk. brown) */
+    border-top: solid 1px rgba(207,72,35,.2); /* //ColourLovers: tomorrow's dawn (brown) */
+}
+
+
+
+/* Other Typographical Styles*/
+.copywrite {
+    font-style: italic;
+}

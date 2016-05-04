@@ -9,8 +9,19 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
-        <h4>Edit Message</h4>
-        <hr />
+        <h4 class="dark-heading">Edit Message</h4>
+        <p>
+            <div class="btn-group">
+                <button type="button" class="btn btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Go <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li>@Html.ActionLink("Inbox", "Inbox")</li>
+                    <li>@Html.ActionLink("Sent Messages", "Sent")</li>
+                    <li>@Html.ActionLink("My Profile", "Index", "Profile")</li>
+                </ul>
+            </div>
+        </p>
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.MessageID)
         @Html.HiddenFor(model => model.SenderID)
@@ -34,15 +45,11 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input type="submit" value="Save" class="btn btn-custom-submit" />
             </div>
         </div>
     </div>
 }
-
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

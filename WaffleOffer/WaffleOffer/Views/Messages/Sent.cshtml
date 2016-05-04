@@ -4,45 +4,35 @@
     ViewBag.Title = "Sent Messages";
 }
 
-<h2>Sent Messages</h2>
-
-<table class="table">
-    <tr>
-        <th>
-            @*@Html.DisplayNameFor(model => model.SenderItem.UserName)*@ 
-            To
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Subject)
-        </th>
-        <th>
-            @*@Html.DisplayNameFor(model => model.DateSent)*@
-            Sent
-        </th>
-        <th></th>
-    </tr>
-
+<h4 class="dark-heading">Sent Messages</h4>
+<p>
+    <div class="btn-group">
+        <button type="button" class="btn btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Go <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Inbox", "Inbox")</li>
+            <li>@Html.ActionLink("My Profile", "Index", "Profile")</li>
+        </ul>
+    </div>
+</p>
+<ul class="collection">
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.RecipientItem.UserName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Subject)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DateSent)
-            </td>
-            <td>
-                @Html.ActionLink("Open", "View", new { id = item.MessageID }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.MessageID })
-            </td>
-        </tr>
+        <li class="collection-item avatar">
+            <i class="material-icons">account_circle</i>
+            <p>
+                <span class="msg-label">To:</span> @Html.DisplayFor(modelItem => item.RecipientItem.UserName) <br />
+                <span class="msg-label">Subject:</span> @Html.DisplayFor(modelItem => item.Subject) <br />
+                <span class="msg-label">Sent:</span> @Html.DisplayFor(modelItem => item.DateSent)
+            </p>
+            <div class="secondary-content">
+                @Html.ActionLink("mail_outline", "View", new { id = item.MessageID }, new { @class = "material-icons icon-link-light", @title = "Open" })
+                &nbsp;
+                @Html.ActionLink("delete_forever", "Delete", new { id = item.MessageID }, new { @class = "material-icons icon-link-light icon-warning", @title = "Delete" })
+            </div>
+        </li>
     }
+</ul>
 
-</table>
-<p>
-    @Html.ActionLink("Return to Inbox", "Inbox")
-</p>
 

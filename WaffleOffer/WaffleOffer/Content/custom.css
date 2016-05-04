@@ -1,42 +1,343 @@
-﻿
-/*Selection*/
-::selection {
-    color: #ffffff; /*Text color*/
-    background: #671900; /* ColourLovers: red blazer (red brown)*/
-    /*background: #ffee57;  // ColourLovers: Golden Apple (yellow) */
-    font-weight: bold;
-}
+﻿/* 
+    Color Guide:
+    Lighter grey --> #a5a5a5
+    Darker grey --> #535353
+
+    Gold --> #ffc90e
+    Lighter gold --> #efe4b0
+    Darker gold --> #f8b10e
+*/
 
 body {
-    color: #1a0200; /* ColourLovers: River of Wine (black red) */
-    background-color: #ffe4c9; /* // ColourLovers: Spotless Angel (light tan) */
-    /*background-color: #ffc68c;  // ColourLovers: sand storm (tan - like a golden waffle) */
+    color: #535353;
+    background-color: #fff;
 }
 
-/*Navbar Styles*/
-.navbar-inverse {
+/* Navbar Styles */
+.navbar-default {
+    background-color: #fff;
+    border: solid #a5a5a5 2px;
+    /*border: solid #535353 2px;*/
+    color: #a5a5a5;
+    /*color: #535353;*/
+    padding: 0;
+}
+
+.navbar-default .navbar-brand {   
+    border-left: solid #a5a5a5 2px;
+    /*border-left: solid #535353 2px;*/
+    /*border-right: solid #a5a5a5 2px;*/
+    /*border-right: solid #535353 2px;*/
+    color: #a5a5a5;
+    /*color: #535353;*/
+    font-size: 22px;
+}
+
+.navbar-default .navbar-brand:hover,
+.navbar-default .navbar-brand:focus {
+    /*color: #ffc90e;*/
+    /*color: #535353;*/
+    color: #a5a5a5;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #a5a5a5;
+    /*color: #535353;*/
+}
+
+.navbar-default .navbar-nav > li > a:hover,
+.navbar-default .navbar-nav > li > a:focus {
+    color: #ffc90e;
+}
+.navbar-default .navbar-toggle .icon-bar {
+    background-color: #a5a5a5;
+    /*background-color: #535353;*/
+}
+.custom-nav-item {
+    border-right: solid #a5a5a5 2px;
+    /*border-right: solid #535353 2px;*/
+    margin-bottom: 0;
+}
+.custom-nav-item-right {
+    border-left: solid #a5a5a5 2px;
+    /*border-left: solid #535353 2px;*/
+    margin-bottom: 0;
+}
+.custom-nav-item-both {
+    border-left: solid #a5a5a5 2px;
+    /*border-left: solid #535353 2px;*/
+    border-right: solid #a5a5a5 2px;
+    /*border-right: solid #a5a5a5 2px;*/
+    margin-bottom: 0;
+}
+
+#landing-nav {
     font-weight: bold;
-    background-color: #1a0200; /* ColourLovers: River of Wine (black red) */
 }
 
-.navbar-inverse .navbar-brand:hover,
-.navbar-inverse .navbar-brand:focus {
-    color: #ffee57; /* ColourLovers: Golden Apple (yellow) */
-    font-weight: bold;
+#landing-nav i {
+    color: #a5a5a5;
 }
 
-.navbar-inverse .navbar-nav > li > a:hover,
-.navbar-inverse .navbar-nav > li > a:focus {
-  color: #ffee57; /* ColourLovers: Golden Apple (yellow) */
-  font-weight: bold;
+#landing-nav label {
+    color: #a5a5a5;
+}
+
+#landing-nav input {
+    margin-top: -18px;
+    padding: 0;
+}
+
+#landing-nav input[type=text] {
+    border-bottom: 2px solid #a5a5a5;
+    color: #a5a5a5;
+    font-weight: normal;
+}
+
+#landing-nav input[type=text]:focus {
+    border-bottom: 2px solid #f8b10e;
+    box-shadow: 0 1px 0 0 #fff;
+}
+
+/* Heading Styles */
+.light-heading {
+    color: #a5a5a5;
+    margin-top: 50px;
+}
+.dark-heading {
+    color: #535353;
+    margin-top: 50px;
+}
+.list-header {
+    text-align: center;
 }
 
 /* Jumbotron Styles */
 .jumbotron {
-    background-color: rgba(238, 238, 238, 0.5); /* // equiv. of #eeeeee, at 90% trans. */
+    background-color: #fff;
+    /*border: solid #a5a5a5 2px;*/
+    margin: 50px 0 0 0;
+}
+.jumbotron img {
+    height: auto;
+    margin: 0 auto;
+    max-width: 100%;   
 }
 
-/* Other Typographical Styles*/
-.copywrite {
-    font-style: italic;
+/* Additional Home Page Styles */
+.landing-col {
+    padding: 15px;
 }
+
+.landing-col h4 {
+    /*color: #a5a5a5;*/
+    color: #535353;
+}
+
+.landing-col p {
+    font-size: 18px;
+}
+
+/* Footer Styles */
+footer {   
+    font-size: 12px;
+}
+
+footer ul li {
+    margin: 0 0 5px 0;
+}
+
+footer a {
+    color: #a5a5a5;
+    text-decoration: underline;
+}
+
+footer a:hover, 
+footer a:focus {
+    color: #535353;
+    text-decoration: underline;
+}
+
+footer a:visited {
+    color: #535353;
+    text-decoration: underline;
+}
+
+footer address {
+    color: #a5a5a5;
+    text-align: right;
+}
+
+/* Button Styles */
+.btn-custom-submit {
+    background-color: #fff;
+    border: solid #ffc90e 2px;
+    color: #f8b10e;
+}
+.btn-custom-submit:hover,
+.btn-custom-submit:focus {
+    background-color: #fff;
+    color: #f8b10e;
+}
+
+.btn-custom-danger {
+    background-color: #fff;
+    border: solid #e82722 2px;
+    color: #e82722;
+}
+.btn-custom-danger:hover,
+.btn-custom-danger:focus {
+    background-color: #fff;
+    color: #e82722;
+}
+
+.btn-custom-grey {
+    background-color: #fff;
+    border: solid #a5a5a5 2px;
+    color: #535353;
+}
+.btn-custom-grey:hover,
+.btn-custom-grey:focus {
+    background-color: #fff;
+    color: #535353;
+}
+
+.btn-group .dropdown-menu li a{
+    background-color: #fff;
+    color: #535353;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.btn-group .dropdown-menu li a:hover,
+.btn-group .dropdown-menu li a:focus{
+    background-color: #fff;
+    color: #ffc90e;
+}
+
+/* Icon Styles */
+.icon-link-light {
+    color: #a5a5a5;
+}
+.icon-link-dark {
+    color: #535353;
+}
+.icon-link-light:hover,
+.icon-link-dark:hover,
+.icon-link-light:focus,
+.icon-link-dark:focus {
+    color: #ffc90e;
+}
+
+.icon-warning:hover,
+.icon-warning:focus {
+    color:#e82722;
+}
+
+/* Card Styles */
+.custom-card-heading {
+    color: #535353;
+    font-size: 20px;
+    font-weight: normal;
+    text-align: center;
+    width: 100%;
+}
+
+.custom-card-content {
+    color: #535353;
+    font-size: 16px;
+    text-align: left;
+}
+
+.custom-card-content-center {
+    text-align: center;
+}
+.custom-card-icon {
+    color: inherit;
+    font-size: 52px;
+    text-align:center;
+}
+.custom-card,
+.custom-card-yellow,
+.custom-card-green,
+.custom-card-blue,
+.custom-card-purple,
+.custom-card-red,
+.custom-card-orange {
+    background-color: #fff;
+    border: 2px solid #a5a5a5;
+    color: #a5a5a5;
+    min-height: 100px;
+    min-width: 100px;
+}
+.custom-card-red:hover {
+    border:#fa1e1e solid 2px;
+    color: #fa1e1e;
+}
+.custom-card-orange:hover {
+    border:#FF9500 solid 2px;
+    color: #FF9500;
+}
+.custom-card-yellow:hover {
+    border:#ffc90e solid 2px;
+    color: #ffc90e;
+}
+.custom-card-green:hover {
+    border:#72cb19 solid 2px;
+    color: #72cb19;
+}
+.custom-card-blue:hover {
+    border:#00B3FF solid 2px;
+    color:#00B3FF;
+}
+.custom-card-purple:hover {
+    border:#8c1efa solid 2px;
+    color: #8c1efa;
+}
+
+/*
+.custom-card-icon-1,
+.custom-card-icon-2,
+.custom-card-icon-3,
+.custom-card-icon-4,
+.custom-card-icon-5,
+.custom-card-icon-6 {
+    color: #a3a3a3;
+    font-size: 52px;
+    text-align:center;
+}
+.custom-card-icon-1:hover {
+    color: #EB2D2D;
+}
+.custom-card-icon-2:hover {
+    color: #ffc90e;
+}
+.custom-card-icon-3:hover {
+    color: #87f23a;
+}
+.custom-card-icon-4:hover {
+    color: #3de2f2;
+}
+.custom-card-icon-5:hover {
+    color: #a83df2;
+}
+.custom-card-icon-6:hover {
+    color: #fff;
+    text-shadow: 1px 4px 2px #a5a5a5;
+}
+*/
+/* Text Classes */
+.msg-label {
+    font-weight: bold;
+}
+
+/* Image Styles */
+.profile-pic {
+    border: solid #a5a5a5 2px;
+}
+.profile-caption {
+    font-size: 15px;
+    text-align: center;
+}
+
+

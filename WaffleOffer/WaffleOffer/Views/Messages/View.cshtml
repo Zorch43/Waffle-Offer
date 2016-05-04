@@ -3,53 +3,28 @@
 @{
     ViewBag.Title = "View Message";
 }
-<h2>View Message</h2>
-<div>
-    <dl class="dl-horizontal">
-        <dt>
-            @*@Html.DisplayNameFor(model => model.SenderItem.UserName)*@
-            Sender
-        </dt>
-        <dd>
-            @Html.DisplayFor(model => model.SenderItem.UserName)
-        </dd>
-
-        <dt>
-            @*@Html.DisplayNameFor(model => model.RecipientItem.UserName)*@
-            Recipient
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.RecipientItem.UserName)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Subject)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Subject)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Body)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Body)
-        </dd>
-        <dt>
-            @*@Html.DisplayNameFor(model => model.DateSent)*@
-            Sent
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DateSent)
-        </dd>
-
-    </dl>
-</div>
+<h4 class="dark-heading">View Message</h4>
 <p>
-    @Html.ActionLink("Return to Inbox", "Inbox")
+    <div class="btn-group">
+        <button type="button" class="btn btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            Go <span class="caret"></span>
+        </button>
+        <ul class="dropdown-menu">
+            <li>@Html.ActionLink("Inbox", "Inbox")</li>
+            <li>@Html.ActionLink("Sent Messages","Sent")</li>
+            <li>@Html.ActionLink("My Profile", "Index", "Profile")</li>
+        </ul>
+    </div>
 </p>
+<div>
+    <ul class="collection">
+        <li class="collection-item">
+            <span class="msg-label">Sender: &nbsp;</span> @Html.DisplayFor(model => model.SenderItem.UserName)<br />
+            <span class="msg-label">Recipient: &nbsp;</span> @Html.DisplayFor(model => model.RecipientItem.UserName)<br />
+            <span class="msg-label">Sent: &nbsp;</span> @Html.DisplayFor(model => model.DateSent)
+        </li>
+        <li class="collection-item"><span class="msg-label">@Html.DisplayNameFor(model => model.Subject): &nbsp;</span> @Html.DisplayFor(model => model.Subject)</li>
+        <li class="collection-item"><span class="msg-label">@Html.DisplayNameFor(model => model.Body): &nbsp;</span>@Html.DisplayFor(model => model.Body)</li>
+    </ul>
+</div>
 

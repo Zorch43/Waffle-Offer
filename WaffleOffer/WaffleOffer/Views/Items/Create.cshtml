@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm("Create", "Items", null, FormMethod.Post, new { enctype = "multipart/form-data" })) 
 {
     @Html.AntiForgeryToken()
     
@@ -50,6 +50,17 @@
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.Quantity, new { @class = "material-input" })
                 @Html.ValidationMessageFor(model => model.Quantity)
+            </div>
+        </div>
+
+
+        <div class="form-group">
+            @Html.Label("Images", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <span class="btn btn-file">
+                    Browse <input type="file" id="Images" name="upload" />
+                </span>
+                @Html.ValidationMessageFor(model => model.Images)
             </div>
         </div>
 

@@ -29,7 +29,8 @@ namespace WaffleOffer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = db.Items.Find(id);
+            //Item item = db.Items.Find(id);
+            Item item = db.Items.Include(i => i.Images).SingleOrDefault(i => i.ItemID == id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -48,10 +49,38 @@ namespace WaffleOffer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity")] Item item)
+        public ActionResult Create([Bind(Include = "ItemID,Name,Description,Quality,Units,Quantity")] Item item, HttpPostedFileBase upload)
         {
+            var validImageTypes = new string[]
+            {
+                "image/gif",
+                "image/jpeg",
+                "image/pjpeg",
+                "image/png"
+            };
+
+            if (!validImageTypes.Contains(upload.ContentType))
+            {
+                ModelState.AddModelError("Images", "Please choose either a GIF, JPG or PNG image.");
+            }
+
             if (ModelState.IsValid)
             {
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    var image = new ItemImage
+                    {
+                        FileName = System.IO.Path.GetFileName(upload.FileName),
+                        ContentType = upload.ContentType
+                    };
+                    using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                    {
+                        image.Content = reader.ReadBytes(upload.ContentLength);
+                    }
+                    item.Images.Add(image);
+                }
+
+
                 db.Items.Add(item);
                 db.SaveChanges();
                 return RedirectToAction("Index");

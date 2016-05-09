@@ -1,9 +1,12 @@
 ﻿@model WaffleOffer.Models.Trade
 
 <table class="table">
+
     <tr>
         <th>@Model.SendingTrader.UserName</th>
-        <th></th>
+        <th>
+            @Model.GetTradeStatusMessage(User.Identity.Name == Model.SendingTrader.UserName)
+        </th>
         <th>@Model.ReceivingTrader.UserName</th>
         <th></th>
     </tr>

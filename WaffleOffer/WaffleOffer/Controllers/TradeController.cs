@@ -110,7 +110,6 @@ namespace WaffleOffer.Controllers
         public ActionResult Create([Bind(Include = "TradeId, SenderId,ReceiverId,Items")] TradeCreator trade)
         {
             
-
             //create Trade
             var model = new Trade()
             {

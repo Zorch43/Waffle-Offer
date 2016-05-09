@@ -234,6 +234,7 @@
     <Content Include="Views\Messages\Error.cshtml" />
     <Content Include="Views\Trade\List.cshtml" />
     <Content Include="Views\Shared\CompactTrade.cshtml" />
+    <Content Include="Views\Items\Items.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

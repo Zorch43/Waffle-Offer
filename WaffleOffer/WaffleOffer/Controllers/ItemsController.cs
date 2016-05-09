@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WaffleOffer.Models;
+using Microsoft.AspNet.Identity;
 
 namespace WaffleOffer.Controllers
 {
@@ -51,6 +52,18 @@ namespace WaffleOffer.Controllers
 
             // Default list of items
             //return View(db.Items.ToList());
+        }
+
+        public ActionResult Items(string userName, Item.ItemType type)
+        {
+            ViewBag.TypeHeading = type + "s";
+            ViewBag.ListingUser = userName;
+
+            var items = (from i in db.Items
+                        where i.ListingType == type && i.ListingUser == userName
+                        select i).ToList();
+
+            return View(items);
         }
 
         // GET: /Items/Details/5

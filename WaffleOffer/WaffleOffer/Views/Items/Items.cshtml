@@ -1,7 +1,11 @@
 ﻿@model IEnumerable<WaffleOffer.Models.Item>
+@{
+    ViewBag.Title = "Items";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-@*<i class="material-icons">arrow_drop_down</i>*@
-@*<i class="material-icons">sort</i>*@
+<h4 class="dark-heading">@ViewBag.TypeHeading</h4>
+
 <table class="table table-hover">
     <tr>
         <th>
@@ -48,15 +52,21 @@
                         Actions <span class="caret"></span>
                     </button>
                     <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("View", "Details", "Items", new { id = item.ItemID },null)</li>
+                        <li>@Html.ActionLink("View", "Details", "Items", new { id = item.ItemID }, null)</li>
                         @if (User.IsInRole("Admin") || User.Identity.Name == item.ListingUser)
                         {
                             <li>@Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null)</li>
                             <li>@Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null)</li>
                         }
                     </ul>
-                </div>    
+                </div>
             </td>
         </tr>
     }
 </table>
+<div>
+    @Html.ActionLink("Back to Profile", "Index", "Profile", new { userName = @ViewBag.ListingUser }, new { @class="btn btn-sm btn-custom-grey" })
+</div>
+
+
+

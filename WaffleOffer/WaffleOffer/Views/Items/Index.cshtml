@@ -1,11 +1,11 @@
 ﻿@model IEnumerable<WaffleOffer.Models.Item>
 
 @{
-    ViewBag.Title = "Items Index";
+    ViewBag.Title = "All Items";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="dark-heading">All Items</h1>
+<h4 class="dark-heading">All Items</h4>
 @*<h2>Items Index</h2>*@
 
 <p>
@@ -16,10 +16,19 @@
 
     @using (Html.BeginForm())
     {
-        <p>
-            Item Name: @Html.TextBox("searchStg") <input type="submit" value="Search" />
-            @*<input type="reset" value="Clear" />*@
-        </p>
+        <div class="col-md-8">
+            <div class="form-group">
+                @*Item Name: @Html.TextBox("searchStg") <input type="submit" value="Search" />*@
+                @*<input type="reset" value="Clear" />*@
+                <div class="input-field">
+                    <span>
+                        <i class="material-icons prefix">search</i>
+                        @Html.TextBox("searchStg", null, new { @class = "validate" })
+                        <input type="submit" value="Search" class="btn btn-never-wide btn-custom-submit" />
+                    </span>
+                </div>
+            </div>
+        </div>
     }
 </p>
 

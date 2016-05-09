@@ -6,7 +6,7 @@
 <h4 class="dark-heading">View Message</h4>
 <p>
     <div class="btn-group">
-        <button type="button" class="btn btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-sm btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Go <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
@@ -21,10 +21,18 @@
         <li class="collection-item">
             <span class="msg-label">Sender: &nbsp;</span> @Html.DisplayFor(model => model.SenderItem.UserName)<br />
             <span class="msg-label">Recipient: &nbsp;</span> @Html.DisplayFor(model => model.RecipientItem.UserName)<br />
-            <span class="msg-label">Sent: &nbsp;</span> @Html.DisplayFor(model => model.DateSent)
+            <span class="msg-label">Sent: &nbsp;</span> @Html.DisplayFor(model => model.DateSent)<br />
+            <span class="msg-label">@Html.DisplayNameFor(model => model.Subject): &nbsp;</span> @Html.DisplayFor(model => model.Subject) <br />
+            @Html.DisplayFor(model => model.Body) <br />
+            @if (User.Identity.Name == Model.RecipientItem.UserName)
+            {
+              @Html.ActionLink("Reply", "Compose", new { recipientUsername = Model.SenderItem.UserName }, new { @class = "btn btn-sm btn-custom-grey", @title = "Reply" })
+            }
         </li>
+        <!--
         <li class="collection-item"><span class="msg-label">@Html.DisplayNameFor(model => model.Subject): &nbsp;</span> @Html.DisplayFor(model => model.Subject)</li>
         <li class="collection-item"><span class="msg-label">@Html.DisplayNameFor(model => model.Body): &nbsp;</span>@Html.DisplayFor(model => model.Body)</li>
+        -->
     </ul>
 </div>
 

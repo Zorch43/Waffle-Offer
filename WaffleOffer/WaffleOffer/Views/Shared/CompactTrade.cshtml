@@ -8,6 +8,7 @@
             @Model.GetTradeStatusMessage(User.Identity.Name == Model.SendingTrader.UserName)
         </th>
         <th>@Model.ReceivingTrader.UserName</th>
+        <th></th>
     </tr>
     <tr>
         <td>
@@ -19,9 +20,9 @@
             </ul>
         </td>
         <td>
-            For:
-            <br/>
-            @Html.ActionLink("View Trade", "Index", "Trade", new { partner = Model.ReceivingTrader.UserName, tradeId = Model.TradeId }, null)
+            <i class="material-icons animated slideInLeft">arrow_forward</i>
+            <br />
+            <i class="material-icons animated slideInRight">arrow_back</i>
         </td>
         <td>
             <ul>
@@ -30,6 +31,9 @@
                     <li>@item.Quantity x @item.Name</li>
                 }
             </ul>
+        </td>
+        <td>
+            @Html.ActionLink("View Trade", "Index", "Trade", new { partner = Model.ReceivingTrader.UserName, tradeId = Model.TradeId }, new { @class = "btn btn-sm btn-sender btn-custom-grey" })
         </td>
     </tr>
 </table>

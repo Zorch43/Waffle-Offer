@@ -100,23 +100,28 @@
     }
 </script>
 
-<h2>Trade</h2>
+<h4 class="dark-heading divider-new">Trade</h4>
 
 <table class="table">
     <tr>
+        @*
         <th>Sender: @Html.DisplayFor(model => model.SendingTrader.UserName)</th>
         <th>Offered by Sender</th>
         <th>Offered by Receiver</th>
         <th>Receiver: @Html.DisplayFor(model => model.ReceivingTrader.UserName)</th>
+        *@
+        <th>@Html.DisplayFor(model => model.SendingTrader.UserName)</th>
+        <th>@Html.DisplayFor(model => model.SendingTrader.UserName)'s Offer</th>
+        <th>@Html.DisplayFor(model => model.ReceivingTrader.UserName)'s Offer</th>
+        <th>@Html.DisplayFor(model => model.ReceivingTrader.UserName)</th>
     </tr>
     <tr>
-        <td>
-            
+        <td>           
             <ul id="SenderHaves">
                 @foreach (var item in Model.SenderHaves)
                 {
                     <li id="@item.ItemID">
-                        <input type="button" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                        <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
                     </li>
                 }
             </ul>
@@ -127,7 +132,7 @@
                 @foreach (var item in Model.SendingItems)
                 {
                     <li id="@item.ItemID">
-                        <input type="button" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                        <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
                     </li>
                 }
             </ul>
@@ -137,7 +142,7 @@
                 @foreach (var item in Model.ReceivingItems)
                 {
                     <li id="@item.ItemID">
-                        <input type="button" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                        <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
                     </li>
                 }
             </ul>
@@ -147,7 +152,7 @@
                 @foreach (var item in Model.ReceiverHaves)
                 {
                     <li id="@item.ItemID">
-                        <input type="button" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                        <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
                     </li>
                 }
             </ul>
@@ -158,33 +163,33 @@
 @if (!Model.Submitted || (!Model.Canceled && !Model.Rejected && !Model.Accepted 
     && Model.SendingTrader.UserName != User.Identity.Name))
 {
-    <button onclick="submitTrade()">Submit Trade</button>
+    <button class="btn btn-block btn-custom-submit" onclick="submitTrade()">Submit Trade</button>
 }
 @if (Model.Submitted && (!Model.Canceled && !Model.Rejected && !Model.Accepted
                 && Model.SendingTrader.UserName != User.Identity.Name))
 {
-    <button onclick="updateTrade('Accept')">Accept Trade</button>
-    <button onclick="updateTrade('Reject')">Reject Trade</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Accept')">Accept Trade</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Reject')">Reject Trade</button>
 }
 @if (User.Identity.Name == Model.SendingTrader.UserName && Model.Submitted && !Model.Canceled 
     || (Model.Accepted && !Model.SenderConfirmed && !Model.ReceiverConfirmed))
 {
-    <button onclick="updateTrade('Cancel')">Cancel Trade</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Cancel')">Cancel Trade</button>
 }
 @if (Model.Accepted && ((User.Identity.Name == Model.SendingTrader.UserName && !Model.SenderConfirmed)
                 || (User.Identity.Name == Model.ReceivingTrader.UserName && !Model.ReceiverConfirmed)))
 {
-    <button onclick="updateTrade('Confirm')">Confirm Trade</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Confirm')">Confirm Trade</button>
 }
 @if (Model.SenderConfirmed && Model.ReceiverConfirmed && ((User.Identity.Name == Model.SendingTrader.UserName && Model.SenderRating == 0)
                             || (User.Identity.Name == Model.ReceivingTrader.UserName && Model.ReceiverRating == 0)))
 {
     @: Rate Trade: 
-    <button onclick="updateTrade('1')">Poor</button>
-    <button onclick="updateTrade('2')">Fair</button>
-    <button onclick="updateTrade('3')">Good</button>
-    <button onclick="updateTrade('4')">Great</button>
-    <button onclick="updateTrade('5')">Perfect</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('1')">Poor</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('2')">Fair</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('3')">Good</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('4')">Great</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('5')">Perfect</button>
 }
 
 

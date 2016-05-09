@@ -7,7 +7,7 @@
 <h4 class="dark-heading">Compose Message</h4>
 <p>
     <div class="btn-group">
-        <button type="button" class="btn btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        <button type="button" class="btn btn-sm btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Go <span class="caret"></span>
         </button>
         <ul class="dropdown-menu">
@@ -42,7 +42,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.Body, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextAreaFor(model => model.Body, new { @class = "materialize-textarea", @rows = "5", @cols = "20" })
+                @Html.TextAreaFor(model => model.Body, new { @class = "materialize-textarea", @rows = "10", @cols = "20" })
                 @Html.ValidationMessageFor(model => model.Body)
             </div>
         </div>

@@ -13,20 +13,9 @@ namespace WaffleOffer.Models
         {
         }
 
-<<<<<<< HEAD
-        public System.Data.Entity.DbSet<Message> Messages { get; set; }
-        public System.Data.Entity.DbSet<Item> Items { get; set; }
-        public System.Data.Entity.DbSet<ItemImage> ItemImages { get; set; }
-=======
-        protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        {
-            base.OnModelCreating(modelBuilder);
->>>>>>> master
-
-        }
-
         public System.Data.Entity.DbSet<Item> Items { get; set; }
         public System.Data.Entity.DbSet<Message> Messages { get; set; }
         public System.Data.Entity.DbSet<Trade> Trades { get; set; }
+        public System.Data.Entity.DbSet<ItemImage> ItemImages { get; set; }
     }
 }

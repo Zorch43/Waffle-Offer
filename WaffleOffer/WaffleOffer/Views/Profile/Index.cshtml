@@ -90,10 +90,12 @@
             </div>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <div class="card custom-card-yellow hoverable">
-                <h4 class="custom-card-heading">Pending Trades</h4>
-                <p class="custom-card-content-center"><i class="material-icons custom-card-icon">compare_arrows</i></p>
-            </div>
+            <a href="@Url.Action("List", "Trade")">
+                <div class="card custom-card-yellow hoverable">
+                    <h4 class="custom-card-heading">Pending Trades</h4>
+                    <p class="custom-card-content-center"><i class="material-icons custom-card-icon">compare_arrows</i></p>
+                </div>
+            </a>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
             <a href="@Url.Action("Inbox","Messages")">

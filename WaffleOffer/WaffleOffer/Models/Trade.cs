@@ -115,9 +115,11 @@ namespace WaffleOffer.Models
             }
         }
 
+
+        //whether trade has been submitted
+        public bool Submitted { get; set; }
+
         //whether the sending player has opted to cancel the trade
-        //only available to sender on the first offer
-        //canceling allowed on counter-offers, but only reverts to previous list of items.
         public bool Canceled { get; set; }
 
         //list of previous item ids
@@ -148,19 +150,25 @@ namespace WaffleOffer.Models
                 return "Canceled";
             else if (Rejected)
                 return "Rejected";
-            else if (Accepted)
-                return "Accepted, Confirmation Pending";
             else if (SenderConfirmed && ReceiverConfirmed)
-                return "Confirmed, Please Rate";
+                return "Confirmed";
             else if ((trader && SenderConfirmed) || (!trader && ReceiverConfirmed))
-                return "Awaiting Partner's Confirmation";
-            else if ((!trader && SenderConfirmed) || (trader && ReceiverConfirmed))
-                return "Awaiting Your Confirmation";
+                return "Confirmation Pending";
+            else if ((trader && SenderRating > 0) || (!trader && ReceiverRating > 0))
+                return "Rating Pending";
             else if (SenderRating > 0 && ReceiverRating > 0)
-                return "Archived";
+                return "Completed";
+            else if (Accepted)
+                return "Accepted";
+            else if (Submitted)
+            {
+                if (trader)
+                    return "Trade Submitted";
+                else
+                    return "Trade Received";
+            }
             else
-                return "Pending";
-                
+                return "New Trade";   
         }
     }
 }

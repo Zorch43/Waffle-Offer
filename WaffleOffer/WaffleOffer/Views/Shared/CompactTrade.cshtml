@@ -1,9 +1,12 @@
 ﻿@model WaffleOffer.Models.Trade
 
 <table class="table">
+
     <tr>
         <th>@Model.SendingTrader.UserName</th>
-        <th></th>
+        <th>
+            @Model.GetTradeStatusMessage(User.Identity.Name == Model.SendingTrader.UserName)
+        </th>
         <th>@Model.ReceivingTrader.UserName</th>
     </tr>
     <tr>
@@ -18,7 +21,7 @@
         <td>
             For:
             <br/>
-            @Html.ActionLink("View Trade", "Index", "Trade", new { partner = Model.ReceivingTrader.UserName, tradeId = Model.TradeId }, null);
+            @Html.ActionLink("View Trade", "Index", "Trade", new { partner = Model.ReceivingTrader.UserName, tradeId = Model.TradeId }, null)
         </td>
         <td>
             <ul>

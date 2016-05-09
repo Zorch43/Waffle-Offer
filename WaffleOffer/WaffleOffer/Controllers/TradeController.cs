@@ -109,13 +109,14 @@ namespace WaffleOffer.Controllers
         [HttpPost]
         public ActionResult Create([Bind(Include = "TradeId, SenderId,ReceiverId,Items")] TradeCreator trade)
         {
-            
+
 
             //create Trade
             var model = new Trade()
             {
                 SendingTraderId = trade.SenderId,
-                ReceivingTraderId = trade.ReceiverId
+                ReceivingTraderId = trade.ReceiverId,
+                Submitted = true
             };
 
             var items = new List<Item>();
@@ -144,13 +145,66 @@ namespace WaffleOffer.Controllers
                 //set trade id
                 model.TradeId = trade.TradeId;
                 //update in database
-                db.Entry(model).State = EntityState.Modified;
+                //also update many-to-many relationship with items
+                //remove
+                db.Trades.Remove(db.Trades.Find(model.TradeId));
+                db.SaveChanges();
+                //then add back in, with new list of items
+                db.Trades.Add(model);
                 db.SaveChanges();
             }
             
 
 
             //go back to items
+            return RedirectToAction("List");
+        }
+
+        [HttpPost]
+        public ActionResult Update(int tradeId, string status)
+        {
+            Trade trade = db.Trades.Find(tradeId);
+
+            if (trade != null)
+            {
+                switch (status)
+                {
+                    case "Accept":
+                        trade.Accepted = true;
+                        break;
+                    case "Cancel":
+                        trade.Canceled = true;
+                        break;
+                    case "Confirm":
+                        if (User.Identity.GetUserId() == trade.SendingTraderId)
+                            trade.SenderConfirmed = true;
+                        else
+                            trade.ReceiverConfirmed = true;
+                        break;
+                    case "Reject":
+                        trade.Rejected = true;
+                        break;
+                    default:
+                        int rating = 0;
+                        if (int.TryParse(status, out rating))
+                        {
+                            if (User.Identity.GetUserId() == trade.SendingTraderId)
+                            {
+                                trade.SenderRating = rating;
+                            }
+                            else
+                            {
+                                trade.ReceiverRating = rating;
+                            }
+                        }
+                        break;
+                }
+
+                //save changes to trade
+                db.Entry(trade).State = EntityState.Modified;
+                db.SaveChanges();
+            }
+
             return RedirectToAction("List");
         }
 

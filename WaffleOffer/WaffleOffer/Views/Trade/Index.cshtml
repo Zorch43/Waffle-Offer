@@ -6,6 +6,17 @@
 <script type="text/javascript">
     function moveItem(id)
     {
+        //have to convert the model values because mixing javascript and razor gets weird
+        var submitted = "@Model.Submitted" == "True";
+        var accepted = "@Model.Accepted" == "True";
+        var canceled = "@Model.Canceled" == "True";
+        var rejected = "@Model.Rejected" == "True";
+        var isSender = "@User.Identity.Name" == "@Model.SendingTrader.UserName";
+        //if not a new trade, the submitter may not make changes
+        //if trade is already accepted, rejected, or canceled, nobody can make changes
+        if(submitted && isSender || accepted || rejected || canceled){
+            return;
+        }
         //find specified element
         var item = document.getElementById(id);
         //find source column id
@@ -43,6 +54,22 @@
         document.getElementById("submitTrade").submit();
     }
 
+    function updateTrade(status)
+    {
+        //add hidden input to form with status code
+        //generate a hidden input element
+        var n = document.createElement("INPUT");
+        n.setAttribute('type', 'hidden');
+        //assign name
+        n.setAttribute('name', 'Status');
+
+        n.setAttribute('value', status);
+        //append to submission form
+        document.getElementById('updateTrade').appendChild(n);
+        //submit form
+        document.getElementById("updateTrade").submit();
+    }
+
 
     function addItems(column)
     {
@@ -64,7 +91,7 @@
                 n.setAttribute('type', 'hidden');
                 //assign name
                 n.setAttribute('name', 'Items');
-            
+
                 n.setAttribute('value', itemId);
                 //append to submission form
                 document.getElementById('submitTrade').appendChild(n);
@@ -134,9 +161,57 @@
 </table>
 <button class="btn btn-block btn-custom-submit" onclick="submitTrade()">Submit Trade</button>
 
-@using (Html.BeginForm("Create", "Trade", FormMethod.Post, new { id="submitTrade"})){
+@if (!Model.Submitted || (!Model.Canceled && !Model.Rejected && !Model.Accepted 
+    && Model.SendingTrader.UserName != User.Identity.Name))
+{
+    <button class="btn btn-block btn-custom-submit" onclick="submitTrade()">Submit Trade</button>
+}
+@if (Model.Submitted && (!Model.Canceled && !Model.Rejected && !Model.Accepted
+                && Model.SendingTrader.UserName != User.Identity.Name))
+{
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Accept')">Accept Trade</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Reject')">Reject Trade</button>
+}
+@if (User.Identity.Name == Model.SendingTrader.UserName && Model.Submitted && !Model.Canceled 
+    || (Model.Accepted && !Model.SenderConfirmed && !Model.ReceiverConfirmed))
+{
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Cancel')">Cancel Trade</button>
+}
+@if (Model.Accepted && ((User.Identity.Name == Model.SendingTrader.UserName && !Model.SenderConfirmed)
+                || (User.Identity.Name == Model.ReceivingTrader.UserName && !Model.ReceiverConfirmed)))
+{
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Confirm')">Confirm Trade</button>
+}
+@if (Model.SenderConfirmed && Model.ReceiverConfirmed && ((User.Identity.Name == Model.SendingTrader.UserName && Model.SenderRating == 0)
+                            || (User.Identity.Name == Model.ReceivingTrader.UserName && Model.ReceiverRating == 0)))
+{
+    @: Rate Trade: 
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('1')">Poor</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('2')">Fair</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('3')">Good</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('4')">Great</button>
+    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('5')">Perfect</button>
+}
+
+
+@if (!Model.Submitted)
+{
+    <a href="@Url.Action("Index", "Items")">Back to List</a>
+}
+else
+{
+    <a href="@Url.Action("List", "Trade")">Back to List</a>
+}
+
+@using (Html.BeginForm("Create", "Trade", FormMethod.Post, new { id = "submitTrade" }))
+{
     <input type="hidden" name="TradeId" value="@Model.TradeId"/>
     <input type="hidden" name="SenderId" value="@Model.SendingTrader.Id" />
     <input type="hidden" name="ReceiverId" value="@Model.ReceivingTrader.Id" />
+}
+
+@using (Html.BeginForm("Update", "Trade", FormMethod.Post, new { id = "updateTrade" }))
+{
+    <input type="hidden" name="TradeId" value="@Model.TradeId" />
 }
 

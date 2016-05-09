@@ -47,7 +47,27 @@
         <dd>
             @Html.DisplayFor(model => model.Quantity)
         </dd>
+        @if (Model.Images.Any(i => i.ItemID == Model.ItemID))
+        {
+            <dt>
+                Image
+            </dt>
+            <dd>
+                <div class="col-md-6">
+                    <!--Image Card-->
+                    <div class="card hoverable">
+                        <div class="card-image">
+                            <div class="view overlay hm-white-slight z-depth-1">
+                                <img src="~/ItemImages?id=@Model.Images.First(i => i.ItemID == Model.ItemID).ImageID" class="img-responsive" alt="image" />
+                            </div>
+                        </div>
+                    </div>
+                    <!--Image Card-->
+                </div>
 
+                
+            </dd>
+        }
     </dl>
 </div>
 <p>

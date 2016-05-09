@@ -114,12 +114,20 @@ namespace WaffleOffer.Models
                 return list;
             }
         }
+<<<<<<< HEAD
 
+=======
+
+>>>>>>> master
 
         //whether trade has been submitted
         public bool Submitted { get; set; }
 
+<<<<<<< HEAD
         //whether the sending player has opted to cancel the trade
+=======
+        //whether the sending player has opted to cancel the trade
+>>>>>>> master
         public bool Canceled { get; set; }
 
         //list of previous item ids
@@ -150,6 +158,10 @@ namespace WaffleOffer.Models
                 return "Canceled";
             else if (Rejected)
                 return "Rejected";
+<<<<<<< HEAD
+
+=======
+>>>>>>> master
             else if (SenderConfirmed && ReceiverConfirmed)
                 return "Confirmed";
             else if ((trader && SenderConfirmed) || (!trader && ReceiverConfirmed))
@@ -168,7 +180,11 @@ namespace WaffleOffer.Models
                     return "Trade Received";
             }
             else
+<<<<<<< HEAD
                 return "New Trade";   
+=======
+                return "New Trade";   
+>>>>>>> master
         }
     }
 }

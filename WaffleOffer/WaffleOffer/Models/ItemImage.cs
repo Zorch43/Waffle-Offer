@@ -16,5 +16,8 @@ namespace WaffleOffer.Models
         public string Caption { get; set; }
         //  filename for the image uploaded
         public string FileName { get; set; }
+        //  a byte array of the image to store in the database
+        public byte[] Content { get; set; }
+        public string ContentType { get; set; }
     }
 }

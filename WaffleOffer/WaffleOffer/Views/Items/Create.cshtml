@@ -1,6 +1,16 @@
 ﻿@model WaffleOffer.Models.Item
 
-@{
+@*@{
+<<<<<<< HEAD
+    ViewBag.Title = "Create new item";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Item:</h2>
+*@
+
+@* New code *@
+@{   
     ViewBag.Title = "Add Good or Service";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
@@ -10,8 +20,15 @@
     @Html.AntiForgeryToken()
     
     <div class="form-horizontal">
+        @*<h4>Add A New Item</h4>
+        <hr />*@
+
         <h4 class="dark-heading">Add New Item</h4>
+        @* new code *@
         @Html.ValidationSummary(true)
+
+        @Html.Hidden("ListingType")
+        @Html.Hidden("ListingUser")
 
         <div class="form-group">
             @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
@@ -73,7 +90,7 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Back to List", "Index", null, new { @class="btn btn-sm btn-custom-grey" })
 </div>
 
 @section Scripts {

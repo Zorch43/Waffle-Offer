@@ -29,7 +29,7 @@ namespace WaffleOffer
             UserManagerFactory = () =>
             {
                 /*var usermanager = new UserManager<AppUser>(
-                    new UserStore<AppUser>(new WaffleOfferDBContext()));*/
+                    new UserStore<AppUser>(new WaffleOfferContext()));*/
                 var usermanager = new UserManager<AppUser>(
                     new UserStore<AppUser>(new WaffleOfferContext()));
                 // allow alphanumeric characters in username

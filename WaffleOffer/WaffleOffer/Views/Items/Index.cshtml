@@ -1,57 +1,35 @@
 ﻿@model IEnumerable<WaffleOffer.Models.Item>
 
 @{
-    ViewBag.Title = "Items";
+    ViewBag.Title = "All Items";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h4 class="dark-heading">Items</h4>
+<h4 class="dark-heading">All Items</h4>
+@*<h2>Items Index</h2>*@
+
 <p>
-    @Html.ActionLink("Add Item", "Create", "", new { @class="btn btn-sm btn-custom-grey" })
+    @* Action link to add an item. Does not work from this view; needs to go through profile. *@
+    @*@Html.ActionLink("Add Item", "Create", "", new { @class="btn btn-sm btn-custom-grey" })*@
+    @*@Html.ActionLink("Create New", "Create")*@
+
+
+    @using (Html.BeginForm())
+    {
+        <div class="col-md-8">
+            <div class="form-group">
+                @*Item Name: @Html.TextBox("searchStg") <input type="submit" value="Search" />*@
+                @*<input type="reset" value="Clear" />*@
+                <div class="input-field">
+                    <span>
+                        <i class="material-icons prefix">search</i>
+                        @Html.TextBox("searchStg", null, new { @class = "validate" })
+                        <input type="submit" value="Search" class="btn btn-never-wide btn-custom-submit" />
+                    </span>
+                </div>
+            </div>
+        </div>
+    }
 </p>
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayNameFor(model => model.Name)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Description)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quality)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Units)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
-        <th></th>
-    </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.Name)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Description)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Quality)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Units)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Quantity)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ItemID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ItemID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ItemID })
-        </td>
-    </tr>
-}
-
-</table>
+    @Html.Partial("ItemList", Model) <!-- Links to a partial view that holds the items table -->

@@ -9,7 +9,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-default navbar-fixed-top">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#top-nav">
@@ -29,6 +29,7 @@
                 <ul class="nav navbar-nav navbar-right">
                     @*Authentication links*@
                     @if (User.Identity.IsAuthenticated)
+					
                     {
                         <li class="custom-nav-item-right">@Html.ActionLink(User.Identity.Name, "Index", "Profile")</li>
                         <!--<li class="custom-nav-item-right">@Html.ActionLink("account_box", "Index", "Profile",null, new { @class = "material-icons", @title = "My Profile" })</li>-->
@@ -39,7 +40,21 @@
                         <li class="custom-nav-item-right"><a href="@Url.Action("login", "auth")">Log In</a></li>
                         <li class="custom-nav-item-both"><a href="@Url.Action("Register", "auth")">Register</a></li>
                     }
+
+				  @*{
+                        <li class="custom-nav-item-right">@Html.ActionLink(User.Identity.Name, "Index", "Profile")</li>
+                        <li class="custom-nav-item-right">@Html.ActionLink("Messages", "Inbox", "Messages", null, null)</li>
+                        <li class="custom-nav-item-right"><a href="@Url.Action("logout", "auth")">Log Out</a></li>
+                    }
+                    else
+                    {
+                        <li class="custom-nav-item-right"><a href="@Url.Action("login", "auth")">Log In</a></li>
+                        <li class="custom-nav-item-both"><a href="@Url.Action("Register", "auth")">Register</a></li>
+                    }*@
+
+				@* new code *@
                 </ul>
+                @*@Html.Partial("_AuthLoginPartial")*@
             </div>
         </div>
     </div>

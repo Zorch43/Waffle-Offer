@@ -12,6 +12,8 @@ namespace WaffleOffer.Controllers
     {
         private readonly UserManager<AppUser> userManager;
 
+        private WaffleOfferContext db = new WaffleOfferContext();
+
         public ProfileController() : this(Startup.UserManagerFactory.Invoke())
         {
         }
@@ -32,6 +34,16 @@ namespace WaffleOffer.Controllers
             }
 
             var model = userManager.FindByName(userName);
+            model.TraderAccount = new Trader()
+            {
+                Wants = (from i in db.Items
+                         where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Want
+                         select i).ToList(),
+                Haves = (from i in db.Items
+                         where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Have
+                         select i).ToList()
+            };
+
             if (model != null)
                 return View(new ProfileViewModel(model));
             else

@@ -18,7 +18,11 @@ namespace WaffleOffer.Models
             ZipCode = user.ZipCode;
             Nickname = user.UserName;
             ProfileText = user.ProfileText;
-            
+            if (user.TraderAccount != null)
+            {
+                Wants = user.TraderAccount.Wants;
+                Haves = user.TraderAccount.Haves;
+            }
         }
         //personal
         [Required]
@@ -43,6 +47,10 @@ namespace WaffleOffer.Models
         public string Nickname { get; set; }
         [Display(Name="About Me")]
         public string ProfileText { get; set; }
+
+        //items
+        public List<Item> Wants { get; set; }
+        public List<Item> Haves { get; set; }
 
         //methods
         [Display(Name="Name")]

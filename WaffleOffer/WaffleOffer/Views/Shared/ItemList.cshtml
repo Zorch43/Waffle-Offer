@@ -1,0 +1,62 @@
+﻿@model IEnumerable<WaffleOffer.Models.Item>
+
+@*<i class="material-icons">arrow_drop_down</i>*@
+@*<i class="material-icons">sort</i>*@
+<table class="table table-hover">
+    <tr>
+        <th>
+            @Html.ActionLink("Item Name", "Index", new { sortOdr = ViewBag.NameSort }) @*<span class="glyphicon-sort-by-alphabet"></span>*@ <span class="caret"></span>
+            @*@Html.DisplayNameFor(model => model.Name)*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Description)
+        </th>
+        <th>
+            @Html.ActionLink("Quality", "Index", new { sortOdr = ViewBag.QualitySort })
+            @*@Html.DisplayNameFor(model => model.Quality)*@
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Units)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Quantity)
+        </th>
+
+        <th></th>
+    </tr>
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quality)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Units)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Quantity)
+            </td>
+            <td>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-sm btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Actions <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>@Html.ActionLink("View", "Details", "Items", new { id = item.ItemID },null)</li>
+                        @if (User.IsInRole("Admin") || User.Identity.Name == item.ListingUser)
+                        {
+                            <li>@Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null)</li>
+                            <li>@Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null)</li>
+                        }
+                    </ul>
+                </div>    
+            </td>
+        </tr>
+    }
+</table>

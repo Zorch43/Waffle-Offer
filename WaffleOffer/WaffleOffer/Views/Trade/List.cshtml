@@ -1,0 +1,19 @@
+﻿@model IEnumerable<WaffleOffer.Models.Trade>
+
+@{
+    ViewBag.Title = "Trades";
+}
+
+<h4 class="dark-heading divider-new">Trades</h4>
+
+<table class="table">
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.Partial("CompactTrade", item)
+        </td>
+    </tr>
+}
+
+</table>

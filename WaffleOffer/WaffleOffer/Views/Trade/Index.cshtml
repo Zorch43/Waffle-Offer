@@ -1,0 +1,142 @@
+﻿@model WaffleOffer.Models.Trade
+@{
+    ViewBag.Title = "Trade";
+}
+
+<script type="text/javascript">
+    function moveItem(id)
+    {
+        //find specified element
+        var item = document.getElementById(id);
+        //find source column id
+        var srcColId = item.parentElement.getAttribute("id");
+        //set destination column
+        var destColId;
+
+        switch (srcColId)
+        {
+            case "SenderHaves":
+                destColId = "SenderOffers";
+                break;
+            case "SenderOffers":
+                destColId = "SenderHaves";
+                break;
+            case "ReceiverHaves":
+                destColId = "ReceiverOffers";
+                break;
+            case "ReceiverOffers":
+                destColId = "ReceiverHaves";
+                break;
+        }
+        //append element to destination column
+        document.getElementById(destColId).appendChild(item);
+    }
+
+    function submitTrade()
+    {
+        //get list of items in the offered column
+        //get list of items in the requested column
+        //add inputs to form with value of item ids
+        addItems("SenderOffers");
+        addItems("ReceiverOffers");
+        //submit form
+        document.getElementById("submitTrade").submit();
+    }
+
+
+    function addItems(column)
+    {
+        //get the column element
+        var col = document.getElementById(column);
+        //get all items in it
+        var items = col.childNodes;
+        //for each item:
+        for (var i = 0; i < items.length; i++)
+        {
+            if (items[i].nodeType == 1) {
+                //assign value
+                var item = items[i];
+                var itemId = item.getAttribute('id');
+
+
+                //generate a hidden input element
+                var n = document.createElement("INPUT");
+                n.setAttribute('type', 'hidden');
+                //assign name
+                n.setAttribute('name', 'Items');
+            
+                n.setAttribute('value', itemId);
+                //append to submission form
+                document.getElementById('submitTrade').appendChild(n);
+            }
+        }
+    }
+</script>
+
+<h4 class="dark-heading divider-new">Trade</h4>
+
+<table class="table">
+    <tr>
+        @*
+        <th>Sender: @Html.DisplayFor(model => model.SendingTrader.UserName)</th>
+        <th>Offered by Sender</th>
+        <th>Offered by Receiver</th>
+        <th>Receiver: @Html.DisplayFor(model => model.ReceivingTrader.UserName)</th>
+        *@
+        <th>@Html.DisplayFor(model => model.SendingTrader.UserName)</th>
+        <th>@Html.DisplayFor(model => model.SendingTrader.UserName)'s Offer</th>
+        <th>@Html.DisplayFor(model => model.ReceivingTrader.UserName)'s Offer</th>
+        <th>@Html.DisplayFor(model => model.ReceivingTrader.UserName)</th>
+    </tr>
+    <tr>
+        <td>           
+            <ul id="SenderHaves">
+                @foreach (var item in Model.SenderHaves)
+                {
+                    <li id="@item.ItemID">
+                        <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                    </li>
+                }
+            </ul>
+        </td>
+
+        <td>
+            <ul id="SenderOffers">
+                @foreach (var item in Model.SendingItems)
+                {
+                    <li id="@item.ItemID">
+                        <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                    </li>
+                }
+            </ul>
+        </td>
+        <td>
+            <ul id="ReceiverOffers">
+                @foreach (var item in Model.ReceivingItems)
+                {
+                    <li id="@item.ItemID">
+                        <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                    </li>
+                }
+            </ul>
+        </td>
+        <td>
+            <ul id="ReceiverHaves">
+                @foreach (var item in Model.ReceiverHaves)
+                {
+                    <li id="@item.ItemID">
+                        <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                    </li>
+                }
+            </ul>
+        </td>
+    </tr>
+</table>
+<button class="btn btn-block btn-custom-submit" onclick="submitTrade()">Submit Trade</button>
+
+@using (Html.BeginForm("Create", "Trade", FormMethod.Post, new { id="submitTrade"})){
+    <input type="hidden" name="TradeId" value="@Model.TradeId"/>
+    <input type="hidden" name="SenderId" value="@Model.SendingTrader.Id" />
+    <input type="hidden" name="ReceiverId" value="@Model.ReceivingTrader.Id" />
+}
+

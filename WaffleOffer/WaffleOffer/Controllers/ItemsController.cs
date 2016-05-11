@@ -156,25 +156,27 @@ namespace WaffleOffer.Controllers
                 "image/png"
             };
 
-            if (!validImageTypes.Contains(upload.ContentType))
-            {
-                ModelState.AddModelError("Images", "Please choose either a GIF, JPG or PNG image.");
-            }
-
             if (ModelState.IsValid)
             {
                 if (upload != null && upload.ContentLength > 0)
                 {
-                    var image = new ItemImage
+                    if (!validImageTypes.Contains(upload.ContentType))
                     {
-                        FileName = System.IO.Path.GetFileName(upload.FileName),
-                        ContentType = upload.ContentType
-                    };
-                    using (var reader = new System.IO.BinaryReader(upload.InputStream))
-                    {
-                        image.Content = reader.ReadBytes(upload.ContentLength);
+                        ModelState.AddModelError("Images", "Please choose either a GIF, JPG or PNG image.");
                     }
-                    item.Images.Add(image);
+                    else 
+                    { 
+                        var image = new ItemImage
+                        {
+                            FileName = System.IO.Path.GetFileName(upload.FileName),
+                            ContentType = upload.ContentType
+                        };
+                        using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                        {
+                            image.Content = reader.ReadBytes(upload.ContentLength);
+                        }
+                        item.Images.Add(image);
+                    }
                 }
 
 

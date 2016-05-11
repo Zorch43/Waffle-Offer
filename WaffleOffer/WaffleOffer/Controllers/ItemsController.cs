@@ -18,46 +18,54 @@ namespace WaffleOffer.Controllers
 
         // GET: /Items/
         //public ActionResult Index(string sortOdr, string searchStg)  // sorting and simple search
-        public ActionResult Index(string sortOdr, string itemType, string searchStg)  // sorting and filtered search
+        public ActionResult Index(string sortOdr, string searchStg, string itemType)  // sorting and filtered search
         {
             // Viewbags for sorting
             ViewBag.NameSort = String.IsNullOrEmpty(sortOdr) ? "name_desc" : "";
             ViewBag.QualitySort = sortOdr == "Quality" ? "quality_desc" : "Quality";
 
-            //// Search with filters for Wants or Haves
-            //// NOTE: Using tutorial "Search" from asp.net (http://www.asp.net/mvc/overview/getting-started/introduction/adding-search)
-            //var TypeLst = new List<string>();
+            // Search with filters for Wants or Haves
+            // NOTE: Using tutorial "Search" from asp.net (http://www.asp.net/mvc/overview/getting-started/introduction/adding-search)
+            var TypeLst = new List<string>();
 
-            //var TypeQry = from t in db.Items
-            //              orderby t.ListingType  // (ListingType = 1) is Have
-            //              select t.ListingType;
+            string TypeHav = Item.ItemType.Have.ToString();
+            string TypeWnt = Item.ItemType.Want.ToString();
 
-            //string TypeOpt = "0";
+            var TypeQry = from t in db.Items
+                          orderby t.ListingType  // (ListingType = 1) is Have
+                          select t.ListingType;
 
-            //if(TypeOpt == "0")
-            //{
-            //    //not sure about this
-            //}
+            string[] TypeOpt = { TypeHav, TypeWnt };
 
+            /*string TypeOpt = "0";
+
+            if (TypeOpt == "0")
+            {
+                //not sure about this
+            }*/
+
+            TypeLst.AddRange(TypeOpt);
             //TypeLst.AddRange(TypeQry.Distinct());  // doesn't seem to want to allow this. Maybe because of enum?
-            //ViewBag.itemType = new SelectList(TypeLst);
+            ViewBag.itemType = new SelectList(TypeLst);
 
-            //var items = from i in db.Items
-            //            select i;
+            var items = from i in db.Items
+                        select i;
 
-            //if (!String.IsNullOrEmpty(searchStg))
-            //{
-            //    items = items.Where(s => s.Name.Contains(searchStg) || s.Description.Contains(searchStg));
-            //}
+            if (!String.IsNullOrEmpty(searchStg))
+            {
+                items = items.Where(s => s.Name.Contains(searchStg) || s.Description.Contains(searchStg));
+            }
 
-            //if (!String.IsNullOrEmpty(itemType))
-            //{
-            //    items = items.Where(f => f.ListingType == itemType);
-            //}
+            // for selecting Want or Have
+            /*if (!String.IsNullOrEmpty(itemType))
+            {
+               items = items.Where(t => t.ItemType.Have == itemType|| t.ItemType.Want == itemType)); 
+                //items = items.Where(f => f.ListingType == itemType);
+            } */
 
 
             // Simple Search
-            var items = from i in db.Items
+            /*var items = from i in db.Items
                         select i;
 
             if (!String.IsNullOrEmpty(searchStg))
@@ -65,7 +73,7 @@ namespace WaffleOffer.Controllers
                 items = items.Where(s => s.Name.Contains(searchStg) || s.Description.Contains(searchStg));
                 //items = items.Where(s => s.Name.Contains(searchStg));  // Does single word/ words in same order search in Name only
                 //items = items.Where(s => s.Name.Contains(searchStg) || s.Name.Contains(searchStg2)); // tried a second search criteria with string. Did not work.
-            }/**/
+            } */
 
 
             // sorting by Name and Quality
@@ -126,7 +134,6 @@ namespace WaffleOffer.Controllers
             //// Default action
             //return View();
             
-            // Create for Wants and Haves. Wants and Haves need to be working, else this returns a 404 error
             if (type == Item.ItemType.Have.ToString() || type == Item.ItemType.Want.ToString())
             {
                 return View(new Item()

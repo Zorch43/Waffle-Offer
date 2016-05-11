@@ -28,14 +28,14 @@ namespace WaffleOffer.Controllers
             // NOTE: Using tutorial "Search" from asp.net (http://www.asp.net/mvc/overview/getting-started/introduction/adding-search)
             var TypeLst = new List<string>();
 
-            string TypeHav = Item.ItemType.Have.ToString();
-            string TypeWnt = Item.ItemType.Want.ToString();
+            string Have = Item.ItemType.Have.ToString();
+            string Want = Item.ItemType.Want.ToString();
 
             var TypeQry = from t in db.Items
                           orderby t.ListingType  // (ListingType = 1) is Have
                           select t.ListingType;
 
-            string[] TypeOpt = { TypeHav, TypeWnt };
+            string[] TypeOpt = { Have, Want };
 
             /*string TypeOpt = "0";
 
@@ -59,7 +59,7 @@ namespace WaffleOffer.Controllers
             // for selecting Want or Have
             /*if (!String.IsNullOrEmpty(itemType))
             {
-               items = items.Where(t => t.ItemType.Have == itemType|| t.ItemType.Want == itemType)); 
+               items = items.Where(t => t.ItemType.Have == itemType || t.ItemType.Want == itemType); 
                 //items = items.Where(f => f.ListingType == itemType);
             } */
 

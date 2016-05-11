@@ -32,7 +32,7 @@ namespace WaffleOffer.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-            context.Database.CreateIfNotExists();
+            //context.Database.CreateIfNotExists();
             userManager = new UserManager<AppUser>(new UserStore<AppUser>(context));
             context.Roles.AddOrUpdate(new IdentityRole("Admin"));
             context.Roles.AddOrUpdate(new IdentityRole("Trader"));

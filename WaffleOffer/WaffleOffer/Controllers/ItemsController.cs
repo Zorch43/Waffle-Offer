@@ -57,11 +57,13 @@ namespace WaffleOffer.Controllers
             }
 
             // for selecting Want or Have
-            /*if (!String.IsNullOrEmpty(itemType))
+            if (!String.IsNullOrEmpty(itemType))
             {
-               items = items.Where(t => t.ItemType.Have == itemType || t.ItemType.Want == itemType); 
+                items = items.Where(t => t.ListingType.ToString() == itemType);  // suggested by Timo
+                //items = items.Where(t => t.ItemType == itemType);
+                //items = items.Where(t => t.ItemType.Have == itemType|| t.ItemType.Want == itemType)); 
                 //items = items.Where(f => f.ListingType == itemType);
-            } */
+            } /**/
 
 
             // Simple Search

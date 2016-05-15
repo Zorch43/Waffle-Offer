@@ -1,7 +1,8 @@
-﻿@model WaffleOffer.Models.MessageViewModel
+﻿@model IEnumerable<WaffleOffer.Models.MessageViewModel>
 
 @{
     ViewBag.Title = "View Message";
+    int counter = 0;
 }
 <h4 class="dark-heading">View Message</h4>
 <p>
@@ -16,23 +17,65 @@
         </ul>
     </div>
 </p>
-<div>
-    <ul class="collection">
-        <li class="collection-item">
-            <span class="msg-label">Sender: &nbsp;</span> @Html.DisplayFor(model => model.SenderItem.UserName)<br />
-            <span class="msg-label">Recipient: &nbsp;</span> @Html.DisplayFor(model => model.RecipientItem.UserName)<br />
-            <span class="msg-label">Sent: &nbsp;</span> @Html.DisplayFor(model => model.DateSent)<br />
-            <span class="msg-label">@Html.DisplayNameFor(model => model.Subject): &nbsp;</span> @Html.DisplayFor(model => model.Subject) <br />
-            @Html.DisplayFor(model => model.Body) <br />
-            @if (User.Identity.Name == Model.RecipientItem.UserName)
-            {
-              @Html.ActionLink("Reply", "Compose", new { recipientUsername = Model.SenderItem.UserName }, new { @class = "btn btn-sm btn-custom-grey", @title = "Reply" })
-            }
-        </li>
-        <!--
-        <li class="collection-item"><span class="msg-label">@Html.DisplayNameFor(model => model.Subject): &nbsp;</span> @Html.DisplayFor(model => model.Subject)</li>
-        <li class="collection-item"><span class="msg-label">@Html.DisplayNameFor(model => model.Body): &nbsp;</span>@Html.DisplayFor(model => model.Body)</li>
-        -->
-    </ul>
+<div class="panel-group" id="accordion">
+@foreach (var item in Model)
+{
+    string panelId = "collapse" + counter;
+    string toggleId = "#" + panelId;
+      
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <div class="panel-title">
+                <a data-toggle="collapse" href="@toggleId">
+                    @Html.HiddenFor(modelItem => item.ThreadID)
+                    @Html.HiddenFor(modelItem => item.ThreadPosition)
+
+                    @if (User.Identity.Name == item.SenderItem.UserName)
+                    {
+                        @Html.HiddenFor(modelItem => item.SenderItem.UserName)
+                    }
+                    else
+                    {
+                        <span class="msg-label">Sender: &nbsp;</span> @Html.DisplayFor(modelItem => item.SenderItem.UserName)<br />
+                    }
+                    
+                    @if (User.Identity.Name == item.RecipientItem.UserName)
+                    {
+                        @Html.HiddenFor(modelItem => item.RecipientItem.UserName)
+                    }
+                    else
+                    {
+                        <span class="msg-label">Recipient: &nbsp;</span> @Html.DisplayFor(modelItem => item.RecipientItem.UserName)<br />
+                    }
+                    
+                    <span class="msg-label">Sent: &nbsp;</span> @Html.DisplayFor(modelItem => item.DateSent)<br />
+                    <span class="msg-label">Subject: &nbsp;</span> @Html.DisplayFor(modelItem => item.Subject)<br />
+                    <i class="material-icons">expand_more</i>
+                </a>
+            </div>
+        </div>
+        @if (panelId == ViewBag.LatestMessagePanelID) {
+            <div id="@panelId" class="panel-collapse collapse in">
+                <div class="panel-body">
+                    @Html.DisplayFor(modelItem => item.Body) <br />
+                    @if (User.Identity.Name == item.RecipientItem.UserName)
+                {
+                        @Html.ActionLink("Reply", "Compose", new { recipientUsername = item.SenderItem.UserName, isReply = true, threadId = item.ThreadID, threadPos = (item.ThreadPosition + 1) }, new { @class = "btn btn-sm btn-custom-grey", @title = "Reply" })
+                }
+                </div>
+            </div>
+        }
+        <div id="@panelId" class="panel-collapse collapse">
+            <div class="panel-body">
+                @Html.DisplayFor(modelItem => item.Body) <br />
+                @if (User.Identity.Name == item.RecipientItem.UserName)
+                {
+                  @Html.ActionLink("Reply", "Compose", new { recipientUsername = item.SenderItem.UserName, isReply = true, threadId = item.ThreadID, threadPos = (item.ThreadPosition + 1) }, new { @class = "btn btn-sm btn-custom-grey", @title = "Reply" })
+                }
+            </div>
+        </div>
+    </div>
+    counter++;
+}
 </div>
 

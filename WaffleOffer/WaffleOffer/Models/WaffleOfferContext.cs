@@ -11,8 +11,10 @@ namespace WaffleOffer.Models
     {
         public WaffleOfferContext() : base("name=WaffleOfferContext")
         {
+            //Configuration.LazyLoadingEnabled = false;
         }
 
+        public System.Data.Entity.DbSet<Thread> Threads { get; set; }
         public System.Data.Entity.DbSet<Item> Items { get; set; }
         public System.Data.Entity.DbSet<Message> Messages { get; set; }
         public System.Data.Entity.DbSet<Trade> Trades { get; set; }

@@ -19,5 +19,9 @@ namespace WaffleOffer.Models
         public bool Sent { get; set; }
         public bool Copy { get; set; }
         //public bool Saved { get; set; }
+        public bool IsReply { get; set; }
+        public int ThreadID { get; set; }
+        public int ThreadPosition { get; set; }
+
     }
 }

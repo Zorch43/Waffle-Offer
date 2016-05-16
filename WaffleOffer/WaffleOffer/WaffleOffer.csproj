@@ -131,6 +131,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Vereyon.Web.FlashMessage, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Vereyon.Web.FlashMessage.1.0.1\lib\net40\Vereyon.Web.FlashMessage.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -165,6 +169,7 @@
     <Compile Include="Models\CreateItemViewModel.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemImage.cs" />
+    <Compile Include="Models\ItemList.cs" />
     <Compile Include="Models\ItemTag.cs" />
     <Compile Include="Models\LoginViewModel.cs" />
     <Compile Include="Models\Message.cs" />
@@ -172,6 +177,7 @@
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
     <Compile Include="Models\Search.cs" />
+    <Compile Include="Models\Thread.cs" />
     <Compile Include="Models\Trade.cs" />
     <Compile Include="Models\TradeCreator.cs" />
     <Compile Include="Models\Trader.cs" />
@@ -185,6 +191,8 @@
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
     <Content Include="Content\custom.css" />
+    <Content Include="Content\mdb.css" />
+    <Content Include="Content\mdb.min.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
@@ -195,6 +203,8 @@
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
+    <Content Include="Scripts\mdb.js" />
+    <Content Include="Scripts\mdb.min.js" />
     <Content Include="Scripts\modernizr-2.6.2.js" />
     <Content Include="Scripts\respond.js" />
     <Content Include="Scripts\respond.min.js" />

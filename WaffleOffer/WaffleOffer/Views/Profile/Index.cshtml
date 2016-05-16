@@ -18,7 +18,7 @@
             @if (User.Identity.Name != Model.Nickname)
             {
                 <div class="col-md-offset-1">
-                    @Html.ActionLink("Send Message", "Compose", "Messages", new { recipientUsername = Model.Nickname }, new { @class="btn btn-sm btn-custom-grey" })
+                    @Html.ActionLink("Send Message", "Compose", "Messages", new { recipientUsername = Model.Nickname, isReply = false, threadId = -1, threadPos = 0 }, new { @class="btn btn-sm btn-custom-grey" })
                 </div>
             }
         </div>
@@ -26,9 +26,13 @@
             <h5>About @Html.DisplayFor(model => model.Nickname)</h5>
             <p>
                 @Html.DisplayFor(model => model.ProfileText)
-                Lorem ipsum whateverum until there is some profile text or some placeholder
-                something or other. Whatever. Lorem. Ipsum. Etcetera. Rosa rosae rosae rosam 
-                rosa (with a flat little hat) rosa.
+                @if (String.IsNullOrWhiteSpace(Model.ProfileText))
+                {
+                    @:Lorem ipsum whateverum until there is some profile text or some placeholder
+                    @:something or other. Whatever.Lorem.Ipsum.Etcetera.Rosa rosae rosae rosam
+                    @:rosa(with a flat little hat) rosa.
+                }
+
             </p>
             <p>
                 <strong>@Html.DisplayNameFor(model => model.ZipCode):</strong> @Html.DisplayFor(model => model.ZipCode)

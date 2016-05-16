@@ -1,10 +1,19 @@
-﻿@model IEnumerable<WaffleOffer.Models.Item>
+﻿@model WaffleOffer.Models.ItemList
 @{
     ViewBag.Title = "Items";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h4 class="dark-heading">@ViewBag.TypeHeading</h4>
+
+
+<div class="col-xs-12 col-sm-6 col-md-4">
+    <a href="@Url.Action("Create", "Items", new { type = Model.Type.ToString() })">
+        <div class="card custom-card-short-grey hoverable">
+            <h5 class="custom-card-short-heading"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add a @Model.Type.ToString()</h5>
+        </div>
+    </a>
+</div>
 
 <table class="table table-hover">
     <tr>
@@ -13,22 +22,22 @@
             @*@Html.DisplayNameFor(model => model.Name)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Description)
+            @Html.DisplayNameFor(model => model.ItemModel.Description)
         </th>
         <th>
             @Html.ActionLink("Quality", "Index", new { sortOdr = ViewBag.QualitySort })
             @*@Html.DisplayNameFor(model => model.Quality)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Units)
+            @Html.DisplayNameFor(model => model.ItemModel.Units)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Quantity)
+            @Html.DisplayNameFor(model => model.ItemModel.Quantity)
         </th>
 
         <th></th>
     </tr>
-    @foreach (var item in Model)
+    @foreach (var item in Model.Items)
     {
         <tr>
             <td>

@@ -107,10 +107,11 @@ namespace WaffleOffer.Controllers
             ViewBag.ListingUser = userName;
 
             var items = (from i in db.Items
-                        where i.ListingType == type && i.ListingUser == userName
-                        select i).ToList();
+                         where i.ListingType == type && i.ListingUser == userName
+                         select i).ToList();
+            var list = new ItemList() { Items = items, Type = type };
 
-            return View(items);
+            return View(list);
         }
 
         // GET: /Items/Details/5

@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using WaffleOffer.Models;
+using Vereyon.Web;
 
 namespace WaffleOffer.Controllers
 {
@@ -97,6 +98,14 @@ namespace WaffleOffer.Controllers
                                  where i.ListingUser == model.ReceivingTrader.UserName && i.ListingType == Item.ItemType.Have
                                  select i).ToList()
                     };
+
+                    //if either partner has no items, redirect to instructions page
+                    if (model.SendingTrader.TraderAccount.Haves.Count < 1
+                        || model.ReceivingTrader.TraderAccount.Haves.Count < 1)
+                    {
+                        FlashMessage.Info("Please create an item that you can trade before entering a trade");
+                        return RedirectToAction("Create", "Items", new { type = Item.ItemType.Have.ToString() });
+                    }
 
                     return View(model);
                 }

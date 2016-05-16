@@ -14,7 +14,8 @@
         var isSender = "@User.Identity.Name" == "@Model.SendingTrader.UserName";
         //if not a new trade, the submitter may not make changes
         //if trade is already accepted, rejected, or canceled, nobody can make changes
-        if(submitted && isSender || accepted || rejected || canceled){
+        if (submitted && isSender || accepted || rejected || canceled) {
+            alert("Cannot edit trade at this stage")
             return;
         }
         //find specified element
@@ -45,6 +46,15 @@
 
     function submitTrade()
     {
+        //check to make sure that each trader is offering something
+        var col1 = document.getElementById("SenderOffers");
+        var col2 = document.getElementById("ReceiverOffers");
+        if (col1.childElementCount < 1 || col2.childElementCount < 1) {
+            //block submission if there is not at least 1 element (not node)
+            //in each column
+            alert("Each trader must offer something in trade");
+            return;
+        }
         //get list of items in the offered column
         //get list of items in the requested column
         //add inputs to form with value of item ids
@@ -171,8 +181,8 @@
     <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Accept')">Accept Trade</button>
     <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Reject')">Reject Trade</button>
 }
-@if (User.Identity.Name == Model.SendingTrader.UserName && Model.Submitted && !Model.Canceled 
-    || (Model.Accepted && !Model.SenderConfirmed && !Model.ReceiverConfirmed))
+@if (User.Identity.Name == Model.SendingTrader.UserName && Model.Submitted && !Model.Canceled && !Model.Accepted 
+    && !Model.Rejected || (Model.Accepted && !Model.SenderConfirmed && !Model.ReceiverConfirmed))
 {
     <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Cancel')">Cancel Trade</button>
 }

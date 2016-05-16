@@ -150,14 +150,14 @@ namespace WaffleOffer.Models
                 return "Canceled";
             else if (Rejected)
                 return "Rejected";
+            else if (SenderRating > 0 && ReceiverRating > 0)
+                return "Completed";
+            else if ((trader && SenderRating > 0) || (!trader && ReceiverRating > 0))
+                return "Rating Pending";
             else if (SenderConfirmed && ReceiverConfirmed)
                 return "Confirmed";
             else if ((trader && SenderConfirmed) || (!trader && ReceiverConfirmed))
                 return "Confirmation Pending";
-            else if ((trader && SenderRating > 0) || (!trader && ReceiverRating > 0))
-                return "Rating Pending";
-            else if (SenderRating > 0 && ReceiverRating > 0)
-                return "Completed";
             else if (Accepted)
                 return "Accepted";
             else if (Submitted)

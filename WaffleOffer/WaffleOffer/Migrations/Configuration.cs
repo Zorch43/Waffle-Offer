@@ -16,7 +16,6 @@ namespace WaffleOffer.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
-            
         }
 
         protected override void Seed(WaffleOffer.Models.WaffleOfferContext context)
@@ -33,10 +32,10 @@ namespace WaffleOffer.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-            //context.Database.Delete();
             context.Database.CreateIfNotExists();
             userManager = new UserManager<AppUser>(new UserStore<AppUser>(context));
-            context.Roles.AddOrUpdate(r => r.Name, new IdentityRole("Admin"), new IdentityRole("Trader"));
+            context.Roles.AddOrUpdate(new IdentityRole("Admin"));
+            context.Roles.AddOrUpdate(new IdentityRole("Trader"));
             //create admin account
             var admin = new AppUser()
             {
@@ -86,8 +85,7 @@ namespace WaffleOffer.Migrations
                 ZipCode = "97997"
             };
             InitUser(user4, "Password", "Trader");
-            //load users
-            //context.Users.Load();
+
             //seed some items
             var item1 = new Item()
             {
@@ -129,8 +127,10 @@ namespace WaffleOffer.Migrations
                 ListingType = Item.ItemType.Have,
                 ListingUser = "TraderPrime"
             };
-            
-            context.Items.AddOrUpdate(i => i.Name, item1, item2, item3, item4);
+            context.Items.AddOrUpdate(item1);
+            context.Items.AddOrUpdate(item2);
+            context.Items.AddOrUpdate(item3);
+            context.Items.AddOrUpdate(item4);
             base.Seed(context);
         }
 

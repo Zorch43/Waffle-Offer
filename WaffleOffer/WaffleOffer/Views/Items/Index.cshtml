@@ -23,18 +23,11 @@
                 <div class="input-field">
                     <span>
                         <i class="material-icons prefix">search</i>
-                        @Html.TextBox("searchStg", null, new { @class = "validate" }) in
+                        @Html.TextBox("searchStg", null, new { @class = "validate" }) in 
                         @*@Html.DropDownListFor(m => m.ListingType.ToString(), SelectList, new { @class = "form-control" })*@
                         @Html.DropDownList("itemType", "All")
-                        @*@Html.DropDownList("itemType", null, new { @class = "form-control btn btn-sm" })*@ @* NOTE: Works, but does not have an "All" option and the pulldown is too wide *@
-                        @*@Html.DropDownList("itemType", null, new { @class = "form-control" })*@
-                         @*@Html.DropDownListFor(t => t.ListingType.ToString(), (SelectList)ViewBag.itemType, "All", new { @class = "form-control btn btn-sm" })*@
-                        @*</span>
-
-                @Html.DropDownList("itemType", "All", new { @class = "form-control" })
-            <span>*@
+                        <input type="submit" value="Search" class="btn btn-never-wide btn-custom-submit" />
                     </span>
-                    <input type="submit" value="Search" class="btn btn-never-wide btn-custom-submit" />
                 </div>
             </div>
         </div>

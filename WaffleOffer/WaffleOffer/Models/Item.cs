@@ -8,6 +8,7 @@ namespace WaffleOffer.Models
 {
     public class Item
     {
+
         public enum ItemType { Want, Have}
         List<ItemTag> tags = new List<ItemTag>(); // removed extra 'new'
         List<ItemImage> images = new List<ItemImage>();

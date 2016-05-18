@@ -15,14 +15,19 @@ namespace WaffleOffer.Models
 
         [Key]
         public int ItemID { get; set; }
+        [Required]
         public string Name { get; set; }
+        [Required]
         public string Description { get; set; }
         public List<ItemTag> Tags { get { return tags; } set { tags = value; } }
         public List<ItemImage> Images { get { return images; } set { images = value; } }
+        [Required]
         public int Quality { get; set; }
         //  What the Item is measured in (minutes, pounds, etc)
+        [Required]
         public string Units { get; set; }
         //  number of Units offered
+        [Required]
         public double Quantity { get; set; }
         //type of listing
         public ItemType ListingType { get; set; }

@@ -4,9 +4,12 @@
     ViewBag.Title = "Edit Item";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Items", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
+    
+    @Html.Hidden("ListingType")
+    @Html.Hidden("ListingUser")
     
     <div class="form-horizontal">
         <h4 class="dark-heading">Edit Item</h4>
@@ -50,6 +53,30 @@
             <div class="col-md-10">
                 @Html.TextBoxFor(model => model.Quantity, new { @class = "material-input" })
                 @Html.ValidationMessageFor(model => model.Quantity)
+            </div>
+        </div>
+        @if (Model.Images.Any(i => i.ItemID == Model.ItemID))
+        {
+            <div class="form-group">
+            @Html.LabelFor(model => model.Images, new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    <div class="card hoverable">
+                        <div class="card-image">
+                            <div class="view overlay hm-white-slight z-depth-1">
+                                <img src="~/ItemImages?id=@Model.Images.First(i => i.ItemID == Model.ItemID).ImageID" class="img-responsive" alt="image" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+        <div class="form-group">
+            @Html.Label("Change Image", new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                <span class="btn btn-file">
+                    Browse <input type="file" id="Images" name="upload" />
+                </span>
+                @Html.ValidationMessageFor(model => model.Images)
             </div>
         </div>
 

@@ -160,7 +160,6 @@ namespace WaffleOffer.Controllers
         {
             var validImageTypes = new string[]
             {
-                "image/gif",
                 "image/jpeg",
                 "image/pjpeg",
                 "image/png"
@@ -172,13 +171,14 @@ namespace WaffleOffer.Controllers
                 {
                     if (!validImageTypes.Contains(upload.ContentType))
                     {
-                        ModelState.AddModelError("Images", "Please choose either a GIF, JPG or PNG image.");
+                        ModelState.AddModelError("Images", "Please choose either a JPG or PNG image.");
                     }
                     else 
                     { 
                         var image = new ItemImage
                         {
                             FileName = System.IO.Path.GetFileName(upload.FileName),
+                            ItemID = item.ItemID,
                             ContentType = upload.ContentType
                         };
                         using (var reader = new System.IO.BinaryReader(upload.InputStream))
@@ -224,7 +224,8 @@ namespace WaffleOffer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = db.Items.Find(id);
+            //Item item = db.Items.Find(id);
+            Item item = db.Items.Include(i => i.Images).SingleOrDefault(i => i.ItemID == id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -237,10 +238,48 @@ namespace WaffleOffer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity")] Item item)
+        public ActionResult Edit([Bind(Include = "ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item, HttpPostedFileBase upload)
         {
+            var validImageTypes = new string[]
+            {
+                "image/jpeg",
+                "image/pjpeg",
+                "image/png"
+            };
+
             if (ModelState.IsValid)
             {
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    if (!validImageTypes.Contains(upload.ContentType))
+                    {
+                        ModelState.AddModelError("Images", "Please choose either a JPG or PNG image.");
+                    }
+                    else
+                    {
+                        var images = (from i in db.ItemImages
+                                      where i.ItemID == item.ItemID
+                                      select i).ToList();
+
+                        if (images.Any())
+                        {
+                            db.ItemImages.Remove(images.FirstOrDefault());
+                        }
+
+                        var image = new ItemImage
+                        {
+                            FileName = System.IO.Path.GetFileName(upload.FileName),
+                            ItemID = item.ItemID,
+                            ContentType = upload.ContentType
+                        };
+                        using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                        {
+                            image.Content = reader.ReadBytes(upload.ContentLength);
+                        }
+                        item.Images = new List<ItemImage> { image };
+                    }
+                }
+
                 db.Entry(item).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");

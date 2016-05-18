@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
@@ -107,11 +107,10 @@ namespace WaffleOffer.Controllers
             ViewBag.ListingUser = userName;
 
             var items = (from i in db.Items
-                         where i.ListingType == type && i.ListingUser == userName
-                         select i).ToList();
-            var list = new ItemList() { Items = items, Type = type };
+                        where i.ListingType == type && i.ListingUser == userName
+                        select i).ToList();
 
-            return View(list);
+            return View(items);
         }
 
         // GET: /Items/Details/5

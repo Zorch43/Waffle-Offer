@@ -144,20 +144,40 @@ namespace WaffleOffer.Models
         //receiver's rating of the completed trade
         public int ReceiverRating { get; set; }
 
+        public DateTime LastModified { get; set; }
+
+        public double DaysOld
+        {
+            get
+            {
+                return (DateTime.Now - LastModified).TotalDays;
+            }
+        }
+
+        //constructor
+        public Trade()
+        {
+            if(LastModified == null)
+                //if not set, set to now
+                LastModified = DateTime.Now;
+        }
+
+        
+
         public string GetTradeStatusMessage(bool trader)
         {
             if (Canceled)
                 return "Canceled";
             else if (Rejected)
                 return "Rejected";
+            else if (SenderRating > 0 && ReceiverRating > 0)
+                return "Rated";
+            else if ((trader && SenderRating > 0) || (!trader && ReceiverRating > 0))
+                return "Rating Pending";
             else if (SenderConfirmed && ReceiverConfirmed)
                 return "Confirmed";
             else if ((trader && SenderConfirmed) || (!trader && ReceiverConfirmed))
                 return "Confirmation Pending";
-            else if ((trader && SenderRating > 0) || (!trader && ReceiverRating > 0))
-                return "Rating Pending";
-            else if (SenderRating > 0 && ReceiverRating > 0)
-                return "Completed";
             else if (Accepted)
                 return "Accepted";
             else if (Submitted)

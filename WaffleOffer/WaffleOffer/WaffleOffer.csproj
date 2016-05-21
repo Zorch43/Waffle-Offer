@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -131,6 +131,10 @@
       <Private>True</Private>
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="Vereyon.Web.FlashMessage, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\Vereyon.Web.FlashMessage.dll</HintPath>
+    </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
       <HintPath>..\packages\WebGrease.1.5.2\lib\WebGrease.dll</HintPath>
@@ -242,9 +246,11 @@
     <Content Include="Views\Messages\View.cshtml" />
     <Content Include="Views\Messages\Sent.cshtml" />
     <Content Include="Views\Messages\Error.cshtml" />
-    <Content Include="Views\Trade\List.cshtml" />
+    <Content Include="Views\Trade\Pending.cshtml" />
     <Content Include="Views\Shared\CompactTrade.cshtml" />
     <Content Include="Views\Items\Items.cshtml" />
+    <Content Include="Views\Trade\History.cshtml" />
+    <Content Include="Views\Trade\Ratings.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

@@ -123,7 +123,8 @@ namespace WaffleOffer.Controllers
             {
                 SendingTraderId = trade.SenderId,
                 ReceivingTraderId = trade.ReceiverId,
-                Submitted = true
+                Submitted = true,
+                LastModified = DateTime.Now
             };
 
             var items = new List<Item>();
@@ -206,7 +207,8 @@ namespace WaffleOffer.Controllers
                         }
                         break;
                 }
-
+                //update date last modified
+                trade.LastModified = DateTime.Now;
                 //save changes to trade
                 db.Entry(trade).State = EntityState.Modified;
                 db.SaveChanges();
@@ -216,28 +218,60 @@ namespace WaffleOffer.Controllers
         }
 
         [HttpGet]
-        public ActionResult List()
+        public ActionResult Pending()
         {
-            //TODO: load list
             var list = (from t in db.Trades.Include("SendingTrader")
                         .Include("ReceivingTrader").Include("Items")
-                        select t).ToList();
-
-            if (User.IsInRole("Admin"))
-            {
-                return View(list);
-            }
-            else
-            {
-                var selectiveList = new List<Trade>();
-                foreach (Trade t in list)
-                {
-                    if (User.Identity.Name == t.ReceivingTrader.UserName
+                        where (User.Identity.Name == t.ReceivingTrader.UserName
                         || User.Identity.Name == t.SendingTrader.UserName)
-                        selectiveList.Add(t);
+                        orderby t.LastModified descending
+                        select t).ToList();
+            //remove old canceled/rejected/completed trades from pending trades
+            var recentList = new List<Trade>();
+            foreach (Trade t in list)
+            {
+                if (!(t.DaysOld > 7 && (t.Canceled || t.Rejected || (t.SenderRating > 0 && t.ReceiverRating > 0))))
+                {
+                    recentList.Add(t);
                 }
-                return View(selectiveList);
             }
+            return View(recentList);
+        }
+
+        [HttpGet]
+        public ActionResult History()
+        {
+            var list = (from t in db.Trades.Include("SendingTrader")
+                        .Include("ReceivingTrader").Include("Items")
+                        where (User.Identity.Name == t.ReceivingTrader.UserName
+                        || User.Identity.Name == t.SendingTrader.UserName)
+                        && (t.Canceled || t.Rejected || (t.SenderRating > 0 && t.ReceiverRating > 0))
+                        orderby t.LastModified descending
+                        select t).ToList();
+            return View(list);
+        }
+
+        [HttpGet]
+        public ActionResult Ratings()
+        {
+            var list = (from t in db.Trades.Include("SendingTrader")
+                        .Include("ReceivingTrader").Include("Items")
+                        where (User.Identity.Name == t.ReceivingTrader.UserName && t.SenderRating > 0)
+                        || (User.Identity.Name == t.SendingTrader.UserName && t.ReceiverRating > 0)
+                        orderby t.LastModified descending
+                        select t).ToList();
+            return View(list);
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public ActionResult ListAll()
+        {
+            var list = (from t in db.Trades.Include("SendingTrader")
+                        .Include("ReceivingTrader").Include("Items")
+                        orderby t.LastModified descending
+                        select t).ToList();
+            return View(list);
         }
     }
 }

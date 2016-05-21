@@ -14,6 +14,18 @@
                 <!-- commented out until I can fix the garbage-looking alignment -->
                 <!--<figcaption class="profile-caption">-->@*@Html.DisplayFor(model => model.Nickname)*@ <!--</figcaption>-->
             </figure>
+            @if (Model.Rating >= 1)
+            {
+                <div class="col-md-offset-1">
+                    Rating: @Html.DisplayFor(model => model.Rating)
+                </div>
+            }
+            else
+            {
+                <div class="col-md-offset-1">
+                    Rating: Unrated
+                </div>
+            }
             @*Only other traders should be able to see this*@
             @if (User.Identity.Name != Model.Nickname)
             {
@@ -100,14 +112,16 @@
             </a>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <div class="card custom-card-purple hoverable animated slideInRight">
-                <h4 class="custom-card-heading">Ratings</h4>
-                <!--<p class="custom-card-content-center"><i class="material-icons custom-card-icon">thumbs_up_down</i></p>-->
-                <p class="custom-card-content-center"><i class="material-icons custom-card-icon">star_border</i></p>
-            </div>
+            <a href="@Url.Action("Ratings", "Trade")">
+                <div class="card custom-card-purple hoverable animated slideInRight">
+                    <h4 class="custom-card-heading">Ratings</h4>
+                    <!--<p class="custom-card-content-center"><i class="material-icons custom-card-icon">thumbs_up_down</i></p>-->
+                    <p class="custom-card-content-center"><i class="material-icons custom-card-icon">star_border</i></p>
+                </div>
+            </a>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <a href="@Url.Action("List", "Trade")">
+            <a href="@Url.Action("Pending", "Trade")">
                 <div class="card custom-card-yellow hoverable animated slideInRight">
                     <h4 class="custom-card-heading">Pending Trades</h4>
                     <p class="custom-card-content-center"><i class="material-icons custom-card-icon">compare_arrows</i></p>
@@ -115,10 +129,12 @@
             </a>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <div class="card custom-card-green hoverable animated slideInRight">
-                <h4 class="custom-card-heading">Trade History</h4>
-                <p class="custom-card-content-center"><i class="material-icons custom-card-icon">access_time</i></p>
-            </div>
+            <a href="@Url.Action("History", "Trade")">
+                <div class="card custom-card-green hoverable animated slideInRight">
+                    <h4 class="custom-card-heading">Trade History</h4>
+                    <p class="custom-card-content-center"><i class="material-icons custom-card-icon">access_time</i></p>
+                </div>
+            </a>
         </div>
     </div><!--end row -->
     }

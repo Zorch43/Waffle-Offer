@@ -52,6 +52,9 @@ namespace WaffleOffer.Models
         public List<Item> Wants { get; set; }
         public List<Item> Haves { get; set; }
 
+        //rating
+        public double Rating { get; set; }
+
         //methods
         [Display(Name="Name")]
         public string RealName { get { return FirstName + " " + LastName; } }

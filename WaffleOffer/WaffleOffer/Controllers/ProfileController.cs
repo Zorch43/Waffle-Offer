@@ -45,9 +45,40 @@ namespace WaffleOffer.Controllers
             };
 
             if (model != null)
-                return View(new ProfileViewModel(model));
+            {
+                var profile = new ProfileViewModel(model);
+
+                //calculate rating
+                var trades = (from t in db.Trades.Include("SendingTrader").Include("ReceivingTrader")
+                                  //where (t.SendingTrader.UserName == model.UserName && t.ReceiverRating > 0)
+                                  //   || (t.ReceivingTrader.UserName == model.UserName && t.SenderRating > 0)
+                              select t).ToList();
+                int ratingSum = 0;
+                int count = 0;
+                foreach (Trade t in trades)
+                {
+                    if (t.SendingTrader.UserName == model.UserName && t.ReceiverRating > 0)
+                    {
+                        ratingSum += t.ReceiverRating;
+                        count++;
+                    }
+                    else if (t.ReceivingTrader.UserName == model.UserName && t.SenderRating > 0)
+                    {
+                        ratingSum += t.SenderRating;
+                        count++;
+                    }
+                        
+                }
+
+                profile.Rating = (double)ratingSum / count;
+                return View(profile);
+            }
+
             else
+            {
                 return HttpNotFound("Profile not found");
+            }
+                
         }
 
         //GET: /Profile/Edit/userName

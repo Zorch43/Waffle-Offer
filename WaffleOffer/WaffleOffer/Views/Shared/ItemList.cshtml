@@ -26,6 +26,8 @@
     </tr>
     @foreach (var item in Model)
     {
+		if (!(item.Reserved || item.Removed))
+		{
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Name)
@@ -61,12 +63,15 @@
                         <li>@Html.ActionLink("View", "Details", "Items", new { id = item.ItemID },null)</li>
                         @if (User.IsInRole("Admin") || User.Identity.Name == item.ListingUser)
                         {
-                            <li>@Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null)</li>
-                            <li>@Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null)</li>
+                            @Html.Raw(" | ");
+                            @Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null)
+                            @Html.Raw(" | ");
+                            @Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null )
                         }
                     </ul>
                 </div>
             </td>
         </tr>
+		}
     }
 </table>

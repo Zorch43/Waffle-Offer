@@ -7,7 +7,14 @@
         <ul>
             @foreach (var item in Model.SendingItems)
             {
-                <li>@item.Quantity x @item.Name</li>
+                if (Model.Accepted)
+				{
+					<li>@item.Name</li>
+				}
+				else
+				{
+					<li>@item.ToString()</li>
+				}
             }
         </ul>
     </div>
@@ -25,7 +32,14 @@
         <ul>
             @foreach (var item in Model.ReceivingItems)
             {
-                <li>@item.Quantity x @item.Name</li>
+                if (Model.Accepted)
+				{
+					<li>@item.Name</li>
+				}
+				else
+				{
+					<li>@item.ToString()</li>
+				}
             }
         </ul>
     </div>

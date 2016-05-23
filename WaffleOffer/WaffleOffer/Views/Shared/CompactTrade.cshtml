@@ -1,52 +1,87 @@
 ﻿@model WaffleOffer.Models.Trade
 
-<table class="table">
-    <tr>
-        <th>@Model.SendingTrader.UserName</th>
-        <th>
-            @Model.GetTradeStatusMessage(User.Identity.Name == Model.SendingTrader.UserName)
-        </th>
-        <th>@Model.ReceivingTrader.UserName</th>
-        <th></th>
-    </tr>
-    <tr>
-        <td>
-            <ul>
-                @foreach (var item in Model.SendingItems)
-                {
-                    if (Model.Accepted)
-                    {
-                        <li>@item.Name</li>
-                    }
-                    else
-                    {
-                        <li>@item.ToString()</li>
-                    }
-                }
-            </ul>
-        </td>
-        <td>
+<div class="panel panel-default">
+    <div class="col-md-3">
+        <h5 class="h5-responsive">@Model.SendingTrader.UserName</h5>
+        <br />
+        <ul>
+            @foreach (var item in Model.SendingItems)
+            {
+                if (Model.Accepted)
+				{
+					<li>@item.Name</li>
+				}
+				else
+				{
+					<li>@item.ToString()</li>
+				}
+            }
+        </ul>
+    </div>
+    <div class="col-md-4">
+        <p class="small-text text-center">Status: @Model.GetTradeStatusMessage(User.Identity.Name == Model.SendingTrader.UserName)</p>
+        <div class="text-center">
             <i class="material-icons animated slideInLeft">arrow_forward</i>
             <br />
             <i class="material-icons animated slideInRight">arrow_back</i>
-        </td>
-        <td>
-            <ul>
-                @foreach (var item in Model.ReceivingItems)
-                {
-                    if (Model.Accepted)
+        </div>
+    </div>
+    <div class="col-md-3">
+        <h5 class="h5-responsive">@Model.ReceivingTrader.UserName</h5>
+        <br />
+        <ul>
+            @foreach (var item in Model.ReceivingItems)
+            {
+                if (Model.Accepted)
+				{
+					<li>@item.Name</li>
+				}
+				else
+				{
+					<li>@item.ToString()</li>
+				}
+            }
+        </ul>
+    </div>
+    <div class="col-md-2">
+        @Html.ActionLink("View Trade", "Index", "Trade", new { partner = Model.ReceivingTrader.UserName, tradeId = Model.TradeId }, new { @class = "btn btn-sm btn-sender btn-custom-grey" })
+    </div>
+</div>
+@*
+    <table class="table">
+        <tr>
+            <th>@Model.SendingTrader.UserName</th>
+            <th>
+                @Model.GetTradeStatusMessage(User.Identity.Name == Model.SendingTrader.UserName)
+            </th>
+            <th>@Model.ReceivingTrader.UserName</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>
+                <ul>
+                    @foreach (var item in Model.SendingItems)
                     {
-                        <li>@item.Name</li>
+                        <li>@item.Quantity x @item.Name</li>
                     }
-                    else
+                </ul>
+            </td>
+            <td>
+                <i class="material-icons animated slideInLeft">arrow_forward</i>
+                <br />
+                <i class="material-icons animated slideInRight">arrow_back</i>
+            </td>
+            <td>
+                <ul>
+                    @foreach (var item in Model.ReceivingItems)
                     {
-                        <li>@item.ToString()</li>
+                        <li>@item.Quantity x @item.Name</li>
                     }
-                }
-            </ul>
-        </td>
-        <td>
-            @Html.ActionLink("View Trade", "Index", "Trade", new { partner = Model.ReceivingTrader.UserName, tradeId = Model.TradeId }, new { @class = "btn btn-sm btn-sender btn-custom-grey" })
-        </td>
-    </tr>
-</table>
+                </ul>
+            </td>
+            <td>
+                @Html.ActionLink("View Trade", "Index", "Trade", new { partner = Model.ReceivingTrader.UserName, tradeId = Model.TradeId }, new { @class = "btn btn-sm btn-sender btn-custom-grey" })
+            </td>
+        </tr>
+    </table>
+*@

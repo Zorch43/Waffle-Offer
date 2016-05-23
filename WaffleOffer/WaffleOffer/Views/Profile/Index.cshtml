@@ -11,8 +11,6 @@
             <figure>
                 <!-- profile img or placeholder avatar goes here-->
                 <img src="../Images/wo-temp-avatar-1.png" class="profile-pic" />
-                <!-- commented out until I can fix the garbage-looking alignment -->
-                <!--<figcaption class="profile-caption">-->@*@Html.DisplayFor(model => model.Nickname)*@ <!--</figcaption>-->
             </figure>
             @if (Model.Rating >= 1)
             {
@@ -36,16 +34,23 @@
         </div>
         <div class="col-md-8">
             <h5>About @Html.DisplayFor(model => model.Nickname)</h5>
-            <p>
-                @Html.DisplayFor(model => model.ProfileText)
-                @if (String.IsNullOrWhiteSpace(Model.ProfileText))
+            @if (String.IsNullOrWhiteSpace(Model.ProfileText))
+            {
+                <p class="note">
+                @if (User.Identity.Name == Model.Nickname)
                 {
-                    @:Lorem ipsum whateverum until there is some profile text or some placeholder
-                    @:something or other. Whatever.Lorem.Ipsum.Etcetera.Rosa rosae rosae rosam
-                    @:rosa(with a flat little hat) rosa.
+                    @: You haven't filled out this section yet.
                 }
-
-            </p>
+                else
+                {
+                    @: Trader has not yet filled in this section.
+                }
+                </p>
+            }
+            else 
+            {
+                <p>@Html.DisplayFor(model => model.ProfileText)</p>
+            }
             <p>
                 <strong>@Html.DisplayNameFor(model => model.ZipCode):</strong> @Html.DisplayFor(model => model.ZipCode)
             </p>
@@ -74,14 +79,14 @@
             </a>          
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <a href="@Url.Action("Create", "Items", new { type = "Have" })">
+            <a href="@Url.Action("Create", "Items", new { userName = Model.Nickname, type = "Have" })">
                 <div class="card custom-card-short-grey hoverable">
                     <h5 class="custom-card-short-heading"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add a New Have</h5>
                 </div>
             </a>  
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <a href="@Url.Action("Create", "Items", new { type = "Want" })">
+            <a href="@Url.Action("Create", "Items", new { userName = Model.Nickname, type = "Want" })">
                 <div class="card custom-card-short-grey hoverable">
                     <h5 class="custom-card-short-heading"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span>&nbsp;Add a New Want</h5>
                 </div>
@@ -96,6 +101,7 @@
             </a>
         </div>     
         <div class="col-xs-12 col-sm-6 col-md-4">
+            <!-- THIS DOES NOT WORK ANYMORE. FIND OUT WTF IS HAPPENING WITH THE ITEMLIST MODEL -->
             <a href="@Url.Action("Items", "Items", new { userName = Model.Nickname, type= "Have" })">
                 <div class="card custom-card-orange hoverable animated slideInLeft">
                     <h4 class="custom-card-heading">Haves</h4>
@@ -104,6 +110,7 @@
             </a>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
+            <!-- THIS DOES NOT WORK ANYMORE. FIND OUT WTF IS HAPPENING WITH THE ITEMLIST MODEL -->
             <a href="@Url.Action("Items", "Items", new { userName = Model.Nickname, type= "Want" })">
                 <div class="card custom-card-red hoverable animated slideInLeft">
                     <h4 class="custom-card-heading">Wants</h4>
@@ -142,26 +149,37 @@
     @*Trader will not see this on their own page*@
     @if (User.Identity.Name != Model.Nickname || User.IsInRole("Admin"))
     {
-        <!-- TODO: Add Wants and needs to these lists dynamically. May require using a partial view. -->
         <div class="row">
             <div class="col-md-6">
                 <ul class="collection with-header">
                     <li class="collection-header list-header"><h5>Haves</h5></li>
-                    <li class="collection-item">Thing 1</li>
-                    <li class="collection-item">Thing 2</li>
-                    <li class="collection-item">Thing 3</li>
-                    <li class="collection-item">Thing 4</li>
+                    @if (Model.Haves.Count > 0)
+                    {
+                        @Html.Partial("ProfileHaves", Model.Haves)
+                    }
+                    else
+                    {
+                        <li class="collection-item">
+                            No haves listed.
+                        </li>
+                    }
                 </ul>
             </div>
             <div class="col-md-6">
                 <ul class="collection with-header">
                     <li class="collection-header list-header"><h5>Wants</h5></li>
-                    <li class="collection-item">Thing 1</li>
-                    <li class="collection-item">Thing 2</li>
-                    <li class="collection-item">Thing 3</li>
-                    <li class="collection-item">Thing 4</li>
+                    @if (Model.Wants.Count > 0)
+                    {
+                        @Html.Partial("ProfileWants", Model.Wants)
+                    }
+                    else
+                    {
+                        <li class="collection-item">
+                            No wants listed.
+                        </li>
+                    }
                 </ul>
             </div>
-        </div>  
+        </div>
     }
 </div>

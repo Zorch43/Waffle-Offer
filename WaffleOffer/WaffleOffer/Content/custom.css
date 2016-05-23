@@ -248,9 +248,13 @@ footer address {
     border: solid #ffc90e 2px;
     color: #f8b10e;
 }
+.btn-sender, .btn-receiver {
+    display: block;
+    float: left;
+}
 
 .btn-sender:hover,
-.btn-send:focus {
+.btn-sender:focus {
     background-color: #fff;
     border:#00B3FF solid 2px;
     color:#00B3FF;
@@ -274,7 +278,6 @@ footer address {
     background-color: #fff;
     color: #ffc90e;
 }
-
 
 /* Icon Styles */
 .icon-link-light {
@@ -411,7 +414,11 @@ footer address {
     text-shadow: 1px 4px 2px #a5a5a5;
 }
 */
-/* Text Classes */
+
+/* Text Styles */
+.note {
+   font-style:italic;
+}
 .msg-label {
     font-weight: bold;
 }
@@ -434,6 +441,9 @@ footer address {
     color: #a5a5a5;
     text-decoration: underline;
 }
+.small-text {
+    font-size: 14px;
+}
 
 /* Image Styles */
 .profile-pic {
@@ -442,5 +452,13 @@ footer address {
 .profile-caption {
     font-size: 15px;
     text-align: center;
+}
+
+/* Custom (Background) Color Classes */
+.custom-blue {
+    background-color:#00B3FF;
+}
+.custom-green {
+    background-color: #72cb19;
 }
 

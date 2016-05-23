@@ -42,6 +42,10 @@
         }
         //append element to destination column
         document.getElementById(destColId).appendChild(item);
+
+        //show a message to the user if a column is empty
+        //does not seem to do anything. delete if cannot get to work.
+        //showNoItemsMessage(srcColId);
     }
 
     function submitTrade()
@@ -80,7 +84,6 @@
         document.getElementById("updateTrade").submit();
     }
 
-
     function addItems(column)
     {
         //get the column element
@@ -108,18 +111,53 @@
             }
         }
     }
+
+    function checkColumnEmpty(column) {
+        //get the column element
+        var col = document.getElementById(column);
+        if (col.childElementCount > 0)
+            return false;
+        else
+            return true;
+    }
+
+    // This isn't working... (Though it is not--as far as I can see--breaking anything)
+    function showNoItemsMessage(column) {
+        // check to see whether or not the column is empty
+        if (checkColumnEmpty(column)) {
+            // find the corresponding message paragraph tag id
+            var pId = "";
+            var msg = "";
+            switch (column) {
+                case "SenderHaves":
+                    pId = "msgSenderHaves";
+                    msg = "Nothing left in inventory.";
+                    break;
+                case "SenderOffers":
+                    pId = "msgSenderOffers";
+                    msg = "Nothing offered.";
+                    break;
+                case "ReceiverHaves":
+                    pId = "msgReceiverHaves";
+                    msg = "Nothing left in inventory.";
+                    break;
+                case "ReceiverOffers":
+                    pId = "msgReceiverOffers";
+                    msg = "Nothing offered.";
+                    break;
+            }
+            // Insert the appropriate message between the paragraph tags
+            // that correspond to the column passed in
+            document.getElementById(pId).innerHTML = msg;
+        }
+    }
 </script>
 
 <h4 class="dark-heading divider-new">Trade</h4>
-
+@*Commenting this bit out until group approves new trade aesthetic - Sally*@
+@*
 <table class="table">
     <tr>
-        @*
-        <th>Sender: @Html.DisplayFor(model => model.SendingTrader.UserName)</th>
-        <th>Offered by Sender</th>
-        <th>Offered by Receiver</th>
-        <th>Receiver: @Html.DisplayFor(model => model.ReceivingTrader.UserName)</th>
-        *@
         <th>@Html.DisplayFor(model => model.SendingTrader.UserName)</th>
         <th>@Html.DisplayFor(model => model.SendingTrader.UserName)'s Offer</th>
         <th>@Html.DisplayFor(model => model.ReceivingTrader.UserName)'s Offer</th>
@@ -169,47 +207,107 @@
         </td>
     </tr>
 </table>
+*@
+<div class="panel-group">
+    <div class="panel panel-default custom-blue">
+        <h5 class="h5-responsive text-center white-text">@Html.DisplayFor(model => model.SendingTrader.UserName) Inventory</h5>
+    </div>
+    <div class="panel panel-default">
+        <div id="SenderHaves">
+            <div class="clearfix"></div>
+            @foreach (var item in Model.SenderHaves)
+            {
+                <div id="@item.ItemID">
+                    <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                </div>
+            }
+            <p id="msgSenderHaves"></p>
+        </div>
+    </div>
+    <div class="panel panel-default custom-blue">
+        <h5 class="h5-responsive text-center white-text">@Html.DisplayFor(model => model.SendingTrader.UserName)'s Offer</h5> 
+    </div>
+    <div class="panel panel-default">
+        <div id="SenderOffers">
+            @foreach (var item in Model.SendingItems)
+            {
+                <div id="@item.ItemID">
+                    <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                </div>
+            }
+            <p id="msgSenderOffers"></p>
+        </div>
+    </div>
+    <div class="panel panel-default custom-green">
+        <h5 class="h5-responsive text-center white-text">@Html.DisplayFor(model => model.ReceivingTrader.UserName)'s Offer</h5>
+    </div>
+    <div class="panel panel-default" id="ReceiverOffers">
+        <div id="ReceiverOffers">
+            @foreach (var item in Model.ReceivingItems)
+            {
+                <div id="@item.ItemID">
+                    <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                </div>
+            }
+            <p id="msgReceiverOffers"></p>
+        </div>
+    </div>
+    <div class="panel panel-default custom-green">
+        <h5 class="h5-responsive text-center white-text">@Html.DisplayFor(model => model.ReceivingTrader.UserName) Inventory</h5>
+    </div>
+    <div class="panel panel-default" id="ReceiverHaves">
+        <div id="ReceiverHaves">
+            @foreach (var item in Model.ReceiverHaves)
+            {
+                <div id="@item.ItemID">
+                    <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                </div>
+            }
+            <p id="msgReceiverHaves"></p>
+        </div>
+    </div>
+</div>
 
 @if (!Model.Submitted || (!Model.Canceled && !Model.Rejected && !Model.Accepted 
     && Model.SendingTrader.UserName != User.Identity.Name))
 {
-    <button class="btn btn-block btn-custom-submit" onclick="submitTrade()">Submit Trade</button>
+    <button class="btn btn-custom-submit" onclick="submitTrade()">Submit Trade</button>
 }
 @if (Model.Submitted && (!Model.Canceled && !Model.Rejected && !Model.Accepted
                 && Model.SendingTrader.UserName != User.Identity.Name))
 {
-    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Accept')">Accept Trade</button>
-    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Reject')">Reject Trade</button>
+    <button class="btn btn-custom-submit" onclick="updateTrade('Accept')">Accept Trade</button>
+    <button class="btn btn-custom-submit" onclick="updateTrade('Reject')">Reject Trade</button>
 }
 @if (User.Identity.Name == Model.SendingTrader.UserName && Model.Submitted && !Model.Canceled && !Model.Accepted 
     && !Model.Rejected || (Model.Accepted && !Model.SenderConfirmed && !Model.ReceiverConfirmed))
 {
-    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Cancel')">Cancel Trade</button>
+    <button class="btn btn-custom-submit" onclick="updateTrade('Cancel')">Cancel Trade</button>
 }
 @if (Model.Accepted && ((User.Identity.Name == Model.SendingTrader.UserName && !Model.SenderConfirmed)
                 || (User.Identity.Name == Model.ReceivingTrader.UserName && !Model.ReceiverConfirmed)))
 {
-    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('Confirm')">Confirm Trade</button>
+    <button class="btn btn-custom-submit" onclick="updateTrade('Confirm')">Confirm Trade</button>
 }
 @if (Model.SenderConfirmed && Model.ReceiverConfirmed && ((User.Identity.Name == Model.SendingTrader.UserName && Model.SenderRating == 0)
                             || (User.Identity.Name == Model.ReceivingTrader.UserName && Model.ReceiverRating == 0)))
 {
     @: Rate Trade: 
-    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('1')">Poor</button>
-    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('2')">Fair</button>
-    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('3')">Good</button>
-    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('4')">Great</button>
-    <button class="btn btn-block btn-custom-submit" onclick="updateTrade('5')">Perfect</button>
+    <button class="btn btn-custom-submit" onclick="updateTrade('1')">Poor</button>
+    <button class="btn btn-custom-submit" onclick="updateTrade('2')">Fair</button>
+    <button class="btn btn-custom-submit" onclick="updateTrade('3')">Good</button>
+    <button class="btn btn-custom-submit" onclick="updateTrade('4')">Great</button>
+    <button class="btn btn-custom-submit" onclick="updateTrade('5')">Perfect</button>
 }
 
-
+<br />
 @if (!Model.Submitted)
 {
-    <a href="@Url.Action("Index", "Items")">Back to List</a>
+    @Html.ActionLink("Back to List","Index", "Items", null, new { @class="btn btn-sm btn-custom-grey" })
 }
 else
 {
-    <a href="@Url.Action("List", "Trade")">Back to List</a>
+    @Html.ActionLink("Back to List", "List", "Trade", null, new { @class = "btn btn-sm btn-custom-grey" })
 }
 
 @using (Html.BeginForm("Create", "Trade", FormMethod.Post, new { id = "submitTrade" }))

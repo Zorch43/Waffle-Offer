@@ -6,7 +6,6 @@
 
 <h4 class="dark-heading">@ViewBag.TypeHeading</h4>
 
-
 <div class="col-xs-12 col-sm-6 col-md-4">
     <a href="@Url.Action("Create", "Items", new { type = Model.Type.ToString() })">
         <div class="card custom-card-short-grey hoverable">
@@ -18,15 +17,13 @@
 <table class="table table-hover">
     <tr>
         <th>
-            @Html.ActionLink("Item Name", "Index", new { sortOdr = ViewBag.NameSort }) @*<span class="glyphicon-sort-by-alphabet"></span>*@ <span class="caret"></span>
-            @*@Html.DisplayNameFor(model => model.Name)*@
+            @Html.ActionLink("Item Name", "Index", new { sortOdr = ViewBag.NameSort }) <span class="caret"></span>
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ItemModel.Description)
         </th>
         <th>
             @Html.ActionLink("Quality", "Index", new { sortOdr = ViewBag.QualitySort })
-            @*@Html.DisplayNameFor(model => model.Quality)*@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ItemModel.Units)
@@ -37,6 +34,7 @@
 
         <th></th>
     </tr>
+
     @foreach (var item in Model.Items)
     {
         <tr>
@@ -72,6 +70,7 @@
             </td>
         </tr>
     }
+
 </table>
 <div>
     @Html.ActionLink("Back to Profile", "Index", "Profile", new { userName = @ViewBag.ListingUser }, new { @class="btn btn-sm btn-custom-grey" })

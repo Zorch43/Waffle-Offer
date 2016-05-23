@@ -154,15 +154,54 @@ namespace WaffleOffer.Models
             }
         }
 
-        //constructor
+        public bool IsAcceptable
+        {
+            get
+            {
+                //if trade has any reserved items, it cannot be accepted or submitted
+                if (Items != null)
+                {
+                    foreach (Item i in Items)
+                    {
+                        if (i.Reserved || i.Removed)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        //constructors
         public Trade()
         {
-            if(LastModified == null)
+            if(LastModified.Ticks == 0)
                 //if not set, set to now
                 LastModified = DateTime.Now;
         }
 
-        
+        //cloning constructor
+        public Trade(Trade trade)
+        {
+            //copy properties
+            TradeId = trade.TradeId;
+            SendingTraderId = trade.SendingTraderId;
+            SendingTrader = trade.SendingTrader;
+            ReceivingTraderId = trade.ReceivingTraderId;
+            ReceivingTrader = trade.ReceivingTrader;
+            Items = new List<Item>(trade.Items);
+            Submitted = trade.Submitted;
+            Canceled = trade.Canceled;
+            Rejected = trade.Rejected;
+            Accepted = trade.Accepted;
+            SenderConfirmed = trade.SenderConfirmed;
+            ReceiverConfirmed = trade.ReceiverConfirmed;
+            SenderRating = trade.SenderRating;
+            ReceiverRating = trade.ReceiverRating;
+            LastModified = trade.LastModified;
+        }
 
         public string GetTradeStatusMessage(bool trader)
         {
@@ -190,5 +229,7 @@ namespace WaffleOffer.Models
             else
                 return "New Trade";   
         }
+
+        
     }
 }

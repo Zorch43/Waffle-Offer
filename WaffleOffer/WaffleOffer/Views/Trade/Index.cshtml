@@ -66,6 +66,13 @@
 
     function updateTrade(status)
     {
+        //verify that trade is acceptable
+        //(no removed or reserved items)
+        if ("@Model.IsAcceptable" == "False" && status == "Accept") {
+            alert("Cannot accept trade with reserved or removed items."
+                + " Modify the trade and submit a counter-offer.");
+            return;
+        }
         //add hidden input to form with status code
         //generate a hidden input element
         var n = document.createElement("INPUT");
@@ -130,9 +137,12 @@
             <ul id="SenderHaves">
                 @foreach (var item in Model.SenderHaves)
                 {
-                    <li id="@item.ItemID">
-                        <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
-                    </li>
+                    if (!item.Removed && !item.Reserved)
+                    {
+                        <li id="@item.ItemID">
+                            <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                        </li>
+                    }
                 }
             </ul>
         </td>
@@ -141,9 +151,18 @@
             <ul id="SenderOffers">
                 @foreach (var item in Model.SendingItems)
                 {
-                    <li id="@item.ItemID">
-                        <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
-                    </li>
+                    if (Model.Accepted)
+                    {
+                        <li id="@item.ItemID">
+                            <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                        </li>
+                    }
+                    else
+                    {
+                        <li id="@item.ItemID">
+                            <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.ToString()" />
+                        </li>
+                    }
                 }
             </ul>
         </td>
@@ -151,9 +170,19 @@
             <ul id="ReceiverOffers">
                 @foreach (var item in Model.ReceivingItems)
                 {
-                    <li id="@item.ItemID">
-                        <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
-                    </li>
+                    if (Model.Accepted)
+                    {
+                        <li id="@item.ItemID">
+                            <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                        </li>
+                    }
+                    else
+                    {
+                        <li id="@item.ItemID">
+                            <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.ToString()" />
+                        </li>
+                    }
+
                 }
             </ul>
         </td>
@@ -161,9 +190,12 @@
             <ul id="ReceiverHaves">
                 @foreach (var item in Model.ReceiverHaves)
                 {
-                    <li id="@item.ItemID">
-                        <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
-                    </li>
+                    if (!item.Removed && !item.Reserved)
+                    {
+                        <li id="@item.ItemID">
+                            <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                        </li>
+                    }
                 }
             </ul>
         </td>

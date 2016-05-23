@@ -26,60 +26,63 @@
     </tr>
     @foreach (var item in Model)
     {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quality)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Units)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
-            </td>
-            <td>
-				@* Older buttons *@
-                @*<div class="btn-group">
-                    <button type="button" class="btn btn-sm btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        Actions <span class="caret"></span>
-                    </button>
-                    <ul class="dropdown-menu">
-                        <li>@Html.ActionLink("View", "Details", "Items", new { id = item.ItemID },null)</li>
+        if (!(item.Reserved || item.Removed))
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quality)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Units)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @* Older buttons *@
+                    @*<div class="btn-group">
+                            <button type="button" class="btn btn-sm btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Actions <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu">
+                                <li>@Html.ActionLink("View", "Details", "Items", new { id = item.ItemID },null)</li>
+                                @if (User.IsInRole("Admin") || User.Identity.Name == item.ListingUser)
+                                {
+                                    <li>@Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null)</li>
+                                    <li>@Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null)</li>
+                                }
+                            </ul>
+                        </div>*@
+
+                    @Html.ActionLink("Details", "Details", "Items", new { id = item.ItemID }, new { @class = "btn btn-sm btn-custom-grey" })
+                    @if (User.IsInRole("Admin") || User.Identity.Name == item.ListingUser)
+                    {
+                        @*@Html.Raw(" | ");*@
+                        @Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, new { @class = "btn btn-sm btn-custom-grey" })
+                        @*@Html.Raw(" | ");*@
+                        @Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, new { @class = "btn btn-sm btn-custom-grey" })
+                    }
+                </td>
+
+                @* Unstyled CRUD links *@
+                @*<td>
+                        @Html.ActionLink("Details", "Details", "Items", new { id = item.ItemID }, null)
                         @if (User.IsInRole("Admin") || User.Identity.Name == item.ListingUser)
                         {
-                            <li>@Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null)</li>
-                            <li>@Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null)</li>
+                            @Html.Raw(" | ");
+                            @Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null)
+                            @Html.Raw(" | ");
+                            @Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null )
                         }
-                    </ul>
-                </div>*@ 
+                    </td>*@
 
-                @Html.ActionLink("Details", "Details", "Items", new { id = item.ItemID }, new { @class = "btn btn-sm btn-custom-grey" })
-                @if (User.IsInRole("Admin") || User.Identity.Name == item.ListingUser)
-                {
-                    @*@Html.Raw(" | ");*@
-                    @Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, new { @class = "btn btn-sm btn-custom-grey" })
-                    @*@Html.Raw(" | ");*@
-                    @Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, new { @class = "btn btn-sm btn-custom-grey" })
-                }
-            </td>
-
-            @* Unstyled CRUD links *@
-            @*<td>
-                @Html.ActionLink("Details", "Details", "Items", new { id = item.ItemID }, null)
-                @if (User.IsInRole("Admin") || User.Identity.Name == item.ListingUser)
-                {
-                    @Html.Raw(" | ");
-                    @Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null)
-                    @Html.Raw(" | ");
-                    @Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null )
-                }
-            </td>*@
-
-        </tr>
+            </tr>
+        }
     }
 </table>

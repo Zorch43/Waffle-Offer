@@ -110,7 +110,7 @@ namespace WaffleOffer.Controllers
                         where i.ListingType == type && i.ListingUser == userName
                         select i).ToList();
 
-            return View(items);
+            return View(new ItemList() { Items = items, Type = type });
         }
 
         // GET: /Items/Details/5

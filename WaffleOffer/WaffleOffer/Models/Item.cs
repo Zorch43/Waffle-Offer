@@ -31,5 +31,28 @@ namespace WaffleOffer.Models
         //list of trades that the item appears/has appeared in
         //mostly to satisfy EF, but might come in handy
         public List<Trade> Trades { get; set; }
+
+        //trade statuses - Haves only
+        //Reserved: Reserved Items are part of a Trade that has been accepted.
+        //Reserved Items are visible to the Trader (and Admin) in Haves
+        //Reserved Items only appear in the trades they are already in.
+        //If a Reserved Item is in a trade that is not accepted, it is displayed with a note.
+        public bool Reserved { get; set; }
+
+        //Removed:
+        //Removed Items are not visible anywhere but completed (canceled/rejected/confirmed) trades
+        //If an item is Removed and does not appear in any trades, it is deleted from the database
+        public bool Removed { get; set; }
+
+        public override string ToString()
+        {
+            if (Reserved)
+                return Name + " (Reserved)";
+            else if (Removed)
+                return Name + " (Removed)";
+            else
+                return Name;
+        }
+
     }
 }

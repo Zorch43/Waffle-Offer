@@ -111,8 +111,6 @@ namespace WaffleOffer.Controllers
                 }
                 return new HttpNotFoundResult();
             }
-            
-           
         }
 
         [HttpPost]
@@ -138,6 +136,14 @@ namespace WaffleOffer.Controllers
             //add traded items to trade
             model.Items = items;
 
+            //check trade for validity: 
+            //Removed or Reserved items cannot be part of a submitted trade
+            if (!model.IsAcceptable)
+            {
+                FlashMessage.Warning("Removed or reserved items may not be submitted in trade or counter-offer.  "
+                    + "Remove any reserved or removed items from the trade and try again.");
+                return View("Index", trade);
+            }
             if (trade.TradeId == null)
             {
                 //add to database
@@ -165,13 +171,15 @@ namespace WaffleOffer.Controllers
 
 
             //go back to items
-            return RedirectToAction("List");
+            return RedirectToAction("Pending");
         }
 
         [HttpPost]
         public ActionResult Update(int tradeId, string status)
         {
-            Trade trade = db.Trades.Find(tradeId);
+            Trade trade = (from t in db.Trades.Include("Items").Include("SendingTrader").Include("ReceivingTrader")
+                           where t.TradeId == tradeId
+                           select t).FirstOrDefault();
 
             if (trade != null)
             {
@@ -179,15 +187,52 @@ namespace WaffleOffer.Controllers
                 {
                     case "Accept":
                         trade.Accepted = true;
+                        //mark all items as Reserved
+                        //if an item was already reserved or removed, remove it
+                        var itemList = new List<Item>();
+                        foreach (Item i in trade.Items)
+                        {
+                            if (!i.Reserved && !i.Removed)
+                            {
+                                i.Reserved = true;
+                                itemList.Add(i);
+                            }
+                        }
+                        trade.Items = itemList;
                         break;
                     case "Cancel":
                         trade.Canceled = true;
+                        //if trade was previously accepted,
+                        //un-reserve all items in trade
+                        if (trade.Accepted)
+                        {
+                            foreach (Item i in trade.Items)
+                            {
+                                i.Reserved = false;
+                            }
+                        }
                         break;
                     case "Confirm":
                         if (User.Identity.GetUserId() == trade.SendingTraderId)
                             trade.SenderConfirmed = true;
                         else
                             trade.ReceiverConfirmed = true;
+                        //upon confirmation, mark all items in trade as removed
+                        var itemList2 = new List<Item>();
+                        foreach (Item i in trade.Items)
+                        {
+                            if (!i.Removed)
+                            {
+                                if (trade.SenderConfirmed && trade.ReceiverConfirmed)
+                                {
+                                    i.Removed = true;
+                                }
+                                    
+                                itemList2.Add(i);
+                            }
+                        }
+                        trade.Items = itemList2;
+                       
                         break;
                     case "Reject":
                         trade.Rejected = true;
@@ -207,14 +252,20 @@ namespace WaffleOffer.Controllers
                         }
                         break;
                 }
+                Trade updatedTrade = new Trade(trade);
                 //update date last modified
-                trade.LastModified = DateTime.Now;
-                //save changes to trade
-                db.Entry(trade).State = EntityState.Modified;
+                updatedTrade.LastModified = DateTime.Now;
+                //update in database
+                //also update many-to-many relationship with items
+                //remove
+                db.Trades.Remove(trade);
+                db.SaveChanges();
+                //then add back in, with new list of items
+                db.Trades.Add(updatedTrade);
                 db.SaveChanges();
             }
 
-            return RedirectToAction("List");
+            return RedirectToAction("Pending");
         }
 
         [HttpGet]

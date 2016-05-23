@@ -132,13 +132,9 @@
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Vereyon.Web.FlashMessage, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-<<<<<<< HEAD
       <SpecificVersion>False</SpecificVersion>
       <HintPath>Bin\Vereyon.Web.FlashMessage.dll</HintPath>
-=======
-      <HintPath>..\packages\Vereyon.Web.FlashMessage.1.0.1\lib\net40\Vereyon.Web.FlashMessage.dll</HintPath>
       <Private>True</Private>
->>>>>>> refs/remotes/origin/master
     </Reference>
     <Reference Include="WebGrease">
       <Private>True</Private>
@@ -266,13 +262,10 @@
     <Content Include="Views\Trade\Pending.cshtml" />
     <Content Include="Views\Shared\CompactTrade.cshtml" />
     <Content Include="Views\Items\Items.cshtml" />
-<<<<<<< HEAD
     <Content Include="Views\Trade\History.cshtml" />
     <Content Include="Views\Trade\Ratings.cshtml" />
-=======
     <Content Include="Views\Shared\ProfileHaves.cshtml" />
     <Content Include="Views\Shared\ProfileWants.cshtml" />
->>>>>>> refs/remotes/origin/master
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

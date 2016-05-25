@@ -100,7 +100,7 @@
         //for each item:
         for (var i = 0; i < items.length; i++)
         {
-            if (items[i].nodeType == 1) {
+            if (items[i].nodeType == 1 && items[i].getAttribute('class') == "trade-item") {
                 //assign value
                 var item = items[i];
                 var itemId = item.getAttribute('id');
@@ -249,7 +249,7 @@
             <div class="clearfix"></div>
             @foreach (var item in Model.SenderHaves)
             {
-                <div id="@item.ItemID">
+                <div class="trade-item" id="@item.ItemID">
                     <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
                 </div>
             }
@@ -263,7 +263,7 @@
         <div id="SenderOffers">
             @foreach (var item in Model.SendingItems)
             {
-                <div id="@item.ItemID">
+                <div class="trade-item" id="@item.ItemID">
                     <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
                 </div>
             }
@@ -273,25 +273,25 @@
     <div class="panel panel-default custom-green">
         <h5 class="h5-responsive text-center white-text">@Html.DisplayFor(model => model.ReceivingTrader.UserName)'s Offer</h5>
     </div>
-    <div class="panel panel-default" id="ReceiverOffers">
+    <div class="panel panel-default">
         <div id="ReceiverOffers">
             @foreach (var item in Model.ReceivingItems)
             {
-                <div id="@item.ItemID">
+                <div class="trade-item" id="@item.ItemID">
                     <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
                 </div>
             }
-            <p id="msgReceiverOffers"></p>
+            <p id="msgReceiverOffers">
         </div>
     </div>
     <div class="panel panel-default custom-green">
         <h5 class="h5-responsive text-center white-text">@Html.DisplayFor(model => model.ReceivingTrader.UserName) Inventory</h5>
     </div>
-    <div class="panel panel-default" id="ReceiverHaves">
+    <div class="panel panel-default">
         <div id="ReceiverHaves">
             @foreach (var item in Model.ReceiverHaves)
             {
-                <div id="@item.ItemID">
+                <div class="trade-item" id="@item.ItemID">
                     <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
                 </div>
             }
@@ -339,7 +339,7 @@
 }
 else
 {
-    @Html.ActionLink("Back to List", "List", "Trade", null, new { @class = "btn btn-sm btn-custom-grey" })
+    @Html.ActionLink("Back to Profile", "Index", "Profile", null, new { @class = "btn btn-sm btn-custom-grey" })
 }
 
 @using (Html.BeginForm("Create", "Trade", FormMethod.Post, new { id = "submitTrade" }))

@@ -122,5 +122,57 @@ namespace WaffleOffer.Controllers
             
         }
 
+        [HttpGet]
+        public ActionResult ChangePassword(string user)
+        {
+            //if username does not equal the current user's nickname, redirect to user's own page
+            if (user != User.Identity.Name)
+            {
+                return RedirectToAction("ChangePassword", new { user = User.Identity.Name });
+            }
+
+            //get user
+            var appUser = userManager.FindByName(user);
+            //create viewmodel
+            var passwordVM = new ChangePasswordViewModel()
+            {
+                PasswordHash = appUser.PasswordHash
+            };
+
+            //display model
+            return View(passwordVM);
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            
+
+            //verify model
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            //verify old password
+            var user = userManager.Find(User.Identity.Name, model.OldPassword);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Old password is incorrect");
+                return View();
+            }
+
+            //change to new password
+            var hasher = new PasswordHasher();
+            user.PasswordHash = hasher.HashPassword(model.NewPassword);
+            userManager.Update(user);
+            //log out
+            var ctx = Request.GetOwinContext();
+            var authManager = ctx.Authentication;
+
+            authManager.SignOut("ApplicationCookie");
+            return RedirectToAction("index", "home");
+        }
+
 	}
 }

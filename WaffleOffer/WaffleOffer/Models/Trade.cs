@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -144,6 +144,65 @@ namespace WaffleOffer.Models
         //receiver's rating of the completed trade
         public int ReceiverRating { get; set; }
 
+        public DateTime LastModified { get; set; }
+
+        public double DaysOld
+        {
+            get
+            {
+                return (DateTime.Now - LastModified).TotalDays;
+            }
+        }
+
+        public bool IsAcceptable
+        {
+            get
+            {
+                //if trade has any reserved items, it cannot be accepted or submitted
+                if (Items != null)
+                {
+                    foreach (Item i in Items)
+                    {
+                        if (i.Reserved || i.Removed)
+                        {
+                            return false;
+                        }
+                    }
+                }
+
+                return true;
+            }
+        }
+
+        //constructors
+        public Trade()
+        {
+            if(LastModified.Ticks == 0)
+                //if not set, set to now
+                LastModified = DateTime.Now;
+        }
+
+        //cloning constructor
+        public Trade(Trade trade)
+        {
+            //copy properties
+            TradeId = trade.TradeId;
+            SendingTraderId = trade.SendingTraderId;
+            SendingTrader = trade.SendingTrader;
+            ReceivingTraderId = trade.ReceivingTraderId;
+            ReceivingTrader = trade.ReceivingTrader;
+            Items = new List<Item>(trade.Items);
+            Submitted = trade.Submitted;
+            Canceled = trade.Canceled;
+            Rejected = trade.Rejected;
+            Accepted = trade.Accepted;
+            SenderConfirmed = trade.SenderConfirmed;
+            ReceiverConfirmed = trade.ReceiverConfirmed;
+            SenderRating = trade.SenderRating;
+            ReceiverRating = trade.ReceiverRating;
+            LastModified = trade.LastModified;
+        }
+
         public string GetTradeStatusMessage(bool trader)
         {
             if (Canceled)
@@ -151,7 +210,7 @@ namespace WaffleOffer.Models
             else if (Rejected)
                 return "Rejected";
             else if (SenderRating > 0 && ReceiverRating > 0)
-                return "Completed";
+                return "Rated";
             else if ((trader && SenderRating > 0) || (!trader && ReceiverRating > 0))
                 return "Rating Pending";
             else if (SenderConfirmed && ReceiverConfirmed)
@@ -170,5 +229,7 @@ namespace WaffleOffer.Models
             else
                 return "New Trade";   
         }
+
+        
     }
 }

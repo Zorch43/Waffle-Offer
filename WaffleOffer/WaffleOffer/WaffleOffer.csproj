@@ -132,7 +132,8 @@
       <HintPath>..\packages\Newtonsoft.Json.5.0.6\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="Vereyon.Web.FlashMessage, Version=1.0.0.1, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\Vereyon.Web.FlashMessage.1.0.1\lib\net40\Vereyon.Web.FlashMessage.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>Bin\Vereyon.Web.FlashMessage.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="WebGrease">
@@ -199,6 +200,18 @@
     <Content Include="Content\Site.css" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
+    <Content Include="ClassDiagram1.cd" />
+    <Content Include="font\roboto\Roboto-Bold.woff" />
+    <Content Include="font\roboto\Roboto-Bold.woff2" />
+    <Content Include="font\roboto\Roboto-Light.woff" />
+    <Content Include="font\roboto\Roboto-Light.woff2" />
+    <Content Include="font\roboto\Roboto-Medium.woff" />
+    <Content Include="font\roboto\Roboto-Medium.woff2" />
+    <Content Include="font\roboto\Roboto-Regular.woff" />
+    <Content Include="font\roboto\Roboto-Regular.woff2" />
+    <Content Include="font\roboto\Roboto-Thin.woff" />
+    <Content Include="font\roboto\Roboto-Thin.woff2" />
+    <Content Include="MDB License.pdf" />
     <None Include="Properties\PublishProfiles\Waffle-Offer.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
@@ -246,9 +259,13 @@
     <Content Include="Views\Messages\View.cshtml" />
     <Content Include="Views\Messages\Sent.cshtml" />
     <Content Include="Views\Messages\Error.cshtml" />
-    <Content Include="Views\Trade\List.cshtml" />
+    <Content Include="Views\Trade\Pending.cshtml" />
     <Content Include="Views\Shared\CompactTrade.cshtml" />
     <Content Include="Views\Items\Items.cshtml" />
+    <Content Include="Views\Trade\History.cshtml" />
+    <Content Include="Views\Trade\Ratings.cshtml" />
+    <Content Include="Views\Shared\ProfileHaves.cshtml" />
+    <Content Include="Views\Shared\ProfileWants.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

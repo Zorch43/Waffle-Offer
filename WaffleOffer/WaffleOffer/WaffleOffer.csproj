@@ -168,6 +168,7 @@
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Admin.cs" />
     <Compile Include="Models\AppUser.cs" />
+    <Compile Include="Models\ChangePasswordViewModel.cs" />
     <Compile Include="Models\CreateItemViewModel.cs" />
     <Compile Include="Models\Item.cs" />
     <Compile Include="Models\ItemImage.cs" />
@@ -267,6 +268,7 @@
     <Content Include="Views\Trade\Ratings.cshtml" />
     <Content Include="Views\Shared\ProfileHaves.cshtml" />
     <Content Include="Views\Shared\ProfileWants.cshtml" />
+    <Content Include="Views\Profile\ChangePassword.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

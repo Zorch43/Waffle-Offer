@@ -69,6 +69,7 @@
                 @if (Model != null)
                 {
                     @Html.ActionLink("Cancel", "Index", new { username = Model.Nickname }, new { @class = "btn btn-custom-grey" })
+                    @Html.ActionLink("Change Password", "ChangePassword", new { user = Model.Nickname}, new { @class = "btn btn-custom-grey" })
                 }
                 else
                 {

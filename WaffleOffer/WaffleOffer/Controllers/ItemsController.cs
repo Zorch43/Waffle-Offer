@@ -20,12 +20,14 @@ namespace WaffleOffer.Controllers
         //public ActionResult Index(string sortOdr, string searchStg)  // sorting and simple search
         public ActionResult Index(string sortOdr, string searchStg, string itemType)  // sorting and filtered search
         {
-            // Viewbags for sorting
+            // Viewbags for sorting by Item Name and Item Quality
             ViewBag.NameSort = String.IsNullOrEmpty(sortOdr) ? "name_desc" : "";
             ViewBag.QualitySort = sortOdr == "Quality" ? "quality_desc" : "Quality";
 
-            // Search with filters for Wants or Haves
-            // NOTE: Using tutorial "Search" from asp.net (http://www.asp.net/mvc/overview/getting-started/introduction/adding-search)
+            // Search on word in Name or Description, with filters for Wants and Haves
+            // NOTE: Adapted the search from the "Search" tutorial on asp.net (http://www.asp.net/mvc/overview/getting-started/introduction/adding-search)
+
+            // Created a list to accommodate the Wants and Haves
             var TypeLst = new List<string>();
 
             string Have = Item.ItemType.Have.ToString();
@@ -37,15 +39,8 @@ namespace WaffleOffer.Controllers
 
             string[] TypeOpt = { Have, Want };
 
-            /*string TypeOpt = "0";
-
-            if (TypeOpt == "0")
-            {
-                //not sure about this
-            }*/
-
             TypeLst.AddRange(TypeOpt);
-            //TypeLst.AddRange(TypeQry.Distinct());  // doesn't seem to want to allow this. Maybe because of enum?
+            //TypeLst.AddRange(TypeQry.Distinct());  // This command was from the original tutorial, but it does not work here. Maybe because of enum list?
             ViewBag.itemType = new SelectList(TypeLst);
 
             var items = from i in db.Items
@@ -60,9 +55,6 @@ namespace WaffleOffer.Controllers
             if (!String.IsNullOrEmpty(itemType))
             {
                 items = items.Where(t => t.ListingType.ToString() == itemType);  // suggested by Timo
-                //items = items.Where(t => t.ItemType == itemType);
-                //items = items.Where(t => t.ItemType.Have == itemType|| t.ItemType.Want == itemType)); 
-                //items = items.Where(f => f.ListingType == itemType);
             } /**/
 
 
@@ -95,10 +87,28 @@ namespace WaffleOffer.Controllers
                     break;
             }
 
-            return View(items.ToList());
+            // List of items returned by search results
+            var itemsLst = items.ToList();
 
-            // Default list of items
-            //return View(db.Items.ToList());
+            // Message if the list of items returned by search is empty
+            string noItemsLst = "Sorry, could not find the items.";
+
+            if (itemsLst.Count != 0)  //itemsLst != null
+            {
+                return View(itemsLst);
+            }
+            else
+            {
+                //return View(noItemsLst);  // breaks down; it tries to put the phrase in a list
+                return View(itemsLst);    // default
+                //return Content(noItemsLst);  // returns the phrase in a blank page (rest of app is not displayed)
+                                             // Maybe needs a partial view?
+            }
+            
+            /* */
+            //return View(items.ToList());
+            
+
         }
 
         public ActionResult Items(string userName, Item.ItemType type)

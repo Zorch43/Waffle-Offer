@@ -271,6 +271,7 @@
     <Content Include="Views\Shared\ProfileHaves.cshtml" />
     <Content Include="Views\Shared\ProfileWants.cshtml" />
     <Content Include="Views\Profile\ChangePassword.cshtml" />
+    <Content Include="Views\Profile\Browse.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

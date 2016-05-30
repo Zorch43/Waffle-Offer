@@ -6,7 +6,7 @@ using System.Web;
 
 namespace WaffleOffer.Models
 {
-    public class MessageViewModel
+    public class ReportViewModel
     {
         public int MessageID { get; set; }
 
@@ -38,8 +38,5 @@ namespace WaffleOffer.Models
         public bool IsReply { get; set; }
         public int ThreadID { get; set; }
         public int ThreadPosition { get; set; }
-        //reports
-        public string ReportType { get; set; }
-        public string ReportedObject { get; set; }
     }
 }

@@ -23,5 +23,7 @@ namespace WaffleOffer.Models
         public int ThreadID { get; set; }
         public int ThreadPosition { get; set; }
 
+
+
     }
 }

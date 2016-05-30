@@ -88,6 +88,33 @@ namespace WaffleOffer.Controllers
                 
         }
 
+        [AllowAnonymous]
+        public ActionResult Browse()
+        {
+            List<ProfileViewModel> profiles = new List<ProfileViewModel>();
+
+            // Retrieve all user profiles, in ascending order by zipcode (for now)
+            // Currently includes admins
+            List<AppUser> allUsers = (from p in db.Users
+                                     orderby p.ZipCode ascending
+                                     select p).ToList();
+
+            // Loop through the retrieved profiles and create a ProfileViewModel object
+            // for each AppUser user object. Add each object to a list of ProfileViewModel
+            // objects.
+            foreach (AppUser user in allUsers)
+            {
+                var model = userManager.FindByName(user.UserName);
+                if (model != null)
+                {
+                    ProfileViewModel profile = new ProfileViewModel(model);
+                    profiles.Add(profile);
+                }      
+            }
+
+            return View(profiles);
+        }
+
         //GET: /Profile/Edit/userName
         [Authorize]
         public ActionResult Edit(string userName)

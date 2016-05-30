@@ -28,7 +28,8 @@
             <div class="panel-title">
                 <a data-toggle="collapse" href="@toggleId">
                     @Html.HiddenFor(modelItem => item.ThreadID)
-                    @Html.HiddenFor(modelItem => item.ThreadPosition)
+                    @Html.HiddenFor(modelItem => item.IsReply)
+                    @Html.HiddenFor(modelItem => item.HasReply)
 
                     @if (User.Identity.Name == item.SenderItem.UserName)
                     {
@@ -70,10 +71,10 @@
                     {
                         @Html.ActionLink("View Reported Trade", "Index", "Trade", new { tradeId = item.ReportedObject }, new { @class = "btn btn-sm btn-custom-grey" })
                     }
-                    @if (User.Identity.Name == item.RecipientItem.UserName)
-                {
-                        @Html.ActionLink("Reply", "Compose", new { recipientUsername = item.SenderItem.UserName, isReply = true, threadId = item.ThreadID, threadPos = (item.ThreadPosition + 1) }, new { @class = "btn btn-sm btn-custom-grey", @title = "Reply" })
-                }
+                    @if (User.Identity.Name == item.RecipientItem.UserName && item.HasReply == false)
+                    {
+                        @Html.ActionLink("Reply", "Compose", new { recipientUsername = item.SenderItem.UserName, isReply = true, threadId = item.ThreadID }, new { @class = "btn btn-sm btn-custom-grey", @title = "Reply" })
+                    }
                 </div>
             </div>
         }
@@ -82,7 +83,7 @@
                 @Html.DisplayFor(modelItem => item.Body) <br />
                 @if (User.Identity.Name == item.RecipientItem.UserName)
                 {
-                  @Html.ActionLink("Reply", "Compose", new { recipientUsername = item.SenderItem.UserName, isReply = true, threadId = item.ThreadID, threadPos = (item.ThreadPosition + 1) }, new { @class = "btn btn-sm btn-custom-grey", @title = "Reply" })
+                  @Html.ActionLink("Reply", "Compose", new { recipientUsername = item.SenderItem.UserName, isReply = true, threadId = item.ThreadID }, new { @class = "btn btn-sm btn-custom-grey", @title = "Reply" })
                 }
             </div>
         </div>

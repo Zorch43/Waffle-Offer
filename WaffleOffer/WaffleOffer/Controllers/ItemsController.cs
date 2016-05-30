@@ -91,7 +91,8 @@ namespace WaffleOffer.Controllers
             var itemsLst = items.ToList();
 
             // Message if the list of items returned by search is empty
-            string noItemsLst = "Sorry, could not find the items.";
+            // (not working yet)
+            //string noItemsLst = "Sorry, could not find the items.";
 
             if (itemsLst.Count != 0)  //itemsLst != null
             {
@@ -100,9 +101,11 @@ namespace WaffleOffer.Controllers
             else
             {
                 //return View(noItemsLst);  // breaks down; it tries to put the phrase in a list
-                return View(itemsLst);    // default
+                return View(itemsLst);    // default -- stable, but returns an empty list
+                //ViewBag.Message = noItemsLst;  // trying with a ViewBag -- did not work
+                //ViewData["noSearchResult"] = noItemsLst; // trying with ViewData[] -- still did not work
+                //return View();  // (goes with the ViewBag.Message or the ViewData[] attempts)
                 //return Content(noItemsLst);  // returns the phrase in a blank page (rest of app is not displayed)
-                                             // Maybe needs a partial view?
             }
             
             /* */

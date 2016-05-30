@@ -34,18 +34,25 @@ namespace WaffleOffer.Controllers
             }
 
             var model = userManager.FindByName(userName);
-            model.TraderAccount = new Trader()
+
+            if (model == null)
             {
-                Wants = (from i in db.Items
-                         where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Want
-                         select i).ToList(),
-                Haves = (from i in db.Items
-                         where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Have
-                         select i).ToList()
-            };
+                //try to find by id instead
+                model = userManager.FindById(userName);
+            }
 
             if (model != null)
             {
+                model.TraderAccount = new Trader()
+                {
+                    Wants = (from i in db.Items
+                             where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Want
+                             select i).ToList(),
+                    Haves = (from i in db.Items
+                             where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Have
+                             select i).ToList()
+                };
+
                 var profile = new ProfileViewModel(model);
 
                 //calculate rating

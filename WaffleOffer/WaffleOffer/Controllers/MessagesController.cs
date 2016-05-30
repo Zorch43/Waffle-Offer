@@ -17,6 +17,17 @@ namespace WaffleOffer.Controllers
 
         private WaffleOfferContext db = new WaffleOfferContext();
 
+        private readonly UserManager<AppUser> userManager;
+
+        public MessagesController() : this(Startup.UserManagerFactory.Invoke())
+        {
+        }
+
+        public MessagesController(UserManager<AppUser> userManager)
+        {
+            this.userManager = userManager;
+        }
+
         #endregion
 
         #region view/display
@@ -150,6 +161,81 @@ namespace WaffleOffer.Controllers
                 } 
                 else
                     return RedirectToAction("Error");
+            }
+
+            return RedirectToAction("Error");
+        }
+
+        [HttpGet]
+        public ActionResult Report(string type, string id)
+        {
+            //create viewmodel
+            var model = new MessageViewModel()
+            {
+                ReportType = type,
+                ReportedObject = id
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Report([Bind(Include = "Subject,Body,ReportType,ReportedObject")] MessageViewModel msgVm)
+        {
+            if (ModelState.IsValid)
+            {
+
+                string senderId = User.Identity.GetUserId();
+
+                // Get the recipient's AppUser object by username and get the id of
+                // the recipient from the AppUser object
+                AppUser recipient = GetRecipientByUserName("Admin");
+                string recipientId = recipient.Id;
+
+                // Create a new thread
+                Thread thread = new Thread();
+                //set thread report type
+                thread.SetFlag((Thread.ReportType)Enum.Parse(typeof(Thread.ReportType), msgVm.ReportType, true),msgVm.ReportedObject);
+                // Add thread to DB and save changes
+                db.Threads.Add(thread);
+                db.SaveChanges();
+
+                msgVm.ThreadID = thread.ThreadID;
+
+                // Create a new message object by passinging the message (view model 
+                // version) as well as the ids of the recipient and the sender into 
+                // the CreateMessageFromVM method
+                Message msg = CreateMessageFromVM(msgVm, recipientId, senderId, false);
+
+                // Add the message object to the databases and save the changes
+                db.Messages.Add(msg);
+                db.SaveChanges();
+
+                // Send the message using the SendMessage method. If it is sent,
+                // it will return true. If not, it will return false.
+                bool sent = SendMessage(msg);
+
+                if (sent)
+                {
+                    //determine where to redirect to
+                    switch (thread.ReportingTarget)
+                    {
+                        case Thread.ReportType.Item:
+                            return RedirectToAction("Details", "Items", new { id = thread.GetFlagTargetId() });
+                        case Thread.ReportType.Profile:
+                            var user = userManager.FindById(thread.GetFlagTargetId());
+                            return RedirectToAction("Index", "Profile", new { name = user.UserName });
+                        case Thread.ReportType.Trade:
+                            return RedirectToAction("Index", "Trade", new { tradeId = thread.GetFlagTargetId() });
+                        default:
+                            return RedirectToAction("Index", "Profile", null);
+                    }
+                }
+
+                else
+                {
+                    return RedirectToAction("Error");
+                }   
             }
 
             return RedirectToAction("Error");
@@ -343,6 +429,12 @@ namespace WaffleOffer.Controllers
                 msgVm.Copy = msg.Copy;
                 msgVm.IsReply = msg.IsReply;
                 msgVm.ThreadID = msg.ThreadID;
+
+                //set report properties
+                var msgThread = db.Threads.Find(msg.ThreadID);
+                msgVm.ReportedObject = msgThread.GetFlagTargetId();
+                msgVm.ReportType = msgThread.ReportingTarget.ToString();
+
             }
 
             return msgVm;

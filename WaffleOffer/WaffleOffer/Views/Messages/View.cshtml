@@ -59,6 +59,18 @@
             <div id="@panelId" class="panel-collapse collapse in">
                 <div class="panel-body">
                     @Html.DisplayFor(modelItem => item.Body) <br />
+                    @if (item.ReportType == "Item")
+                    {
+                        @Html.ActionLink("View Reported Item", "Details", "Items", new { id = item.ReportedObject }, new { @class = "btn btn-sm btn-custom-grey" })
+                    }
+                    else if (item.ReportType == "Profile")
+                    {
+                        @Html.ActionLink("View Reported Profile", "Index", "Profile", new { userName = item.ReportedObject }, new { @class = "btn btn-sm btn-custom-grey" })
+                    }
+                    else if (item.ReportType == "Trade")
+                    {
+                        @Html.ActionLink("View Reported Trade", "Index", "Trade", new { tradeId = item.ReportedObject }, new { @class = "btn btn-sm btn-custom-grey" })
+                    }
                     @if (User.Identity.Name == item.RecipientItem.UserName && item.HasReply == false)
                     {
                         @Html.ActionLink("Reply", "Compose", new { recipientUsername = item.SenderItem.UserName, isReply = true, threadId = item.ThreadID }, new { @class = "btn btn-sm btn-custom-grey", @title = "Reply" })

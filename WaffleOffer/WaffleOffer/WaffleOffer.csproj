@@ -181,6 +181,7 @@
     <Compile Include="Models\MessageViewModel.cs" />
     <Compile Include="Models\ProfileViewModel.cs" />
     <Compile Include="Models\RegisterViewModel.cs" />
+    <Compile Include="Models\ReportViewModel.cs" />
     <Compile Include="Models\Search.cs" />
     <Compile Include="Models\Thread.cs" />
     <Compile Include="Models\Trade.cs" />
@@ -271,6 +272,7 @@
     <Content Include="Views\Shared\ProfileHaves.cshtml" />
     <Content Include="Views\Shared\ProfileWants.cshtml" />
     <Content Include="Views\Profile\ChangePassword.cshtml" />
+    <Content Include="Views\Messages\Report.cshtml" />
     <Content Include="Views\Profile\Browse.cshtml" />
     <Content Include="Views\Items\Browse.cshtml" />
   </ItemGroup>

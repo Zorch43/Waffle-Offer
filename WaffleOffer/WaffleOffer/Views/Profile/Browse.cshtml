@@ -1,0 +1,21 @@
+﻿@model IEnumerable<WaffleOffer.Models.ProfileViewModel>
+@{
+    ViewBag.Title = "Browse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="dark-heading divider-new">Browse Profiles</h4>
+<div class="panel-group">
+    @foreach(var item in Model) 
+    {
+        <div class="panel panel-default panel-cushioned">
+            <div class="col-xs-6 col-sm-8 col-md-10">
+                <span class="msg-label">@Html.DisplayFor(modelItem => item.Nickname)</span> 
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                @Html.ActionLink("View Profile", "Index", "Profile", new { userName = item.Nickname }, new { @class="btn btn-sm btn-custom-grey" })
+            </div>
+        </div>
+    }
+</div>
+

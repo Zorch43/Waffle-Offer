@@ -126,6 +126,27 @@ namespace WaffleOffer.Controllers
             return View(new ItemList() { Items = items, Type = type });
         }
 
+        [AllowAnonymous]
+        public ActionResult Browse(Item.ItemType type)
+        {
+            ViewBag.BrowseType = "";
+            var items = GetItemsByType(type);
+
+            switch (type)
+            {
+                case Item.ItemType.Have:
+                    ViewBag.BrowseType = "Haves";
+                    break;
+                case Item.ItemType.Want:
+                    ViewBag.BrowseType = "Wants";
+                    break;
+                default:
+                    break;
+            }
+
+            return View(new ItemList() { Items = items, Type = type });
+        }
+
         // GET: /Items/Details/5
         public ActionResult Details(int? id)
         {
@@ -293,6 +314,21 @@ namespace WaffleOffer.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
+        }
+
+        // Retrieve a list of items by the item type
+        public List<Item> GetItemsByType(Item.ItemType type) 
+        {
+            List<Item> items = new List<Item>();
+
+            if (type == Item.ItemType.Have || type == Item.ItemType.Want)
+            {
+                items = (from item in db.Items
+                         where item.ListingType == type
+                         select item).ToList();
+            }
+
+            return items;
         }
     }
 }

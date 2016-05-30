@@ -17,6 +17,17 @@ namespace WaffleOffer.Controllers
 
         private WaffleOfferContext db = new WaffleOfferContext();
 
+        private readonly UserManager<AppUser> userManager;
+
+        public MessagesController() : this(Startup.UserManagerFactory.Invoke())
+        {
+        }
+
+        public MessagesController(UserManager<AppUser> userManager)
+        {
+            this.userManager = userManager;
+        }
+
         #endregion
 
         #region view/display
@@ -73,11 +84,11 @@ namespace WaffleOffer.Controllers
                 return HttpNotFound();
             }
 
-            // Get all of the messages in this message thread (sorted by thread position)
+            // Get all of the messages in this message thread
             List<Message> messages = GetSortedThreadMessages(message.ThreadID);
             List<MessageViewModel> messageVms = GetMessageVMs(messages);
 
-            ViewBag.LatestMessagePanelID = "collapse" + (messageVms.Count - 1);
+            ViewBag.LatestMessagePanelID = "collapse0";
 
             return View(messageVms);
         }
@@ -92,10 +103,9 @@ namespace WaffleOffer.Controllers
 
         #region create/compose
         // GET: /Messages/Compose
-        public ActionResult Compose(string recipientUsername, bool isReply, int threadId, int threadPos)
+        public ActionResult Compose(string recipientUsername, bool isReply, int threadId)
         {
             ViewBag.Recipient = recipientUsername;
-            //ViewBag.ThreadPos = threadPos;
             return View();
         }
 
@@ -105,7 +115,7 @@ namespace WaffleOffer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Compose([Bind(Include = "MessageID,Subject,Body,ThreadID")] MessageViewModel msgVm, string recipientUsername, bool isReply, int threadId, int threadPos)
+        public ActionResult Compose([Bind(Include = "MessageID,Subject,Body,ThreadID")] MessageViewModel msgVm, string recipientUsername, bool isReply, int threadId)
         {
             if (ModelState.IsValid)
             {
@@ -129,10 +139,7 @@ namespace WaffleOffer.Controllers
                     db.SaveChanges();
 
                     msgVm.ThreadID = thread.ThreadID;
-                    //msgVm.ThreadPosition = threadPos;
                 }
-
-                msgVm.ThreadPosition = threadPos;
 
                 // Create a new message object by passinging the message (view model 
                 // version) as well as the ids of the recipient and the sender into 
@@ -147,10 +154,88 @@ namespace WaffleOffer.Controllers
                 // it will return true. If not, it will return false.
                 bool sent = SendMessage(msg);
 
-                if (sent)
+                if (sent) 
+                {
+                    
                     return RedirectToAction("Inbox");
+                } 
                 else
                     return RedirectToAction("Error");
+            }
+
+            return RedirectToAction("Error");
+        }
+
+        [HttpGet]
+        public ActionResult Report(string type, string id)
+        {
+            //create viewmodel
+            var model = new MessageViewModel()
+            {
+                ReportType = type,
+                ReportedObject = id
+            };
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Report([Bind(Include = "Subject,Body,ReportType,ReportedObject")] MessageViewModel msgVm)
+        {
+            if (ModelState.IsValid)
+            {
+
+                string senderId = User.Identity.GetUserId();
+
+                // Get the recipient's AppUser object by username and get the id of
+                // the recipient from the AppUser object
+                AppUser recipient = GetRecipientByUserName("Admin");
+                string recipientId = recipient.Id;
+
+                // Create a new thread
+                Thread thread = new Thread();
+                //set thread report type
+                thread.SetFlag((Thread.ReportType)Enum.Parse(typeof(Thread.ReportType), msgVm.ReportType, true),msgVm.ReportedObject);
+                // Add thread to DB and save changes
+                db.Threads.Add(thread);
+                db.SaveChanges();
+
+                msgVm.ThreadID = thread.ThreadID;
+
+                // Create a new message object by passinging the message (view model 
+                // version) as well as the ids of the recipient and the sender into 
+                // the CreateMessageFromVM method
+                Message msg = CreateMessageFromVM(msgVm, recipientId, senderId, false);
+
+                // Add the message object to the databases and save the changes
+                db.Messages.Add(msg);
+                db.SaveChanges();
+
+                // Send the message using the SendMessage method. If it is sent,
+                // it will return true. If not, it will return false.
+                bool sent = SendMessage(msg);
+
+                if (sent)
+                {
+                    //determine where to redirect to
+                    switch (thread.ReportingTarget)
+                    {
+                        case Thread.ReportType.Item:
+                            return RedirectToAction("Details", "Items", new { id = thread.GetFlagTargetId() });
+                        case Thread.ReportType.Profile:
+                            var user = userManager.FindById(thread.GetFlagTargetId());
+                            return RedirectToAction("Index", "Profile", new { name = user.UserName });
+                        case Thread.ReportType.Trade:
+                            return RedirectToAction("Index", "Trade", new { tradeId = thread.GetFlagTargetId() });
+                        default:
+                            return RedirectToAction("Index", "Profile", null);
+                    }
+                }
+
+                else
+                {
+                    return RedirectToAction("Error");
+                }   
             }
 
             return RedirectToAction("Error");
@@ -261,19 +346,16 @@ namespace WaffleOffer.Controllers
 
             // Get the messages with a RecipientID matching the user's id and that have been
             // marked as having been sent
+            /*
             var allInboxMessages = (from m in db.Messages
                              where m.RecipientID == userId && m.Sent == true && m.Copy == true
                              select m).ToList();
-            /* // TODO: DEBUG. THIS CODE STILL LOADS DUPES. 
-            foreach (var msg in allInboxMessages)
-            {
-                Message latestMessage = GetThreadLatestMessage(userId, msg.ThreadID);
-                inboxMessages.Add(latestMessage);
-            }
+            */
+            inboxMessages = GetOnlyLatestMessagesInUserThreads(userId);
 
             return inboxMessages;
-             */
-            return allInboxMessages;
+
+            //return allInboxMessages;
         }
 
         // Get all messages in which the user is the sender
@@ -283,19 +365,15 @@ namespace WaffleOffer.Controllers
 
             // Get the messages with a SenderID matching the user's id and that have been
             // marked as having been sent
+            /*
             var allSentMessages = (from m in db.Messages
                             where m.SenderID == userId && m.Sent == true && m.Copy == false
                             select m).ToList();
-            /* // TODO: DEBUG. THIS CODE STILL LOADS DUPES.
-            foreach (var msg in allSentMessages)
-            {
-                Message latestMessage = GetThreadLatestMessage(userId, msg.ThreadID);
-                sentMessages.Add(latestMessage);
-            }
+            */
+            sentMessages = GetOnlyLatestMessagesInUserThreads(userId);
 
             return sentMessages;
-             */
-            return allSentMessages;
+
         }
 
         // Get the message sender for the message that matches the
@@ -351,7 +429,12 @@ namespace WaffleOffer.Controllers
                 msgVm.Copy = msg.Copy;
                 msgVm.IsReply = msg.IsReply;
                 msgVm.ThreadID = msg.ThreadID;
-                msgVm.ThreadPosition = msg.ThreadPosition;
+
+                //set report properties
+                var msgThread = db.Threads.Find(msg.ThreadID);
+                msgVm.ReportedObject = msgThread.GetFlagTargetId();
+                msgVm.ReportType = msgThread.ReportingTarget.ToString();
+
             }
 
             return msgVm;
@@ -385,9 +468,8 @@ namespace WaffleOffer.Controllers
         }
 
         /* 
-          Retrieves messages in a given message thread, sorts by position in
-          a thread (or it would if I could get it working properly), and then
-          returns a list of messages that differs depending on whether or not
+          Retrieves messages in a given message thread, sorts by datetime sent, 
+          and then returns a list of messages that differs depending on whether or not
           the user is the recipient or the sender (to avoid returning both
           copies and originals).
         */ 
@@ -398,19 +480,19 @@ namespace WaffleOffer.Controllers
 
             var allThreadMessages = (from m in db.Messages
                         where m.ThreadID == threadId
-                        orderby m.ThreadPosition ascending 
+                        orderby m.DateSent descending 
                         select m).ToList();
 
             foreach (var msg in allThreadMessages)
             {
                 if (userId == msg.RecipientID)
                 {
-                    if (msg.Copy == true)
+                    if (msg.Copy == true && msg.Sent == true)
                         userMessages.Add(msg);
                 }
                 else if (userId == msg.SenderID)
                 {
-                    if (msg.Copy == false)
+                    if (msg.Copy == false && msg.Sent == true)
                         userMessages.Add(msg);
                 }
             }
@@ -418,27 +500,48 @@ namespace WaffleOffer.Controllers
             return userMessages;
         }
 
-        // Retrieves the last message in a message thread. BUGGY. Probable
-        // logic errors. DEBUG.
-        public Message GetThreadLatestMessage(string userId, int threadId)
+        //  Retrieve only the first messages in each message thread
+        //  in which the user is a participant.
+        public List<Message> GetOnlyLatestMessagesInUserThreads(string userId)
         {
-            List<Message> messages = new List<Message>();
-            Message msg = new Message();
+            // Get all message threads in which the user is a participant
+            List<int> userThreadIds = GetUserMessageThreadIDs(userId);
+            List<Message> latestMessages = new List<Message>();
 
-            // Get the messages with a RecipientID matching the user's id and that have been
-            // marked as having been sent
-            if (threadId >= 0)
+            // For each thread in the list of threadIds attached to the user,
+            // get the sorted messages for that thread and add only the latest
+            // message (whether sent or received) to the latestMessages list
+            foreach (int threadId in userThreadIds)
             {
-                messages = GetSortedThreadMessages(threadId);
-                int numMessages = messages.Count;
-                int latestMessageNum;
-                if (numMessages > 0)
+                List<Message> messages = GetSortedThreadMessages(threadId);
+                if (messages.Count > 0)
                 {
-                    latestMessageNum = numMessages - 1;
-                    msg = messages[latestMessageNum];
+                    Message msg = messages[0];
+                    latestMessages.Add(msg);
                 }
             }
-            return msg;
+
+            return latestMessages;
+        }
+
+        // Get the list of the threadIDs for all of the user messages
+        // (does not add duplicates to the list).
+        public List<int> GetUserMessageThreadIDs(string userId)
+        {
+            List<int> threads = new List<int>();
+
+            List<Message> messages = GetAllUserMessages(userId);
+
+            foreach (Message m in messages)
+            {
+                // Do not add duplicate threads
+                if (!threads.Contains(m.ThreadID))
+                {
+                    threads.Add(m.ThreadID);
+                }
+            }
+
+            return threads;
         }
 
         #endregion
@@ -462,15 +565,8 @@ namespace WaffleOffer.Controllers
                 msg.Sent = false;
                 msg.Copy = false;
                 msg.IsReply = isReply;
-                msg.ThreadID = msgVm.ThreadID;
-                msgVm.ThreadPosition = msg.ThreadPosition;
-
-                /*
-                if (isReply == true)
-                    msgVm.ThreadPosition = msg.ThreadPosition + 1;
-                else
-                    msgVm.ThreadPosition = msg.ThreadPosition;
-                */ 
+                msg.HasReply = false;
+                msg.ThreadID = msgVm.ThreadID; 
             }
 
             return msg;
@@ -490,33 +586,43 @@ namespace WaffleOffer.Controllers
             // except for the MessageID (which needs to be different), DateSent (which
             // should be assigned the current DateTime), and Sent (which should be 
             // assigned a value of true.
-            Message msgCopy = new Message();
-            msgCopy.SenderID = msg.SenderID;
-            msgCopy.RecipientID = msg.RecipientID;
-            msgCopy.Subject = msg.Subject;
-            msgCopy.Body = msg.Body;
-            //msgCopy.DateCreated = msg.DateCreated; // for draft-saving feature
-            msgCopy.DateCreated = DateTime.Now;
-            msgCopy.DateSent = DateTime.Now;
-            msgCopy.Sent = true;
-            msgCopy.Copy = true;
-            msgCopy.IsReply = msg.IsReply;
-            msgCopy.ThreadID = msg.ThreadID;
-            msgCopy.ThreadPosition = msg.ThreadPosition;
-
-            // Get the recipient AppUser object
-            AppUser recipient = db.Users.Find(msg.RecipientID);
-
-            // If the recipient exists, add the copy to database,
-            // mark the original message as being sent, and save those
-            // changes to the database.
-            if (recipient != null)
+            if (msg.HasReply == false)
             {
-                db.Messages.Add(msgCopy);
-                msg.Sent = true;
-                db.SaveChanges();
-                sent = true;
+                Message msgCopy = new Message();
+                msgCopy.SenderID = msg.SenderID;
+                msgCopy.RecipientID = msg.RecipientID;
+                msgCopy.Subject = msg.Subject;
+                msgCopy.Body = msg.Body;
+                //msgCopy.DateCreated = msg.DateCreated; // for forthcoming draft-saving feature
+                msgCopy.DateCreated = DateTime.Now;
+                msgCopy.DateSent = DateTime.Now;
+                msgCopy.Sent = true;
+                msgCopy.Copy = true;
+                msgCopy.IsReply = msg.IsReply;
+                msgCopy.HasReply = false;
+                msgCopy.ThreadID = msg.ThreadID;
+
+                // Get the recipient AppUser object
+                AppUser recipient = db.Users.Find(msg.RecipientID);
+
+                // If the recipient exists, add the copy to database,
+                // mark the original message as being sent, and save those
+                // changes to the database.
+                if (recipient != null)
+                {
+                    db.Messages.Add(msgCopy);
+                    msg.Sent = true;
+                    db.SaveChanges();
+                    sent = true;
+                }
+
+                if (sent == true)
+                {
+                    msg.HasReply = true;
+                    db.SaveChanges();
+                }
             }
+
             return sent;
         }
 

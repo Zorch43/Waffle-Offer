@@ -34,18 +34,25 @@ namespace WaffleOffer.Controllers
             }
 
             var model = userManager.FindByName(userName);
-            model.TraderAccount = new Trader()
+
+            if (model == null)
             {
-                Wants = (from i in db.Items
-                         where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Want
-                         select i).ToList(),
-                Haves = (from i in db.Items
-                         where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Have
-                         select i).ToList()
-            };
+                //try to find by id instead
+                model = userManager.FindById(userName);
+            }
 
             if (model != null)
             {
+                model.TraderAccount = new Trader()
+                {
+                    Wants = (from i in db.Items
+                             where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Want
+                             select i).ToList(),
+                    Haves = (from i in db.Items
+                             where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Have
+                             select i).ToList()
+                };
+
                 var profile = new ProfileViewModel(model);
 
                 //calculate rating
@@ -79,6 +86,33 @@ namespace WaffleOffer.Controllers
                 return HttpNotFound("Profile not found");
             }
                 
+        }
+
+        [AllowAnonymous]
+        public ActionResult Browse()
+        {
+            List<ProfileViewModel> profiles = new List<ProfileViewModel>();
+
+            // Retrieve all user profiles, in ascending order by zipcode (for now)
+            // Currently includes admins
+            List<AppUser> allUsers = (from p in db.Users
+                                     orderby p.ZipCode ascending
+                                     select p).ToList();
+
+            // Loop through the retrieved profiles and create a ProfileViewModel object
+            // for each AppUser user object. Add each object to a list of ProfileViewModel
+            // objects.
+            foreach (AppUser user in allUsers)
+            {
+                var model = userManager.FindByName(user.UserName);
+                if (model != null)
+                {
+                    ProfileViewModel profile = new ProfileViewModel(model);
+                    profiles.Add(profile);
+                }      
+            }
+
+            return View(profiles);
         }
 
         //GET: /Profile/Edit/userName

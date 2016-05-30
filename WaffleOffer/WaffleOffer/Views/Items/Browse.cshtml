@@ -1,0 +1,31 @@
+﻿@model WaffleOffer.Models.ItemList
+@{
+    ViewBag.Title = "Browse";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h4 class="dark-heading divider-new">Browse @ViewBag.BrowseType</h4>
+<div class="panel-group" id="accordion">
+    @foreach (var item in Model.Items)
+    {
+        <div class="panel panel-default panel-cushioned">
+            <div class="col-xs-6 col-sm-8 col-md-10">
+                <span class="msg-label">@Html.DisplayNameFor(modelItem => item.Name):</span>&nbsp;@Html.DisplayFor(modelItem => item.Name)
+                <br />
+                <span class="msg-label">Owner:</span>&nbsp;
+                @if (item.ListingUser == User.Identity.Name)
+                {
+                    @:You
+                }
+                else
+                {
+                    @Html.DisplayFor(modelItem => item.ListingUser)
+                }
+            </div>
+            <div class="col-xs-6 col-sm-4 col-md-2">
+                @Html.ActionLink("View", "Details", "Items", new { id = item.ItemID }, new { @class = "btn btn-sm btn-custom-grey" })
+            </div>
+        </div>
+    }
+</div>
+

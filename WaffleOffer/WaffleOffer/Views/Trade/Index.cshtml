@@ -340,6 +340,7 @@
 else
 {
     @Html.ActionLink("Back to Profile", "Index", "Profile", null, new { @class = "btn btn-sm btn-custom-grey" })
+    @Html.ActionLink("Report Trade", "Report", "Messages", new { type = "Trade", id = Model.TradeId }, new { @class = "btn btn-sm btn-custom-grey" })
 }
 
 @using (Html.BeginForm("Create", "Trade", FormMethod.Post, new { id = "submitTrade" }))

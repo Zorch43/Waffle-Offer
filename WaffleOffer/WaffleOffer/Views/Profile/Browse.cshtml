@@ -4,11 +4,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h4 class="dark-heading">Browse Profiles</h4>
+<h4 class="dark-heading divider-new">Browse Profiles</h4>
 <div class="panel-group">
     @foreach(var item in Model) 
     {
-        <div class="panel panel-default">
+        <div class="panel panel-default panel-cushioned">
             <div class="col-xs-6 col-sm-8 col-md-10">
                 <span class="msg-label">@Html.DisplayFor(modelItem => item.Nickname)</span> 
             </div>

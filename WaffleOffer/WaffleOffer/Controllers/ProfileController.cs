@@ -81,6 +81,7 @@ namespace WaffleOffer.Controllers
                 
         }
 
+        [AllowAnonymous]
         public ActionResult Browse()
         {
             List<ProfileViewModel> profiles = new List<ProfileViewModel>();

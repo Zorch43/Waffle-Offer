@@ -32,8 +32,8 @@
                     <ul class="nav navbar-nav">
                         <li class="custom-nav-item">@Html.ActionLink("Featured", "Index", "Home")</li>
                         <li class="custom-nav-item">@Html.ActionLink("Recently Added", "Index", "Home")</li>
-                        <li class="custom-nav-item">@Html.ActionLink("Browse Haves", "Index", "Home")</li>
-                        <li class="custom-nav-item">@Html.ActionLink("Browse Wants", "Index", "Home")</li>
+                        <li class="custom-nav-item">@Html.ActionLink("Browse Haves", "Browse", "Items", new { type = "Have" }, null)</li>
+                        <li class="custom-nav-item">@Html.ActionLink("Browse Wants", "Browse", "Items", new { type = "Want" }, null)</li>
                         <li class="custom-nav-item">@Html.ActionLink("Browse Profiles", "Browse", "Profile")</li>
                     </ul>
                     <form class="navbar-right navbar-form" role="search">
@@ -52,14 +52,14 @@
         <div class="col-md-4 landing-col">
             <h4>Who</h4>
             <p>
-                Who are we? We're Waffle Offer! We want to help you offer waffles, waffle on offers, waffle on waffles offers, and
-                even trade things that don't rhyme with "waffle"!
+                Who are we? We're Waffle Offer! We want to help you offer waffles, waffle on offers, waffle on waffle offers, and
+                even trade things that don't rhyme with "waffle"! And by "waffles" we mean "books." (Just go with it.)
             </p>
         </div>
         <div class="col-md-4 landing-col">
             <h4>What</h4>
             <p>
-                If you can legally swap your goods and services outside of Waffle-Offer, you can do it through Waffle-Offer.
+                If you can legally swap your books outside of Waffle-Offer, you can do it through Waffle-Offer.
                 All you have to do is find someone whose "want" matches your "have" or vice versa. Not finding a good match?
                 We'll suggest matches for you! And, of course, you can always negotiate your trades with other traders.
             </p>

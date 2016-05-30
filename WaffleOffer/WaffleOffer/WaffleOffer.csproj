@@ -272,6 +272,7 @@
     <Content Include="Views\Shared\ProfileWants.cshtml" />
     <Content Include="Views\Profile\ChangePassword.cshtml" />
     <Content Include="Views\Profile\Browse.cshtml" />
+    <Content Include="Views\Items\Browse.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

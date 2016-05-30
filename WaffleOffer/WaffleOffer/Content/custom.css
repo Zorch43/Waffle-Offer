@@ -425,6 +425,11 @@ footer address {
 }
 */
 
+/* Panel Styles */
+.panel-cushioned {
+    padding: 10px;
+}
+
 /* Text Styles */
 .note {
    font-style:italic;

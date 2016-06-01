@@ -25,12 +25,6 @@
         <th>
             @Html.ActionLink("Quality", "Index", new { sortOdr = ViewBag.QualitySort })
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ItemModel.Units)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ItemModel.Quantity)
-        </th>
 
         <th></th>
     </tr>
@@ -39,19 +33,13 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Quality)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Units)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
             </td>
             <td>
                 <div class="btn-group">

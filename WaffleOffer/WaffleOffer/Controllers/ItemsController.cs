@@ -53,7 +53,7 @@ namespace WaffleOffer.Controllers
 
             if (!String.IsNullOrEmpty(searchStg))
             {
-                items = items.Where(s => s.Name.Contains(searchStg) || s.Description.Contains(searchStg));
+                items = items.Where(s => s.Title.Contains(searchStg) || s.Description.Contains(searchStg));
             }
 
             // for selecting Want or Have
@@ -82,7 +82,7 @@ namespace WaffleOffer.Controllers
             switch (sortOdr)
             {
                 case "name_desc":
-                    items = items.OrderByDescending(i => i.Name);
+                    items = items.OrderByDescending(i => i.Title);
                     break;
                 case "Quality":
                     items = items.OrderBy(i => i.Quality);
@@ -91,7 +91,7 @@ namespace WaffleOffer.Controllers
                     items = items.OrderByDescending(i => i.Quality);
                     break;
                 default:
-                    items = items.OrderBy(i => i.Name);
+                    items = items.OrderBy(i => i.Title);
                     break;
             }
 
@@ -156,7 +156,7 @@ namespace WaffleOffer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "ItemID,Title,Author,ISBN,Description,Quality,ListingType,ListingUser")] Item item, HttpPostedFileBase upload)
         {
             var validImageTypes = new string[]
             {
@@ -238,7 +238,7 @@ namespace WaffleOffer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item, HttpPostedFileBase upload)
+        public ActionResult Edit([Bind(Include = "ItemID,Title,Author,ISBN,Description,Quality,ListingType,ListingUser")] Item item, HttpPostedFileBase upload)
         {
             var validImageTypes = new string[]
             {
@@ -277,6 +277,7 @@ namespace WaffleOffer.Controllers
                             image.Content = reader.ReadBytes(upload.ContentLength);
                         }
                         item.Images = new List<ItemImage> { image };
+                        db.Entry(image).State = EntityState.Added;
                     }
                 }
 

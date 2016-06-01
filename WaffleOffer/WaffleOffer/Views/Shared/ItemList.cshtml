@@ -16,11 +16,9 @@
             @*@Html.DisplayNameFor(model => model.Quality)*@
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Units)
+            @Html.DisplayNameFor(model => model.ISBN)
         </th>
-        <th>
-            @Html.DisplayNameFor(model => model.Quantity)
-        </th>
+
         <th>Owner</th>
         <th></th>
     </tr>
@@ -30,7 +28,7 @@
 		{
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Name)
+                @Html.DisplayFor(modelItem => item.Title)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
@@ -39,10 +37,7 @@
                 @Html.DisplayFor(modelItem => item.Quality)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Units)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Quantity)
+                @Html.DisplayFor(modelItem => item.ISBN)
             </td>
             <td>
                 @if (item.ListingUser == User.Identity.Name)

@@ -10,25 +10,20 @@ namespace WaffleOffer.Models
     {
 
         public enum ItemType { Want, Have }
-        List<ItemTag> tags = new List<ItemTag>(); // removed extra 'new'
         List<ItemImage> images = new List<ItemImage>();
 
         [Key]
         public int ItemID { get; set; }
         [Required]
-        public string Name { get; set; } // replace with title
+        public string Title { get; set; }
         [Required]
-        public string Description { get; set; } //  description from api
-        public List<ItemTag> Tags { get { return tags; } set { tags = value; } } // if they come from api, maybe change to categories
+        public string Author { get; set; }
+        [Required]
+        public string Description { get; set; }
+        public string ISBN { get; set; }
         public List<ItemImage> Images { get { return images; } set { images = value; } }
         [Required]
         public int Quality { get; set; }
-        //  What the Item is measured in (minutes, pounds, etc)
-        [Required]
-        public string Units { get; set; } // don't need
-        //  number of Units offered
-        [Required]
-        public double Quantity { get; set; } // don't need
         //type of listing
         public ItemType ListingType { get; set; }
         //listing user
@@ -53,11 +48,11 @@ namespace WaffleOffer.Models
         public override string ToString()
         {
             if (Reserved)
-                return Name + " (Reserved)";
+                return Title + " (Reserved)";
             else if (Removed)
-                return Name + " (Removed)";
+                return Title + " (Removed)";
             else
-                return Name;
+                return Title;
         }
     }
 }

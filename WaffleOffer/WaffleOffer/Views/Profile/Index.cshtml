@@ -28,7 +28,8 @@
             @if (User.Identity.Name != Model.Nickname)
             {
                 <div class="col-md-offset-1">
-                    @Html.ActionLink("Send Message", "Compose", "Messages", new { recipientUsername = Model.Nickname, isReply = false, threadId = -1, threadPos = 0 }, new { @class="btn btn-sm btn-custom-grey" })
+					@Html.ActionLink("Send Message", "Compose", "Messages", new { recipientUsername = Model.Nickname, isReply = false, threadId = -1 }, new { @class="btn btn-sm btn-custom-grey" })
+					@Html.ActionLink("Report Profile", "Report", "Messages", new {type="Profile",id=Model.UserId}, new { @class = "btn btn-sm btn-custom-grey" })
                 </div>
             }
         </div>
@@ -101,7 +102,6 @@
             </a>
         </div>     
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <!-- THIS DOES NOT WORK ANYMORE. FIND OUT WTF IS HAPPENING WITH THE ITEMLIST MODEL -->
             <a href="@Url.Action("Items", "Items", new { userName = Model.Nickname, type= "Have" })">
                 <div class="card custom-card-orange hoverable animated slideInLeft">
                     <h4 class="custom-card-heading">Haves</h4>
@@ -110,7 +110,6 @@
             </a>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-4">
-            <!-- THIS DOES NOT WORK ANYMORE. FIND OUT WTF IS HAPPENING WITH THE ITEMLIST MODEL -->
             <a href="@Url.Action("Items", "Items", new { userName = Model.Nickname, type= "Want" })">
                 <div class="card custom-card-red hoverable animated slideInLeft">
                     <h4 class="custom-card-heading">Wants</h4>

@@ -15,6 +15,7 @@ namespace WaffleOffer.Models
             FirstName = user.FirstName;
             LastName = user.LastName;
             Email = user.Email;
+            UserId = user.Id;
             ZipCode = user.ZipCode;
             Nickname = user.UserName;
             ProfileText = user.ProfileText;
@@ -34,6 +35,7 @@ namespace WaffleOffer.Models
         [Required]
         [DataType(DataType.EmailAddress)]
         public string Email { get; set; }
+        public string UserId { get; set; }
         //location
         [Required]
         [Display(Name = "Zip Code")]

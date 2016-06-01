@@ -1,39 +1,23 @@
 ﻿@model WaffleOffer.Models.MessageViewModel
-
 @{
-    ViewBag.Title = "Compose Message";
+    ViewBag.Title = "Report";
 }
 
-<h4 class="dark-heading">Compose Message</h4>
-<p>
-    <div class="btn-group">
-        <button type="button" class="btn btn-sm btn-custom-grey dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Go <span class="caret"></span>
-        </button>
-        <ul class="dropdown-menu">
-            <li>@Html.ActionLink("Inbox", "Inbox")</li>
-            <li>@Html.ActionLink("Sent Messages", "Sent")</li>
-            <li>@Html.ActionLink("My Profile", "Index", "Profile")</li>
-        </ul>
-    </div>
-</p>
+<h4 class="dark-heading">Report</h4>
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
         @Html.ValidationSummary(true)
-        @Html.HiddenFor(model => model.SenderItem)
         @Html.HiddenFor(model => model.DateCreated)
         @Html.HiddenFor(model => model.DateSent)
         @Html.HiddenFor(model => model.ThreadID)
+        @Html.HiddenFor(model => model.ThreadPosition)
+        @Html.HiddenFor(model => model.ReportType)
+        @Html.HiddenFor(model => model.ReportedObject)
 
-        <div class="form-group">
-            <label class="control-label col-md-2">To</label>
-            <div class="col-md-10">
-                <p class="form-control-static">@ViewBag.Recipient</p>
-            </div>
-        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Subject, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -51,7 +35,7 @@
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Send" class="btn btn-custom-submit" />
-                @Html.ActionLink("Cancel", "Inbox", null, new {@class="btn btn-custom-grey" })
+                @Html.ActionLink("Cancel", "Inbox", null, new { @class = "btn btn-custom-grey" })
             </div>
         </div>
     </div>

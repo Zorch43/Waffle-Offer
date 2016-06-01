@@ -34,18 +34,25 @@ namespace WaffleOffer.Controllers
             }
 
             var model = userManager.FindByName(userName);
-            model.TraderAccount = new Trader()
+
+            if (model == null)
             {
-                Wants = (from i in db.Items
-                         where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Want
-                         select i).ToList(),
-                Haves = (from i in db.Items
-                         where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Have
-                         select i).ToList()
-            };
+                //try to find by id instead
+                model = userManager.FindById(userName);
+            }
 
             if (model != null)
             {
+                model.TraderAccount = new Trader()
+                {
+                    Wants = (from i in db.Items
+                             where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Want
+                             select i).ToList(),
+                    Haves = (from i in db.Items
+                             where i.ListingUser == model.UserName && i.ListingType == Item.ItemType.Have
+                             select i).ToList()
+                };
+
                 var profile = new ProfileViewModel(model);
 
                 //calculate rating
@@ -79,6 +86,33 @@ namespace WaffleOffer.Controllers
                 return HttpNotFound("Profile not found");
             }
                 
+        }
+
+        [AllowAnonymous]
+        public ActionResult Browse()
+        {
+            List<ProfileViewModel> profiles = new List<ProfileViewModel>();
+
+            // Retrieve all user profiles, in ascending order by zipcode (for now)
+            // Currently includes admins
+            List<AppUser> allUsers = (from p in db.Users
+                                     orderby p.ZipCode ascending
+                                     select p).ToList();
+
+            // Loop through the retrieved profiles and create a ProfileViewModel object
+            // for each AppUser user object. Add each object to a list of ProfileViewModel
+            // objects.
+            foreach (AppUser user in allUsers)
+            {
+                var model = userManager.FindByName(user.UserName);
+                if (model != null)
+                {
+                    ProfileViewModel profile = new ProfileViewModel(model);
+                    profiles.Add(profile);
+                }      
+            }
+
+            return View(profiles);
         }
 
         //GET: /Profile/Edit/userName
@@ -120,6 +154,58 @@ namespace WaffleOffer.Controllers
             }
             return View(model);
             
+        }
+
+        [HttpGet]
+        public ActionResult ChangePassword(string user)
+        {
+            //if username does not equal the current user's nickname, redirect to user's own page
+            if (user != User.Identity.Name)
+            {
+                return RedirectToAction("ChangePassword", new { user = User.Identity.Name });
+            }
+
+            //get user
+            var appUser = userManager.FindByName(user);
+            //create viewmodel
+            var passwordVM = new ChangePasswordViewModel()
+            {
+                PasswordHash = appUser.PasswordHash
+            };
+
+            //display model
+            return View(passwordVM);
+        }
+
+        [HttpPost]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            
+
+            //verify model
+            if (!ModelState.IsValid)
+            {
+                return View();
+            }
+
+            //verify old password
+            var user = userManager.Find(User.Identity.Name, model.OldPassword);
+            if (user == null)
+            {
+                ModelState.AddModelError("", "Old password is incorrect");
+                return View();
+            }
+
+            //change to new password
+            var hasher = new PasswordHasher();
+            user.PasswordHash = hasher.HashPassword(model.NewPassword);
+            userManager.Update(user);
+            //log out
+            var ctx = Request.GetOwinContext();
+            var authManager = ctx.Authentication;
+
+            authManager.SignOut("ApplicationCookie");
+            return RedirectToAction("index", "home");
         }
 
 	}

@@ -363,26 +363,36 @@ footer address {
     color: #8c1efa;
 }
 
-.custom-card-short-grey {
+.custom-card-short-grey, .custom-card-shorter-grey{
     background-color: #fff;
     border: 2px solid #a5a5a5;
     color: #a5a5a5;
     font-weight: normal;
+}
+
+.custom-card-short-grey {
     min-height: 50px;
     min-width: 100px;
+}
+.custom-card-shorter-grey {
+    max-height: 35px;
+    min-height: 30px;
+    min-width: 90px;
 }
 .custom-card-short-grey:hover {
     border:#535353 solid 2px;
     font-weight: bold;
 }
-.custom-card-short-heading {
+.custom-card-short-heading, .custom-card-shorter-heading {
     color: #535353;
     font-size: 14px;
     font-weight: inherit;
     text-align: center;
     text-transform: uppercase;
 }
-
+.custom-card-shorter-heading {
+    margin: 2px auto;
+}
 /*
 .custom-card-icon-1,
 .custom-card-icon-2,
@@ -414,6 +424,11 @@ footer address {
     text-shadow: 1px 4px 2px #a5a5a5;
 }
 */
+
+/* Panel Styles */
+.panel-cushioned {
+    padding: 10px;
+}
 
 /* Text Styles */
 .note {

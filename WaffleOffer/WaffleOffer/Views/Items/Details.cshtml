@@ -79,5 +79,6 @@
     }
     else{
         @Html.ActionLink("Open Trade", "Index", "Trade", new { partner=Model.ListingUser}, new { @class="btn btn-sm btn-custom-grey" })
+        @Html.ActionLink("Report Item", "Report", "Messages", new { type="Item",id=Model.ItemID }, new { @class = "btn btn-sm btn-custom-grey" })
     }
 </p>

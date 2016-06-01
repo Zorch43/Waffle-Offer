@@ -53,7 +53,7 @@ namespace WaffleOffer.Controllers
 
             if (!String.IsNullOrEmpty(searchStg))
             {
-                items = items.Where(s => s.Name.Contains(searchStg) || s.Description.Contains(searchStg));
+                items = items.Where(s => s.Title.Contains(searchStg) || s.Description.Contains(searchStg));
             }
 
             // for selecting Want or Have
@@ -82,7 +82,7 @@ namespace WaffleOffer.Controllers
             switch (sortOdr)
             {
                 case "name_desc":
-                    items = items.OrderByDescending(i => i.Name);
+                    items = items.OrderByDescending(i => i.Title);
                     break;
                 case "Quality":
                     items = items.OrderBy(i => i.Quality);
@@ -91,7 +91,7 @@ namespace WaffleOffer.Controllers
                     items = items.OrderByDescending(i => i.Quality);
                     break;
                 default:
-                    items = items.OrderBy(i => i.Name);
+                    items = items.OrderBy(i => i.Title);
                     break;
             }
 
@@ -107,31 +107,11 @@ namespace WaffleOffer.Controllers
             ViewBag.ListingUser = userName;
 
             var items = (from i in db.Items
-                        where i.ListingType == type && i.ListingUser == userName
-                        select i).ToList();
+                         where i.ListingType == type && i.ListingUser == userName
+                         select i).ToList();
+            var list = new ItemList() { Items = items, Type = type };
 
-            return View(new ItemList() { Items = items, Type = type });
-        }
-
-        [AllowAnonymous]
-        public ActionResult Browse(Item.ItemType type)
-        {
-            ViewBag.BrowseType = "";
-            var items = GetItemsByType(type);
-
-            switch (type)
-            {
-                case Item.ItemType.Have:
-                    ViewBag.BrowseType = "Haves";
-                    break;
-                case Item.ItemType.Want:
-                    ViewBag.BrowseType = "Wants";
-                    break;
-                default:
-                    break;
-            }
-
-            return View(new ItemList() { Items = items, Type = type });
+            return View(list);
         }
 
         // GET: /Items/Details/5
@@ -176,11 +156,10 @@ namespace WaffleOffer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ItemID,Name,Description,Quality,Units,Quantity,ListingType,ListingUser")] Item item, HttpPostedFileBase upload)
+        public ActionResult Create([Bind(Include = "ItemID,Title,Author,ISBN,Description,Quality,ListingType,ListingUser")] Item item, HttpPostedFileBase upload)
         {
             var validImageTypes = new string[]
             {
-                "image/gif",
                 "image/jpeg",
                 "image/pjpeg",
                 "image/png"
@@ -192,13 +171,14 @@ namespace WaffleOffer.Controllers
                 {
                     if (!validImageTypes.Contains(upload.ContentType))
                     {
-                        ModelState.AddModelError("Images", "Please choose either a GIF, JPG or PNG image.");
+                        ModelState.AddModelError("Images", "Please choose either a JPG or PNG image.");
                     }
                     else 
                     { 
                         var image = new ItemImage
                         {
                             FileName = System.IO.Path.GetFileName(upload.FileName),
+                            ItemID = item.ItemID,
                             ContentType = upload.ContentType
                         };
                         using (var reader = new System.IO.BinaryReader(upload.InputStream))
@@ -244,7 +224,8 @@ namespace WaffleOffer.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Item item = db.Items.Find(id);
+            //Item item = db.Items.Find(id);
+            Item item = db.Items.Include(i => i.Images).SingleOrDefault(i => i.ItemID == id);
             if (item == null)
             {
                 return HttpNotFound();
@@ -257,15 +238,90 @@ namespace WaffleOffer.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include="ItemID,Name,Description,Quality,Units,Quantity")] Item item)
+        public ActionResult Edit([Bind(Include = "ItemID,Title,Author,ISBN,Description,Quality,ListingType,ListingUser")] Item item, HttpPostedFileBase upload)
         {
+            var validImageTypes = new string[]
+            {
+                "image/jpeg",
+                "image/pjpeg",
+                "image/png"
+            };
+
             if (ModelState.IsValid)
             {
+                if (upload != null && upload.ContentLength > 0)
+                {
+                    if (!validImageTypes.Contains(upload.ContentType))
+                    {
+                        ModelState.AddModelError("Images", "Please choose either a JPG or PNG image.");
+                    }
+                    else
+                    {
+                        var images = (from i in db.ItemImages
+                                      where i.ItemID == item.ItemID
+                                      select i).ToList();
+
+                        if (images.Any())
+                        {
+                            db.ItemImages.Remove(images.FirstOrDefault());
+                        }
+
+                        var image = new ItemImage
+                        {
+                            FileName = System.IO.Path.GetFileName(upload.FileName),
+                            ItemID = item.ItemID,
+                            ContentType = upload.ContentType
+                        };
+                        using (var reader = new System.IO.BinaryReader(upload.InputStream))
+                        {
+                            image.Content = reader.ReadBytes(upload.ContentLength);
+                        }
+                        item.Images = new List<ItemImage> { image };
+                        db.Entry(image).State = EntityState.Added;
+                    }
+                }
+
                 db.Entry(item).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }
             return View(item);
+        }
+
+        [AllowAnonymous]
+        public ActionResult Browse(Item.ItemType type)
+        {
+            ViewBag.BrowseType = "";
+            var items = GetItemsByType(type);
+
+            switch (type)
+            {
+                case Item.ItemType.Have:
+                    ViewBag.BrowseType = "Haves";
+                    break;
+                case Item.ItemType.Want:
+                    ViewBag.BrowseType = "Wants";
+                    break;
+                default:
+                    break;
+            }
+
+            return View(new ItemList() { Items = items, Type = type });
+        }
+
+        // Retrieve a list of items by the item type
+        public List<Item> GetItemsByType(Item.ItemType type)
+        {
+            List<Item> items = new List<Item>();
+
+            if (type == Item.ItemType.Have || type == Item.ItemType.Want)
+            {
+                items = (from item in db.Items
+                         where item.ListingType == type
+                         select item).ToList();
+            }
+
+            return items;
         }
 
         // GET: /Items/Delete/5
@@ -301,21 +357,6 @@ namespace WaffleOffer.Controllers
                 db.Dispose();
             }
             base.Dispose(disposing);
-        }
-
-        // Retrieve a list of items by the item type
-        public List<Item> GetItemsByType(Item.ItemType type) 
-        {
-            List<Item> items = new List<Item>();
-
-            if (type == Item.ItemType.Have || type == Item.ItemType.Want)
-            {
-                items = (from item in db.Items
-                         where item.ListingType == type
-                         select item).ToList();
-            }
-
-            return items;
         }
     }
 }

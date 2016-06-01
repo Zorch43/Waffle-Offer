@@ -1,23 +1,35 @@
-﻿@model WaffleOffer.Models.Item
+@model WaffleOffer.Models.Item
 
 @{
     ViewBag.Title = "Edit Item";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-@using (Html.BeginForm())
+@using (Html.BeginForm("Edit", "Items", null, FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
     @Html.AntiForgeryToken()
     
+    
+    
     <div class="form-horizontal">
         <h4 class="dark-heading">Edit Item</h4>
+        @Html.HiddenFor(model => model.ListingType)
+        @Html.HiddenFor(model => model.ListingUser)
         @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.ItemID)
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Name, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.Title, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Name, new { @class = "material-input" })
-                @Html.ValidationMessageFor(model => model.Name)
+                @Html.TextBoxFor(model => model.Title, new { @class = "material-input" })
+                @Html.ValidationMessageFor(model => model.Title)
+            </div>
+        </div>
+
+        <div class="form-group">
+            @Html.LabelFor(model => model.Author, new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.TextBoxFor(model => model.Author, new { @class = "material-input" })
+                @Html.ValidationMessageFor(model => model.Author)
             </div>
         </div>
 
@@ -38,31 +50,48 @@
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.Units, new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.ISBN, new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Units, new { @class = "material-input" })
-                @Html.ValidationMessageFor(model => model.Units)
+                @Html.TextBoxFor(model => model.ISBN, new { @class = "material-input" })
+                @Html.ValidationMessageFor(model => model.ISBN)
             </div>
         </div>
-
+        @if (Model.Images.Any(i => i.ItemID == Model.ItemID))
+        {
+            <div class="form-group">
+            @Html.LabelFor(model => model.Images, new { @class = "control-label col-md-2" })
+                <div class="col-md-6">
+                    <div class="card hoverable">
+                        <div class="card-image">
+                            <div class="view overlay hm-white-slight z-depth-1">
+                                <img src="~/ItemImages?id=@Model.Images.First(i => i.ItemID == Model.ItemID).ImageID" class="img-responsive" alt="image" />
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
         <div class="form-group">
-            @Html.LabelFor(model => model.Quantity, new { @class = "control-label col-md-2" })
+            @Html.Label("Change Image", new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.TextBoxFor(model => model.Quantity, new { @class = "material-input" })
-                @Html.ValidationMessageFor(model => model.Quantity)
+                <span class="btn btn-file">
+                    Browse <input type="file" id="Images" name="upload" onchange="$('#fileSelected').html($(this).val());" />
+                </span>
+                <span id="fileSelected" class="extra-margin-1"></span>
+                @Html.ValidationMessageFor(model => model.Images)
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-custom-submit" />
+                <input type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "Index", "Items", null, new { @class="btn btn-sm btn-custom-grey" })
+    @Html.ActionLink("Back to List", "Index")
 </div>
 
 @section Scripts {

@@ -91,46 +91,42 @@ namespace WaffleOffer.Migrations
             //seed some items
             var item1 = new Item()
             {
-                Name = "Doodad",
+                Title = "Doodad",
                 Description = "Looks like a pipe or a pistol, depending on how you look at it.",
-                Quantity = 1,
                 Quality = 5,
-                Units = "Thing",
+                Author = "The dude",
                 ListingType = Item.ItemType.Have,
                 ListingUser = "Trader1"
             };
             var item2 = new Item()
             {
-                Name = "Thingamajig",
+                Title = "Thingamajig",
                 Description = "Looks like a cross between a buzzsaw and an eggbeater.",
-                Quantity = 1,
                 Quality = 4,
-                Units = "Thing",
+                Author = "Stephen King",
                 ListingType = Item.ItemType.Have,
                 ListingUser = "TraderA"
             };
             var item3 = new Item()
             {
-                Name = "Stuff",
+                Title = "Stuff",
                 Description = "Big pile of odds and ends.",
-                Quantity = 23,
                 Quality = 2,
-                Units = "Pounds",
+                Author = "Beverly Cleary",
                 ListingType = Item.ItemType.Have,
                 ListingUser = "TraderAlpha"
             };
             var item4 = new Item()
             {
-                Name = "Widget",
+                Title = "Widget",
                 Description = "A clockwork pizza slicer.",
-                Quantity = 3,
                 Quality = 3,
-                Units = "Thing",
+                Author = "Chuck Palahniuk",
                 ListingType = Item.ItemType.Have,
                 ListingUser = "TraderPrime"
             };
             
-            context.Items.AddOrUpdate(i => i.Name, item1, item2, item3, item4);
+            context.Items.AddOrUpdate(i => i.Title, item1, item2, item3, item4);
             base.Seed(context);
         }
 

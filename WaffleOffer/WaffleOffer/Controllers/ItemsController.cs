@@ -24,7 +24,7 @@ namespace WaffleOffer.Controllers
             ViewBag.NameSort = String.IsNullOrEmpty(sortOdr) ? "name_desc" : "";
             ViewBag.QualitySort = sortOdr == "Quality" ? "quality_desc" : "Quality";
 
-            // Search on word in Name or Description, with filters for Wants and Haves
+            // Search on a word in the Name or Description, with filters for Wants and Haves
             // NOTE: Adapted the search from the "Search" tutorial on asp.net (http://www.asp.net/mvc/overview/getting-started/introduction/adding-search)
 
             // Created a list to accommodate the Wants and Haves
@@ -34,13 +34,12 @@ namespace WaffleOffer.Controllers
             string Want = Item.ItemType.Want.ToString();
 
             var TypeQry = from t in db.Items
-                          orderby t.ListingType  // (ListingType = 1) is Have
+                          orderby t.ListingType
                           select t.ListingType;
 
             string[] TypeOpt = { Have, Want };
 
             TypeLst.AddRange(TypeOpt);
-            //TypeLst.AddRange(TypeQry.Distinct());  // This command was from the original tutorial, but it does not work here. Maybe because of enum list?
             ViewBag.itemType = new SelectList(TypeLst);
 
             var items = from i in db.Items
@@ -90,22 +89,13 @@ namespace WaffleOffer.Controllers
             // List of items returned by search results
             var itemsLst = items.ToList();
 
-            // Message if the list of items returned by search is empty
-            // (not working yet)
-            //string noItemsLst = "Sorry, could not find the items.";
-
             if (itemsLst.Count != 0)  //itemsLst != null
             {
                 return View(itemsLst);
             }
             else
             {
-                //return View(noItemsLst);  // breaks down; it tries to put the phrase in a list
                 return View(itemsLst);    // default -- stable, but returns an empty list
-                //ViewBag.Message = noItemsLst;  // trying with a ViewBag -- did not work
-                //ViewData["noSearchResult"] = noItemsLst; // trying with ViewData[] -- still did not work
-                //return View();  // (goes with the ViewBag.Message or the ViewData[] attempts)
-                //return Content(noItemsLst);  // returns the phrase in a blank page (rest of app is not displayed)
             }
             
             /* */

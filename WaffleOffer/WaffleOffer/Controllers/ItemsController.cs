@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -21,8 +20,8 @@ namespace WaffleOffer.Controllers
         //public ActionResult Index(string sortOdr, string searchStg)  // sorting and simple search
         public ActionResult Index(string sortOdr, string searchStg, string itemType)  // sorting and filtered search
         {
-            // Viewbags for sorting by Item Name and Item Quality
-            ViewBag.NameSort = String.IsNullOrEmpty(sortOdr) ? "name_desc" : "";
+            // UPDATED: Viewbags for sorting by book Title and book Quality
+            ViewBag.TitleSort = String.IsNullOrEmpty(sortOdr) ? "title_desc" : "";
             ViewBag.QualitySort = sortOdr == "Quality" ? "quality_desc" : "Quality";
 
             // Search on a word in the Name or Description, with filters for Wants and Haves
@@ -46,9 +45,11 @@ namespace WaffleOffer.Controllers
             var items = from i in db.Items
                         select i;
 
+            // Changes from Jun 1 updates:
+            // "Name" changed to "Title"
             if (!String.IsNullOrEmpty(searchStg))
             {
-                items = items.Where(s => s.Name.Contains(searchStg) || s.Description.Contains(searchStg));
+                items = items.Where(s => s.Title.Contains(searchStg) || s.Description.Contains(searchStg));
             }
 
             // for selecting Want or Have
@@ -70,11 +71,12 @@ namespace WaffleOffer.Controllers
             } */
 
 
-            // sorting by Name and Quality
+            // Sorting by Title and Quality
+            // Jun 1 Updates: "Title" is now taking the place of "Name"
             switch (sortOdr)
             {
-                case "name_desc":
-                    items = items.OrderByDescending(i => i.Name);
+                case "title_desc":
+                    items = items.OrderByDescending(i => i.Title);
                     break;
                 case "Quality":
                     items = items.OrderBy(i => i.Quality);
@@ -83,7 +85,7 @@ namespace WaffleOffer.Controllers
                     items = items.OrderByDescending(i => i.Quality);
                     break;
                 default:
-                    items = items.OrderBy(i => i.Name);
+                    items = items.OrderBy(i => i.Title);
                     break;
             }
 

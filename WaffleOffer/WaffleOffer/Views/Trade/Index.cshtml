@@ -250,7 +250,7 @@
             @foreach (var item in Model.SenderHaves)
             {
                 <div class="trade-item" id="@item.ItemID">
-                    <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                    <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Title" />
                 </div>
             }
             <p id="msgSenderHaves"></p>
@@ -264,7 +264,7 @@
             @foreach (var item in Model.SendingItems)
             {
                 <div class="trade-item" id="@item.ItemID">
-                    <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                    <input type="button" class="btn btn-custom-grey btn-sender" onclick="moveItem(@item.ItemID)" value="@item.Title" />
                 </div>
             }
             <p id="msgSenderOffers"></p>
@@ -278,7 +278,7 @@
             @foreach (var item in Model.ReceivingItems)
             {
                 <div class="trade-item" id="@item.ItemID">
-                    <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                    <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Title" />
                 </div>
             }
             <p id="msgReceiverOffers">
@@ -292,7 +292,7 @@
             @foreach (var item in Model.ReceiverHaves)
             {
                 <div class="trade-item" id="@item.ItemID">
-                    <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Name" />
+                    <input type="button" class="btn btn-custom-grey btn-receiver" onclick="moveItem(@item.ItemID)" value="@item.Title" />
                 </div>
             }
             <p id="msgReceiverHaves"></p>

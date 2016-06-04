@@ -13,7 +13,6 @@ namespace WaffleOffer.Models
 
         [Key]
         public int ThreadID { get; set; }
-        public List<Message> ThreadMessages { get { return messages; } set { messages = value; } }
 
         //flags/reports
         //flag type

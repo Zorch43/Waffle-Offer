@@ -127,6 +127,101 @@ namespace WaffleOffer.Migrations
             };
             
             context.Items.AddOrUpdate(i => i.Title, item1, item2, item3, item4);
+
+            var thread1 = new Thread() { ThreadID = 0 };
+            var thread2 = new Thread() { ThreadID = 1 };
+
+            context.Threads.AddOrUpdate(t => t.ThreadID, thread1, thread2);
+
+            DateTime date1 = new DateTime(2016, 6, 1, 1, 1, 1);
+            DateTime date2 = new DateTime(2016, 6, 1, 2, 2, 2);
+            DateTime date3 = new DateTime(2016, 6, 1, 3, 3, 3);
+
+            var msg1 = new Message()
+            {
+                SenderID = user2.Id,
+                RecipientID = user3.Id,
+                Subject = "RE: The Autobiography of Fred Durst",
+                Body = "Is Fred Durst related to Robert Durst? Because the musical travesty that is Limp Bizkit murdered my brain cells and got away with it.",
+                DateCreated = date1,
+                DateSent = date1,
+                Sent = true,
+                Copy = false,
+                IsReply = false,
+                ThreadID = thread1.ThreadID
+            };
+
+            var msg2 = new Message()
+            {
+                SenderID = user2.Id,
+                RecipientID = user3.Id,
+                Subject = "RE: The Autobiography of Fred Durst",
+                Body = "Is Fred Durst related to Robert Durst? Because the musical travesty that is Limp Bizkit murdered my brain cells and got away with it.",
+                DateCreated = date1,
+                DateSent = date1,
+                Sent = true,
+                Copy = true,
+                IsReply = false,
+                ThreadID = thread1.ThreadID
+            };
+
+            var msg3 = new Message()
+            {
+                SenderID = user3.Id,
+                RecipientID = user2.Id,
+                Subject = "RE: The Dursts",
+                Body = "No, but I think you can understand why I'm trying to unload this stupid book...",
+                DateCreated = date2,
+                DateSent = date2,
+                Sent = true,
+                Copy = false,
+                IsReply = true,
+                ThreadID = thread1.ThreadID
+            };
+
+            var msg4 = new Message()
+            {
+                SenderID = user3.Id,
+                RecipientID = user2.Id,
+                Subject = "RE: The Dursts",
+                Body = "No, but I think you can understand why I'm trying to unload this stupid book...",
+                DateCreated = date2,
+                DateSent = date2,
+                Sent = true,
+                Copy = true,
+                IsReply = true,
+                ThreadID = thread1.ThreadID
+            };
+
+            var msg5 = new Message()
+            {
+                SenderID = user3.Id,
+                RecipientID = user4.Id,
+                Subject = "Hi",
+                Body = "I like books.",
+                DateCreated = date3,
+                DateSent = date3,
+                Sent = true,
+                Copy = false,
+                IsReply = false,
+                ThreadID = thread2.ThreadID
+            };
+
+            var msg6 = new Message()
+            {
+                SenderID = user3.Id,
+                RecipientID = user4.Id,
+                Subject = "Hi",
+                Body = "I like books.",
+                DateCreated = date3,
+                DateSent = date3,
+                Sent = true,
+                Copy = true,
+                IsReply = false,
+                ThreadID = thread2.ThreadID
+            };
+
+            context.Messages.AddOrUpdate(m => m.MessageID, msg1, msg2, msg3, msg4, msg5, msg6);
             base.Seed(context);
         }
 

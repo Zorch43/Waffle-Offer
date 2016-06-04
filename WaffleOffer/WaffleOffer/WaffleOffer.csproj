@@ -258,7 +258,6 @@
     <Content Include="Views\Shared\ItemList.cshtml" />
     <Content Include="Views\Trade\Index.cshtml" />
     <Content Include="Views\Messages\Delete.cshtml" />
-    <Content Include="Views\Messages\Edit.cshtml" />
     <Content Include="Views\Messages\Inbox.cshtml" />
     <Content Include="Views\Messages\Compose.cshtml" />
     <Content Include="Views\Messages\View.cshtml" />

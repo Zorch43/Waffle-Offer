@@ -58,10 +58,8 @@
                         <li>@Html.ActionLink("View", "Details", "Items", new { id = item.ItemID },null)</li>
                         @if (User.IsInRole("Admin") || User.Identity.Name == item.ListingUser)
                         {
-                            @Html.Raw(" | ");
-                            @Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null)
-                            @Html.Raw(" | ");
-                            @Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null )
+                            <li>@Html.ActionLink("Edit", "Edit", "Items", new { id = item.ItemID }, null)</li>
+                            <li>@Html.ActionLink("Delete", "Delete", "Items", new { id = item.ItemID }, null)</li>
                         }
                     </ul>
                 </div>

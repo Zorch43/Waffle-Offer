@@ -70,7 +70,7 @@ body {
     /*border-right: solid #a5a5a5 2px;*/
     margin-bottom: 0;
 }
-
+/*
 #landing-nav {
     font-weight: bold;
 }
@@ -98,7 +98,7 @@ body {
     border-bottom: 2px solid #f8b10e;
     box-shadow: 0 1px 0 0 #fff;
 }
-
+*/
 /* Heading Styles */
 .light-heading {
     color: #a5a5a5;
@@ -116,7 +116,7 @@ body {
 .jumbotron {
     background-color: #fff;
     /*border: solid #a5a5a5 2px;*/
-    margin: 50px 0 0 0;
+    margin: 50px 0;
 }
 .jumbotron img {
     height: auto;
@@ -126,7 +126,7 @@ body {
 
 /* Additional Home Page Styles */
 .landing-col {
-    padding: 15px;
+    padding: 30px;
 }
 
 .landing-col h4 {
@@ -135,7 +135,7 @@ body {
 }
 
 .landing-col p {
-    font-size: 18px;
+    font-size: 16px;
 }
 
 /* Footer Styles */

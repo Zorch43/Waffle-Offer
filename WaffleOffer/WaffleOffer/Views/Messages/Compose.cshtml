@@ -17,12 +17,14 @@
         </ul>
     </div>
 </p>
+
+@Html.ValidationSummary(true)
+
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        @Html.ValidationSummary(true)
         @Html.HiddenFor(model => model.SenderItem)
         @Html.HiddenFor(model => model.DateCreated)
         @Html.HiddenFor(model => model.DateSent)
@@ -58,6 +60,8 @@
 }
 
 @section Scripts {
+    @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/bootstrap")
 }
 

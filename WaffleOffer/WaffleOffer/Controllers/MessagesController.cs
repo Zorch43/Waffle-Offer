@@ -103,6 +103,7 @@ namespace WaffleOffer.Controllers
 
         #region create/compose
         // GET: /Messages/Compose
+        [HttpGet]
         public ActionResult Compose(string recipientUsername, bool isReply, int threadId)
         {
             ViewBag.Recipient = recipientUsername;
@@ -127,7 +128,7 @@ namespace WaffleOffer.Controllers
 
                 // Get the recipient's AppUser object by username and get the id of
                 // the recipient from the AppUser object
-                AppUser recipient = GetRecipientByUserName(recipientUsername);
+                AppUser recipient = GetUserByUserName(recipientUsername);
                 string recipientId = recipient.Id;
 
                 if (isReply == false)
@@ -189,7 +190,7 @@ namespace WaffleOffer.Controllers
 
                 // Get the recipient's AppUser object by username and get the id of
                 // the recipient from the AppUser object
-                AppUser recipient = GetRecipientByUserName("Admin");
+                AppUser recipient = GetUserByUserName("Admin");
                 string recipientId = recipient.Id;
 
                 // Create a new thread
@@ -239,47 +240,6 @@ namespace WaffleOffer.Controllers
             }
 
             return RedirectToAction("Error");
-        }
-
-        #endregion
-
-        #region edit/update
-        // GET: /Messages/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Message message = db.Messages.Find(id);
-            if (message == null)
-            {
-                return HttpNotFound();
-            }
-            // Check the "sent" flag. Disallow the editing of messages that have
-            // already been sent.
-            if (message.Sent != true)
-            {
-                return View(message);
-            }
-            return RedirectToAction("Inbox");
-        }
-
-        // POST: /Messages/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "MessageID,SenderID,RecipientID,Subject,Body,DateCreated,DateSent,Sent")] Message message)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(message).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Inbox");
-            }
-            return View(message);
         }
 
         #endregion
@@ -344,14 +304,7 @@ namespace WaffleOffer.Controllers
         {
             List<Message> inboxMessages = new List<Message>();
 
-            // Get the messages with a RecipientID matching the user's id and that have been
-            // marked as having been sent
-            /*
-            var allInboxMessages = (from m in db.Messages
-                             where m.RecipientID == userId && m.Sent == true && m.Copy == true
-                             select m).ToList();
-            */
-            inboxMessages = GetOnlyLatestMessagesInUserThreads(userId);
+            inboxMessages = GetOnlyLatestMessagesInUserThreads(userId, "inbox");
 
             return inboxMessages;
 
@@ -363,17 +316,19 @@ namespace WaffleOffer.Controllers
         {
             List<Message> sentMessages = new List<Message>();
 
-            // Get the messages with a SenderID matching the user's id and that have been
-            // marked as having been sent
-            /*
-            var allSentMessages = (from m in db.Messages
-                            where m.SenderID == userId && m.Sent == true && m.Copy == false
-                            select m).ToList();
-            */
-            sentMessages = GetOnlyLatestMessagesInUserThreads(userId);
+            sentMessages = GetOnlyLatestMessagesInUserThreads(userId, "sent");
 
             return sentMessages;
 
+        }
+
+        // Retrieves and returns an AppUser object by its UserName
+        public AppUser GetUserByUserName(string username)
+        {
+            var user = (from u in db.Users
+                        where u.UserName == username
+                        select u).FirstOrDefault();
+            return user;
         }
 
         // Get the message sender for the message that matches the
@@ -428,13 +383,19 @@ namespace WaffleOffer.Controllers
                 msgVm.Sent = msg.Sent;
                 msgVm.Copy = msg.Copy;
                 msgVm.IsReply = msg.IsReply;
+                msgVm.HasReply = msg.HasReply;
                 msgVm.ThreadID = msg.ThreadID;
 
                 //set report properties
-                var msgThread = db.Threads.Find(msg.ThreadID);
-                msgVm.ReportedObject = msgThread.GetFlagTargetId();
-                msgVm.ReportType = msgThread.ReportingTarget.ToString();
+                var msgThread = (from t in db.Threads
+                                 where t.ThreadID == msg.ThreadID
+                                 select t).FirstOrDefault();
 
+                if (msgThread != null)
+                {
+                    msgVm.ReportedObject = msgThread.GetFlagTargetId();
+                    msgVm.ReportType = msgThread.ReportingTarget.ToString();
+                }
             }
 
             return msgVm;
@@ -456,15 +417,6 @@ namespace WaffleOffer.Controllers
                 }
             }
             return msgVms;
-        }
-
-        // Retrieves and returns a recipient object by its Nickname
-        public AppUser GetRecipientByUserName(string username)
-        {
-            var user = (from u in db.Users
-                        where u.UserName == username
-                        select u).FirstOrDefault();
-            return user;
         }
 
         /* 
@@ -502,11 +454,13 @@ namespace WaffleOffer.Controllers
 
         //  Retrieve only the first messages in each message thread
         //  in which the user is a participant.
-        public List<Message> GetOnlyLatestMessagesInUserThreads(string userId)
+        public List<Message> GetOnlyLatestMessagesInUserThreads(string userId, string type)
         {
             // Get all message threads in which the user is a participant
             List<int> userThreadIds = GetUserMessageThreadIDs(userId);
+
             List<Message> latestMessages = new List<Message>();
+            Message msg = new Message();
 
             // For each thread in the list of threadIds attached to the user,
             // get the sorted messages for that thread and add only the latest
@@ -514,11 +468,38 @@ namespace WaffleOffer.Controllers
             foreach (int threadId in userThreadIds)
             {
                 List<Message> messages = GetSortedThreadMessages(threadId);
+
                 if (messages.Count > 0)
                 {
-                    Message msg = messages[0];
-                    latestMessages.Add(msg);
+                    switch (type)
+                    {
+                        case "inbox":
+                            for (int i = 0; i < messages.Count; i++)
+                            {
+                                if (messages[i].RecipientID == userId)
+                                {
+                                    msg = messages[i];
+                                    latestMessages.Add(msg);
+                                    break;
+                                }
+                            }
+                            break;
+                        case "sent":
+                            for (int i = 0; i < messages.Count; i++)
+                            {
+                                if (messages[i].SenderID == userId)
+                                {
+                                    msg = messages[i];
+                                    latestMessages.Add(msg);
+                                    break;
+                                }
+                            }
+                            break;
+                        default:
+                            break;
+                    }
                 }
+
             }
 
             return latestMessages;
@@ -534,7 +515,7 @@ namespace WaffleOffer.Controllers
 
             foreach (Message m in messages)
             {
-                // Do not add duplicate threads
+                // Make sure that duplicate threads are not added
                 if (!threads.Contains(m.ThreadID))
                 {
                     threads.Add(m.ThreadID);
@@ -616,7 +597,7 @@ namespace WaffleOffer.Controllers
                     sent = true;
                 }
 
-                if (sent == true)
+                if (sent)
                 {
                     msg.HasReply = true;
                     db.SaveChanges();

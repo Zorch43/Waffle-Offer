@@ -20,37 +20,33 @@ namespace WaffleOffer.Controllers
         //public ActionResult Index(string sortOdr, string searchStg)  // sorting and simple search
         public ActionResult Index(string sortOdr, string searchStg, string itemType)  // sorting and filtered search
         {
-            // Viewbags for sorting
-            ViewBag.NameSort = String.IsNullOrEmpty(sortOdr) ? "name_desc" : "";
+            // UPDATED: Viewbags for sorting by book Title and book Quality
+            ViewBag.TitleSort = String.IsNullOrEmpty(sortOdr) ? "title_desc" : "";
             ViewBag.QualitySort = sortOdr == "Quality" ? "quality_desc" : "Quality";
 
-            // Search with filters for Wants or Haves
-            // NOTE: Using tutorial "Search" from asp.net (http://www.asp.net/mvc/overview/getting-started/introduction/adding-search)
+            // Search on a word in the Name or Description, with filters for Wants and Haves
+            // NOTE: Adapted the search from the "Search" tutorial on asp.net (http://www.asp.net/mvc/overview/getting-started/introduction/adding-search)
+
+            // Created a list to accommodate the Wants and Haves
             var TypeLst = new List<string>();
 
             string Have = Item.ItemType.Have.ToString();
             string Want = Item.ItemType.Want.ToString();
 
             var TypeQry = from t in db.Items
-                          orderby t.ListingType  // (ListingType = 1) is Have
+                          orderby t.ListingType
                           select t.ListingType;
 
             string[] TypeOpt = { Have, Want };
 
-            /*string TypeOpt = "0";
-
-            if (TypeOpt == "0")
-            {
-                //not sure about this
-            }*/
-
             TypeLst.AddRange(TypeOpt);
-            //TypeLst.AddRange(TypeQry.Distinct());  // doesn't seem to want to allow this. Maybe because of enum?
             ViewBag.itemType = new SelectList(TypeLst);
 
             var items = from i in db.Items
                         select i;
 
+            // Changes from Jun 1 updates:
+            // "Name" changed to "Title"
             if (!String.IsNullOrEmpty(searchStg))
             {
                 items = items.Where(s => s.Title.Contains(searchStg) || s.Description.Contains(searchStg));
@@ -60,9 +56,6 @@ namespace WaffleOffer.Controllers
             if (!String.IsNullOrEmpty(itemType))
             {
                 items = items.Where(t => t.ListingType.ToString() == itemType);  // suggested by Timo
-                //items = items.Where(t => t.ItemType == itemType);
-                //items = items.Where(t => t.ItemType.Have == itemType|| t.ItemType.Want == itemType)); 
-                //items = items.Where(f => f.ListingType == itemType);
             } /**/
 
 
@@ -78,10 +71,11 @@ namespace WaffleOffer.Controllers
             } */
 
 
-            // sorting by Name and Quality
+            // Sorting by Title and Quality
+            // Jun 1 Updates: "Title" is now taking the place of "Name"
             switch (sortOdr)
             {
-                case "name_desc":
+                case "title_desc":
                     items = items.OrderByDescending(i => i.Title);
                     break;
                 case "Quality":
@@ -95,11 +89,24 @@ namespace WaffleOffer.Controllers
                     break;
             }
 
-            return View(items.ToList());
+            // List of items returned by search results
+            var itemsLst = items.ToList();
 
-            // Default list of items
-            //return View(db.Items.ToList());
+            if (itemsLst.Count != 0)  //itemsLst != null
+            {
+                return View(itemsLst);
+            }
+            else
+            {
+                return View(itemsLst);    // default -- stable, but returns an empty list
+            }
+            
+            /* */
+            //return View(items.ToList());
+            
+
         }
+
 
         public ActionResult Items(string userName, Item.ItemType type)
         {

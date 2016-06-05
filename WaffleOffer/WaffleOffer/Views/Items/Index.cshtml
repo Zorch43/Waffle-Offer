@@ -28,13 +28,15 @@
                         @Html.DropDownList("itemType", "All")
                         @*@Html.DropDownList("itemType", null, new { @class = "form-control btn btn-sm" })*@ @* NOTE: Works, but does not have an "All" option and the pulldown is too wide *@
                         @*@Html.DropDownList("itemType", null, new { @class = "form-control" })*@
-                         @*@Html.DropDownListFor(t => t.ListingType.ToString(), (SelectList)ViewBag.itemType, "All", new { @class = "form-control btn btn-sm" })*@
-                        @*</span>
-
-                @Html.DropDownList("itemType", "All", new { @class = "form-control" })
-            <span>*@
                     </span>
                     <input type="submit" value="Search" class="btn btn-never-wide btn-custom-submit" />
+                </div>
+                <div id="noSearchResults">
+                    <!--(this is div id: noSearchResults )-->
+                    @*Trying to display a message if the search results turn up nothing.*@
+                    @*@Html.DisplayFor(ViewBag.Mesage)*@
+                    @*@ViewBag.Message*@
+                    @*@ViewData["noSearchResult"]*@
                 </div>
             </div>
         </div>

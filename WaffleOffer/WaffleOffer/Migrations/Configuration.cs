@@ -16,6 +16,7 @@ namespace WaffleOffer.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
             
         }
 
@@ -33,7 +34,7 @@ namespace WaffleOffer.Migrations
             //      new Person { FullName = "Rowan Miller" }
             //    );
             //
-            context.Database.Delete();
+            //context.Database.Delete();
             context.Database.CreateIfNotExists();
             userManager = new UserManager<AppUser>(new UserStore<AppUser>(context));
             context.Roles.AddOrUpdate(r => r.Name, new IdentityRole("Admin"), new IdentityRole("Trader"));

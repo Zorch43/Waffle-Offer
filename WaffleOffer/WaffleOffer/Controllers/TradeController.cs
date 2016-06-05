@@ -44,13 +44,13 @@ namespace WaffleOffer.Controllers
                         //load model up
                         trade.SendingTrader.TraderAccount = new Trader()
                         {
-                            Haves = repo.GetHavesForTrader(trade.SendingTrader)
+                            Haves = repo.GetHavesForUsername(trade.SendingTrader.UserName)
                         };
                         
 
                         trade.ReceivingTrader.TraderAccount = new Trader()
                         {
-                            Haves = repo.GetHavesForTrader(trade.ReceivingTrader)
+                            Haves = repo.GetHavesForUsername(trade.ReceivingTrader.UserName)
                         };
 
                         return View(trade);
@@ -82,12 +82,12 @@ namespace WaffleOffer.Controllers
                     //load model up
                     model.SendingTrader.TraderAccount = new Trader()
                     {
-                        Haves = repo.GetHavesForTrader(model.SendingTrader)
+                        Haves = repo.GetHavesForUsername(model.SendingTrader.UserName)
                     };
 
                     model.ReceivingTrader.TraderAccount = new Trader()
                     {
-                        Haves = repo.GetHavesForTrader(model.ReceivingTrader)
+                        Haves = repo.GetHavesForUsername(model.ReceivingTrader.UserName)
                     };
 
                     //if either partner has no items, redirect to instructions page

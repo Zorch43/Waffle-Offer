@@ -190,7 +190,7 @@ namespace WaffleOffer.Controllers
                 Description = "Big pile of odds and ends.",
                 Quality = 2,
                 ListingType = Item.ItemType.Have,
-                ListingUser = "TraderAlpha"
+                ListingUser = "Trader1"
             };
             var item4 = new Item()
             {
@@ -199,13 +199,13 @@ namespace WaffleOffer.Controllers
                 Description = "A clockwork pizza slicer.",
                 Quality = 3,
                 ListingType = Item.ItemType.Have,
-                ListingUser = "TraderPrime"
+                ListingUser = "TraderA"
             };
             db.Items.Add(item1);
             db.Items.Add(item2);
             db.Items.Add(item3);
             db.Items.Add(item4);
-            
+            db.SaveChanges();
         }
 
         private AppUser InitUser(AppUser user, string password, string roleName)

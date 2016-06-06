@@ -278,6 +278,7 @@
     <Content Include="Views\Messages\Report.cshtml" />
     <Content Include="Views\Profile\Browse.cshtml" />
     <Content Include="Views\Items\Browse.cshtml" />
+    <Content Include="Views\Trade\ListAll.cshtml" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

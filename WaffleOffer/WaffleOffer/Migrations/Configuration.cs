@@ -17,7 +17,6 @@ namespace WaffleOffer.Migrations
         {
             AutomaticMigrationsEnabled = true;
             AutomaticMigrationDataLossAllowed = true;
-            
         }
 
         protected override void Seed(WaffleOffer.Models.WaffleOfferContext context)
@@ -50,7 +49,7 @@ namespace WaffleOffer.Migrations
             };
             InitUser(admin, "IAmTheLaw", "Admin");
             //create some regular users
-            var user1 = new AppUser()
+            /*var user1 = new AppUser()
             {
                 UserName = "Trader1",
                 FirstName = "Gabriel",
@@ -222,7 +221,7 @@ namespace WaffleOffer.Migrations
                 ThreadID = thread2.ThreadID
             };
 
-            context.Messages.AddOrUpdate(m => m.MessageID, msg1, msg2, msg3, msg4, msg5, msg6);
+            context.Messages.AddOrUpdate(m => m.MessageID, msg1, msg2, msg3, msg4, msg5, msg6);*/
             base.Seed(context);
         }
 

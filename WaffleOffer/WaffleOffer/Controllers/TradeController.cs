@@ -13,9 +13,11 @@ namespace WaffleOffer.Controllers
 {
     public class TradeController : Controller
     {
-         private readonly UserManager<AppUser> userManager;
+        // private readonly UserManager<AppUser> userManager;
 
-        private WaffleOfferContext db = new WaffleOfferContext();
+        //private WaffleOfferContext db = new WaffleOfferContext();
+
+        private TradeRepository repo;
 
         public TradeController() : this(Startup.UserManagerFactory.Invoke())
         {
@@ -23,7 +25,7 @@ namespace WaffleOffer.Controllers
 
         public TradeController(UserManager<AppUser> userManager)
         {
-            this.userManager = userManager;
+            repo = new TradeRepository(new WaffleOfferContext(), userManager);
         }
 
         // GET: Trade
@@ -31,10 +33,7 @@ namespace WaffleOffer.Controllers
         {
             if (tradeId != null)
             {
-                var trade = (from t in db.Trades.Include("Items")
-                        .Include("SendingTrader").Include("ReceivingTrader")
-                             where t.TradeId == tradeId
-                             select t).FirstOrDefault();
+                var trade = repo.GetTradeById(tradeId);
 
                 if (trade != null)
                 {
@@ -45,17 +44,13 @@ namespace WaffleOffer.Controllers
                         //load model up
                         trade.SendingTrader.TraderAccount = new Trader()
                         {
-                            Haves = (from i in db.Items
-                                     where i.ListingUser == trade.SendingTrader.UserName && i.ListingType == Item.ItemType.Have
-                                     select i).ToList()
+                            Haves = repo.GetHavesForUsername(trade.SendingTrader.UserName)
                         };
                         
 
                         trade.ReceivingTrader.TraderAccount = new Trader()
                         {
-                            Haves = (from i in db.Items
-                                     where i.ListingUser == trade.ReceivingTrader.UserName && i.ListingType == Item.ItemType.Have
-                                     select i).ToList()
+                            Haves = repo.GetHavesForUsername(trade.ReceivingTrader.UserName)
                         };
 
                         return View(trade);
@@ -74,12 +69,12 @@ namespace WaffleOffer.Controllers
             else
             {
                 //find partner
-                var tradePartner = userManager.FindByName(partner);
+                var tradePartner = repo.GetUserByUserName(partner);
                 if (tradePartner != null)
                 {
                     var model = new Trade()
                     {
-                        SendingTrader = userManager.FindByName(User.Identity.Name),
+                        SendingTrader = repo.GetUserByUserName(User.Identity.Name),
                         Items = new List<Item>(),
                         ReceivingTrader = tradePartner,
                     };
@@ -87,16 +82,12 @@ namespace WaffleOffer.Controllers
                     //load model up
                     model.SendingTrader.TraderAccount = new Trader()
                     {
-                        Haves = (from i in db.Items
-                                 where i.ListingUser == model.SendingTrader.UserName && i.ListingType == Item.ItemType.Have
-                                 select i).ToList()
+                        Haves = repo.GetHavesForUsername(model.SendingTrader.UserName)
                     };
 
                     model.ReceivingTrader.TraderAccount = new Trader()
                     {
-                        Haves = (from i in db.Items
-                                 where i.ListingUser == model.ReceivingTrader.UserName && i.ListingType == Item.ItemType.Have
-                                 select i).ToList()
+                        Haves = repo.GetHavesForUsername(model.ReceivingTrader.UserName)
                     };
 
                     //if either partner has no items, redirect to instructions page
@@ -124,13 +115,13 @@ namespace WaffleOffer.Controllers
                 Submitted = true,
                 LastModified = DateTime.Now
             };
-
+            
             var items = new List<Item>();
 
             //get list of items
             for (int i = 0; i < trade.Items.Count; i++)
             {
-                items.Add(db.Items.Find(trade.Items.ElementAt(i)));
+                items.Add(repo.GetItemById(trade.Items.ElementAt(i)));
             }
 
             //add traded items to trade
@@ -147,8 +138,7 @@ namespace WaffleOffer.Controllers
             if (trade.TradeId == null)
             {
                 //add to database
-                db.Trades.Add(model);
-                db.SaveChanges();
+                repo.CreateTrade(model);
             }
             else
             {
@@ -160,12 +150,7 @@ namespace WaffleOffer.Controllers
                 model.TradeId = trade.TradeId;
                 //update in database
                 //also update many-to-many relationship with items
-                //remove
-                db.Trades.Remove(db.Trades.Find(model.TradeId));
-                db.SaveChanges();
-                //then add back in, with new list of items
-                db.Trades.Add(model);
-                db.SaveChanges();
+                repo.UpdateTradedItems(model);
             }
             
 
@@ -177,9 +162,7 @@ namespace WaffleOffer.Controllers
         [HttpPost]
         public ActionResult Update(int tradeId, string status)
         {
-            Trade trade = (from t in db.Trades.Include("Items").Include("SendingTrader").Include("ReceivingTrader")
-                           where t.TradeId == tradeId
-                           select t).FirstOrDefault();
+            Trade trade = repo.GetTradeById(tradeId);
 
             if (trade != null)
             {
@@ -257,12 +240,7 @@ namespace WaffleOffer.Controllers
                 updatedTrade.LastModified = DateTime.Now;
                 //update in database
                 //also update many-to-many relationship with items
-                //remove
-                db.Trades.Remove(trade);
-                db.SaveChanges();
-                //then add back in, with new list of items
-                db.Trades.Add(updatedTrade);
-                db.SaveChanges();
+                repo.UpdateTradedItems(updatedTrade);
             }
 
             return RedirectToAction("Pending");
@@ -271,12 +249,7 @@ namespace WaffleOffer.Controllers
         [HttpGet]
         public ActionResult Pending()
         {
-            var list = (from t in db.Trades.Include("SendingTrader")
-                        .Include("ReceivingTrader").Include("Items")
-                        where (User.Identity.Name == t.ReceivingTrader.UserName
-                        || User.Identity.Name == t.SendingTrader.UserName)
-                        orderby t.LastModified descending
-                        select t).ToList();
+            var list = repo.GetPendingTradesForUsername(User.Identity.Name);
             //remove old canceled/rejected/completed trades from pending trades
             var recentList = new List<Trade>();
             foreach (Trade t in list)
@@ -292,25 +265,14 @@ namespace WaffleOffer.Controllers
         [HttpGet]
         public ActionResult History()
         {
-            var list = (from t in db.Trades.Include("SendingTrader")
-                        .Include("ReceivingTrader").Include("Items")
-                        where (User.Identity.Name == t.ReceivingTrader.UserName
-                        || User.Identity.Name == t.SendingTrader.UserName)
-                        && (t.Canceled || t.Rejected || (t.SenderRating > 0 && t.ReceiverRating > 0))
-                        orderby t.LastModified descending
-                        select t).ToList();
+            var list = repo.GetTradeHistoryForUsername(User.Identity.Name);
             return View(list);
         }
 
         [HttpGet]
         public ActionResult Ratings()
         {
-            var list = (from t in db.Trades.Include("SendingTrader")
-                        .Include("ReceivingTrader").Include("Items")
-                        where (User.Identity.Name == t.ReceivingTrader.UserName && t.SenderRating > 0)
-                        || (User.Identity.Name == t.SendingTrader.UserName && t.ReceiverRating > 0)
-                        orderby t.LastModified descending
-                        select t).ToList();
+            var list = repo.GetTradeRatingsForUsername(User.Identity.Name);
             return View(list);
         }
 
@@ -318,10 +280,7 @@ namespace WaffleOffer.Controllers
         [Authorize(Roles = "Admin")]
         public ActionResult ListAll()
         {
-            var list = (from t in db.Trades.Include("SendingTrader")
-                        .Include("ReceivingTrader").Include("Items")
-                        orderby t.LastModified descending
-                        select t).ToList();
+            var list = repo.GetAllTrades();
             return View(list);
         }
     }

@@ -4,6 +4,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Data.Common;
 
 namespace WaffleOffer.Models
 {
@@ -12,6 +13,16 @@ namespace WaffleOffer.Models
         public WaffleOfferContext() : base("name=WaffleOfferContext")
         {
             //Configuration.LazyLoadingEnabled = false;
+        }
+
+        public WaffleOfferContext(string name) : base("name=" + name)
+        {
+
+        }
+
+        public WaffleOfferContext(DbConnection connection) : base(connection, true)
+        {
+
         }
 
         public System.Data.Entity.DbSet<Thread> Threads { get; set; }

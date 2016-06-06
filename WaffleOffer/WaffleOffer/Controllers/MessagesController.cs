@@ -15,9 +15,15 @@ namespace WaffleOffer.Controllers
     {
         #region instance variables
 
-        private WaffleOfferContext db = new WaffleOfferContext();
+        //private WaffleOfferContext db = new WaffleOfferContext();
 
-        private readonly UserManager<AppUser> userManager;
+        //private readonly UserManager<AppUser> userManager;
+
+        private MessagesRepository repo;
+
+        #endregion
+
+        #region constructors
 
         public MessagesController() : this(Startup.UserManagerFactory.Invoke())
         {
@@ -25,68 +31,71 @@ namespace WaffleOffer.Controllers
 
         public MessagesController(UserManager<AppUser> userManager)
         {
-            this.userManager = userManager;
+            repo = new MessagesRepository(new MessagingTestContext(), userManager);
         }
 
         #endregion
 
         #region view/display
         // MESSAGE INBOX
-        public ActionResult Inbox()
+        // userId param for testing
+        public ActionResult Inbox(string userId)
         {
             // Create lists of message and message view model objects
             // to hold the inbox messages
             List<Message> messages = new List<Message>();
             List<MessageViewModel> messageVms = new List<MessageViewModel>();
             // Get the id of the current logged-in user
-            string userId = User.Identity.GetUserId();
+            
+            //string userId = User.Identity.GetUserId();
 
             // If there's a user, get that user's messages, make sure that
             // there are more than zero messages, and then convert those message
             // objects into view model objects
             if (userId != null)
             {
-                messages = GetInboxMessages(userId);
+                messages = repo.GetUserInboxMessages(userId);
                 if (messages.Count > 0)
-                    messageVms = GetMessageVMs(messages);
+                    messageVms = repo.GetMessageVMs(messages);
             }
 
             return View(messageVms);
         }
 
         // SENT MESSAGES PAGE
-        public ActionResult Sent()
+        public ActionResult Sent(string userId)
         {
             List<Message> messages = new List<Message>();
             List<MessageViewModel> messageVms = new List<MessageViewModel>();
-            string userId = User.Identity.GetUserId();
+            //string userId = User.Identity.GetUserId();
 
             if (userId != null)
             {
-                messages = GetSentMessages(userId);
+                messages = repo.GetUserSentMessages(userId);
                 if (messages.Count > 0)
-                    messageVms = GetMessageVMs(messages);
+                    messageVms = repo.GetMessageVMs(messages);
             }
                 
             return View(messageVms);
         }
 
-        public ActionResult View(int? id)
+        public ActionResult View(int? id, string userId)
         {
             if (id == null)
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             // Get the message
-            Message message = db.Messages.Find(id);
+            //Message message = db.Messages.Find(id);
+            Message message = repo.GetMessageById(id);
             if (message == null)
             {
                 return HttpNotFound();
             }
 
             // Get all of the messages in this message thread
-            List<Message> messages = GetSortedThreadMessages(message.ThreadID);
-            List<MessageViewModel> messageVms = GetMessageVMs(messages);
+            List<Message> messages = repo.GetSortedThreadMessages(message.ThreadID,userId);
+            List<MessageViewModel> messageVms = repo.GetMessageVMs(messages);
 
             ViewBag.LatestMessagePanelID = "collapse0";
 
@@ -116,7 +125,8 @@ namespace WaffleOffer.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Compose([Bind(Include = "MessageID,Subject,Body,ThreadID")] MessageViewModel msgVm, string recipientUsername, bool isReply, int threadId)
+        // senderId param for testing
+        public ActionResult Compose([Bind(Include = "MessageID,Subject,Body,ThreadID")] MessageViewModel msgVm, string recipientUsername, bool isReply, int threadId, string senderId)
         {
             if (ModelState.IsValid)
             {
@@ -124,11 +134,11 @@ namespace WaffleOffer.Controllers
                 // the sender
                 ViewBag.Recipient = recipientUsername;
 
-                string senderId = User.Identity.GetUserId();
+                //string senderId = User.Identity.GetUserId();
 
                 // Get the recipient's AppUser object by username and get the id of
                 // the recipient from the AppUser object
-                AppUser recipient = GetUserByUserName(recipientUsername);
+                AppUser recipient = repo.GetUserByUserName(recipientUsername);
                 string recipientId = recipient.Id;
 
                 if (isReply == false)
@@ -136,8 +146,9 @@ namespace WaffleOffer.Controllers
                     // Create a new thread
                     Thread thread = new Thread();
                     // Add thread to DB and save changes
-                    db.Threads.Add(thread);
-                    db.SaveChanges();
+                    //db.Threads.Add(thread);
+                    //db.SaveChanges();
+                    repo.AddThread(thread);
 
                     msgVm.ThreadID = thread.ThreadID;
                 }
@@ -145,15 +156,16 @@ namespace WaffleOffer.Controllers
                 // Create a new message object by passinging the message (view model 
                 // version) as well as the ids of the recipient and the sender into 
                 // the CreateMessageFromVM method
-                Message msg = CreateMessageFromVM(msgVm, recipientId, senderId, isReply);
+                Message msg = repo.CreateMessageFromVM(msgVm, recipientId, senderId, isReply);
                 
                 // Add the message object to the databases and save the changes
-                db.Messages.Add(msg);
-                db.SaveChanges();
+                //db.Messages.Add(msg);
+                //db.SaveChanges();
+                repo.AddMessage(msg);
 
                 // Send the message using the SendMessage method. If it is sent,
                 // it will return true. If not, it will return false.
-                bool sent = SendMessage(msg);
+                bool sent = repo.SendMessage(msg);
 
                 if (sent) 
                 {
@@ -180,17 +192,19 @@ namespace WaffleOffer.Controllers
             return View(model);
         }
 
+        // senderId param for testing
+        // adjusted to use the MessagesRepository stuff in case Timo wants to test reporting
         [HttpPost]
-        public ActionResult Report([Bind(Include = "Subject,Body,ReportType,ReportedObject")] MessageViewModel msgVm)
+        public ActionResult Report([Bind(Include = "Subject,Body,ReportType,ReportedObject")] MessageViewModel msgVm, string senderId)
         {
             if (ModelState.IsValid)
             {
 
-                string senderId = User.Identity.GetUserId();
+                //string senderId = User.Identity.GetUserId();
 
                 // Get the recipient's AppUser object by username and get the id of
                 // the recipient from the AppUser object
-                AppUser recipient = GetUserByUserName("Admin");
+                AppUser recipient = repo.GetUserByUserName("Admin");
                 string recipientId = recipient.Id;
 
                 // Create a new thread
@@ -198,8 +212,9 @@ namespace WaffleOffer.Controllers
                 //set thread report type
                 thread.SetFlag((Thread.ReportType)Enum.Parse(typeof(Thread.ReportType), msgVm.ReportType, true),msgVm.ReportedObject);
                 // Add thread to DB and save changes
-                db.Threads.Add(thread);
-                db.SaveChanges();
+                //db.Threads.Add(thread);
+                //db.SaveChanges();
+                repo.AddThread(thread);
 
                 msgVm.ThreadID = thread.ThreadID;
 
@@ -209,12 +224,13 @@ namespace WaffleOffer.Controllers
                 Message msg = CreateMessageFromVM(msgVm, recipientId, senderId, false);
 
                 // Add the message object to the databases and save the changes
-                db.Messages.Add(msg);
-                db.SaveChanges();
+                //db.Messages.Add(msg);
+                //db.SaveChanges();
+                repo.AddMessage(msg);
 
                 // Send the message using the SendMessage method. If it is sent,
                 // it will return true. If not, it will return false.
-                bool sent = SendMessage(msg);
+                bool sent = repo.SendMessage(msg);
 
                 if (sent)
                 {
@@ -224,8 +240,9 @@ namespace WaffleOffer.Controllers
                         case Thread.ReportType.Item:
                             return RedirectToAction("Details", "Items", new { id = thread.GetFlagTargetId() });
                         case Thread.ReportType.Profile:
-                            var user = userManager.FindById(thread.GetFlagTargetId());
-                            return RedirectToAction("Index", "Profile", new { name = user.UserName });
+                            // commented out for testing my messaging stuff -- Sally
+                            //var user = userManager.FindById(thread.GetFlagTargetId());
+                            //return RedirectToAction("Index", "Profile", new { name = user.UserName });
                         case Thread.ReportType.Trade:
                             return RedirectToAction("Index", "Trade", new { tradeId = thread.GetFlagTargetId() });
                         default:
@@ -253,10 +270,11 @@ namespace WaffleOffer.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
             // Find and retrieve the message by its id.
-            Message message = db.Messages.Find(id);
+            //Message message = db.Messages.Find(id);
+            Message message = repo.GetMessageById(id);
             // Make a view model version of the message so that a user can
             // review it before confirming deletion.
-            MessageViewModel messageVm = GetMessageVM(message);
+            MessageViewModel messageVm = repo.GetMessageVM(message);
             if (message == null)
             {
                 return HttpNotFound();
@@ -269,9 +287,10 @@ namespace WaffleOffer.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Message message = db.Messages.Find(id);
-            db.Messages.Remove(message);
-            db.SaveChanges();
+            //Message message = db.Messages.Find(id);
+            repo.DeleteMessageById(id);
+            //db.Messages.Remove(message);
+            //db.SaveChanges();
             return RedirectToAction("Inbox");
         }
         #endregion
@@ -281,60 +300,71 @@ namespace WaffleOffer.Controllers
         {
             if (disposing)
             {
-                db.Dispose();
+                //db.Dispose();
             }
             base.Dispose(disposing);
         }
 
         #endregion
 
-        #region retrieval functions
+        #region retrieval methods
 
         // Get all user messages
         public List<Message> GetAllUserMessages(string userId)
         {
+            /*
             var messages = (from m in db.Messages
                             where m.RecipientID == userId || m.SenderID == userId
                             select m).ToList();
             return messages;
+             */
+            return repo.GetAllUserMessages(userId);
         }
 
         // Get all messages in which the user is the recipient
         public List<Message> GetInboxMessages(string userId)
         {
+            /*
             List<Message> inboxMessages = new List<Message>();
 
             inboxMessages = GetOnlyLatestMessagesInUserThreads(userId, "inbox");
 
             return inboxMessages;
-
-            //return allInboxMessages;
+             */
+            return repo.GetUserInboxMessages(userId);
         }
 
         // Get all messages in which the user is the sender
         public List<Message> GetSentMessages(string userId)
         {
+            /*
             List<Message> sentMessages = new List<Message>();
 
             sentMessages = GetOnlyLatestMessagesInUserThreads(userId, "sent");
 
             return sentMessages;
+             */
+            return repo.GetUserSentMessages(userId);
 
         }
 
         // Retrieves and returns an AppUser object by its UserName
         public AppUser GetUserByUserName(string username)
         {
+            /*
             var user = (from u in db.Users
                         where u.UserName == username
                         select u).FirstOrDefault();
             return user;
+             */
+            return repo.GetUserByUserName(username);
         }
 
         // Get the message sender for the message that matches the
         // message id passed in
         public AppUser GetSender(int messageId)
         {
+            /*
             AppUser sender = new AppUser();
             Message msg = db.Messages.Find(messageId);
 
@@ -343,12 +373,15 @@ namespace WaffleOffer.Controllers
                       select user).FirstOrDefault();
 
             return sender;
+             */
+            return repo.GetSenderByMessageId(messageId);
         }
 
         // Get the message recipient for the message that matches the
         // message id passed in
         public AppUser GetRecipient(int messageId)
         {
+            /*
             AppUser recipient = new AppUser();
             Message msg = db.Messages.Find(messageId);
 
@@ -357,6 +390,8 @@ namespace WaffleOffer.Controllers
                          select user).FirstOrDefault();
 
             return recipient;
+             */
+            return repo.GetRecipientByMessageId(messageId);
         }
 
         // If the Message object passed into GetMessageVM is not 
@@ -365,6 +400,7 @@ namespace WaffleOffer.Controllers
         // an empty MessageViewModel object.
         public MessageViewModel GetMessageVM(Message msg)
         {
+            /*
             MessageViewModel msgVm = new MessageViewModel();
 
             if (msg != null)
@@ -399,6 +435,8 @@ namespace WaffleOffer.Controllers
             }
 
             return msgVm;
+             */
+            return repo.GetMessageVM(msg);
         }
 
         // If the list of Message objects passed in isn't empty, create
@@ -407,6 +445,7 @@ namespace WaffleOffer.Controllers
         // list of MessageViewModel objects.
         public List<MessageViewModel> GetMessageVMs(List<Message> messages)
         {
+            /*
             List<MessageViewModel> msgVms = new List<MessageViewModel>();
             if (messages.Count > 0)
             {
@@ -417,6 +456,8 @@ namespace WaffleOffer.Controllers
                 }
             }
             return msgVms;
+             */
+            return repo.GetMessageVMs(messages);
         }
 
         /* 
@@ -425,8 +466,10 @@ namespace WaffleOffer.Controllers
           the user is the recipient or the sender (to avoid returning both
           copies and originals).
         */ 
-        public List<Message> GetSortedThreadMessages(int threadId)
+        // userId param for testing
+        public List<Message> GetSortedThreadMessages(int threadId, string userId)
         {
+            /*
             List<Message> userMessages = new List<Message>();
             string userId = User.Identity.GetUserId();
 
@@ -450,12 +493,15 @@ namespace WaffleOffer.Controllers
             }
 
             return userMessages;
+             */
+            return repo.GetSortedThreadMessages(threadId, userId);
         }
 
         //  Retrieve only the first messages in each message thread
         //  in which the user is a participant.
         public List<Message> GetOnlyLatestMessagesInUserThreads(string userId, string type)
         {
+            /*
             // Get all message threads in which the user is a participant
             List<int> userThreadIds = GetUserMessageThreadIDs(userId);
 
@@ -467,7 +513,7 @@ namespace WaffleOffer.Controllers
             // message (whether sent or received) to the latestMessages list
             foreach (int threadId in userThreadIds)
             {
-                List<Message> messages = GetSortedThreadMessages(threadId);
+                List<Message> messages = GetSortedThreadMessages(threadId, userId);
 
                 if (messages.Count > 0)
                 {
@@ -503,12 +549,15 @@ namespace WaffleOffer.Controllers
             }
 
             return latestMessages;
+             */
+            return repo.GetOnlyLatestMessagesInUserThreads(userId, type);
         }
 
         // Get the list of the threadIDs for all of the user messages
         // (does not add duplicates to the list).
         public List<int> GetUserMessageThreadIDs(string userId)
         {
+            /*
             List<int> threads = new List<int>();
 
             List<Message> messages = GetAllUserMessages(userId);
@@ -523,16 +572,19 @@ namespace WaffleOffer.Controllers
             }
 
             return threads;
+             */
+            return repo.GetUserMessageThreadIDs(userId);
         }
 
         #endregion
 
-        # region create functions
+        # region create methods
         // Because the messages that the user will be interacting with 
         // will be the view model versions, it is necessary to be able
         // to convert MessageViewModel objects back into Message objects.
         public Message CreateMessageFromVM(MessageViewModel msgVm, string recipientId, string senderId, bool isReply)
         {
+            /*
             Message msg = new Message();
 
             if (msgVm != null)
@@ -551,16 +603,19 @@ namespace WaffleOffer.Controllers
             }
 
             return msg;
+             */
+            return repo.CreateMessageFromVM(msgVm, recipientId, senderId, isReply);
         }
 
         #endregion
 
-        #region messaging functions
+        #region messaging methods
 
         // Send a message by taking the message to be sent, copying it, putting the 
         // copy in the recipient's messages list, and toggling the "Sent" flag to "true."
         public bool SendMessage(Message msg)
         {
+            /*
             bool sent = false;
 
             // Make a copy of the message and give the properties the same values 
@@ -605,6 +660,8 @@ namespace WaffleOffer.Controllers
             }
 
             return sent;
+            */
+            return repo.SendMessage(msg);
         }
 
         #endregion

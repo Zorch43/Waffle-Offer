@@ -284,11 +284,11 @@ namespace WaffleOffer.Controllers
                             image.Content = reader.ReadBytes(upload.ContentLength);
                         }
                         item.Images = new List<ItemImage> { image };
-                        db.Entry(image).State = EntityState.Added;
+                        //db.Entry(image).State = EntityState.Added;
                     }
                 }
 
-                db.Entry(item).State = EntityState.Modified;
+                //db.Entry(item).State = EntityState.Modified;
                 db.SaveChanges();
                 return RedirectToAction("Index");
             }

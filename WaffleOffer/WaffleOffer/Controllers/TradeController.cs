@@ -115,7 +115,7 @@ namespace WaffleOffer.Controllers
                 Submitted = true,
                 LastModified = DateTime.Now
             };
-
+            
             var items = new List<Item>();
 
             //get list of items

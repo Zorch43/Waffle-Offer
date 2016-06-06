@@ -10,7 +10,7 @@ using System.Collections.Generic;
 namespace BookFliprUnitTests
 {
     [TestFixture]
-    public class UnitTest1
+    public class TradeTests
     {
         DbConnection connection;
         TradeRepository repo;

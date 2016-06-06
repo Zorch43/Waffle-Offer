@@ -36,10 +36,23 @@ namespace WaffleOffer.Controllers
              where i.ListingUser == username && i.ListingType == Item.ItemType.Have
              select i).ToList();
         }
+        //get a trader's Haves
+        public List<Item> GetWantsForUsername(string username)
+        {
+            return (from i in db.Items
+                    where i.ListingUser == username && i.ListingType == Item.ItemType.Want
+                    select i).ToList();
+        }
         //get AppUser by username
         public AppUser GetUserByUserName(string username)
         {
             return userManager.FindByName(username);
+        }
+
+        //get appuser by id
+        public AppUser GetUserById(string id)
+        {
+            return userManager.FindById(id);
         }
         //get Item by id
         public Item GetItemById(int? id)

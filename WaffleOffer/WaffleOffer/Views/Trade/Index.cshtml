@@ -55,14 +55,14 @@
         var col2 = document.getElementById("ReceiverOffers");
         var found1 = false;
         var found2 = false;
-        for (var i = 0; i < col1.childElementCount; i++) {
-            if (col1.childNodes[i].nodeType == 1 && items[i].getAttribute('class') == "trade-item") {
+        for (var i = 0; i < col1.children.length; i++) {
+            if (col1.children[i].getAttribute('class') == "trade-item") {
                 found1 = true;
                 break;
             }
         }
-        for (var i = 0; i < col2.childElementCount; i++) {
-            if (col2.childNodes[i].nodeType == 1 && items[i].getAttribute('class') == "trade-item") {
+        for (var i = 0; i < col2.children.length; i++) {
+            if (col1.children[i].getAttribute('class') == "trade-item") {
                 found2 = true;
                 break;
             }
@@ -325,12 +325,12 @@
     <button class="btn btn-custom-submit" onclick="updateTrade('Accept')">Accept Trade</button>
     <button class="btn btn-custom-submit" onclick="updateTrade('Reject')">Reject Trade</button>
 }
-@if (User.Identity.Name == Model.SendingTrader.UserName && Model.Submitted && !Model.Canceled && !Model.Accepted 
+@if (!Model.Canceled && User.Identity.Name == Model.SendingTrader.UserName && Model.Submitted && !Model.Canceled && !Model.Accepted 
     && !Model.Rejected || (Model.Accepted && !Model.SenderConfirmed && !Model.ReceiverConfirmed))
 {
     <button class="btn btn-custom-submit" onclick="updateTrade('Cancel')">Cancel Trade</button>
 }
-@if (Model.Accepted && ((User.Identity.Name == Model.SendingTrader.UserName && !Model.SenderConfirmed)
+@if (Model.Accepted && !Model.Canceled && ((User.Identity.Name == Model.SendingTrader.UserName && !Model.SenderConfirmed)
                 || (User.Identity.Name == Model.ReceivingTrader.UserName && !Model.ReceiverConfirmed)))
 {
     <button class="btn btn-custom-submit" onclick="updateTrade('Confirm')">Confirm Trade</button>
